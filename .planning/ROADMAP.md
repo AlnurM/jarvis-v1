@@ -54,7 +54,7 @@ Plans:
 Plans:
 - [x] 02-01-PLAN.md — Test scaffold (Wave 0): pytest fixtures, mock Claude/Deepgram, requirements.txt upgrade to anthropic 0.91.0 + deepgram-sdk 6.1.1
 - [x] 02-02-PLAN.md — Backend routes: POST /api/chat (Claude structured output + MongoDB) and WebSocket /api/ws/transcribe (Deepgram relay)
-- [ ] 02-03-PLAN.md — Frontend contracts: extend Zustand store with voice FSM + conversation history; extend API client with chatWithJarvis() and createTranscribeWS()
+- [x] 02-03-PLAN.md — Frontend contracts: extend Zustand store with voice FSM + conversation history; extend API client with chatWithJarvis() and createTranscribeWS()
 - [ ] 02-04-PLAN.md — Frontend hooks: useVoiceRecorder (MediaRecorder + VAD), useVoiceOutput (SpeechSynthesis + Safari workarounds), useWaveVisualizer (Canvas AnalyserNode)
 - [ ] 02-05-PLAN.md — Visual modes: ListeningMode (blue waveform), ThinkingMode (blue→purple orb), SpeakingMode (purple waveform + subtitles)
 - [ ] 02-06-PLAN.md — App wiring: ModeRouter with AnimatePresence transitions + App.tsx FSM orchestration
@@ -104,7 +104,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Foundation | 4/4 | Complete   | 2026-04-08 |
-| 2. Voice Loop Core | 2/7 | In Progress|  |
+| 2. Voice Loop Core | 3/7 | In Progress|  |
 | 3. Information Modes | 0/TBD | Not started | - |
 | 4. Extended Modes | 0/TBD | Not started | - |
 | 5. Polish & Hardening | 0/TBD | Not started | - |

@@ -7,17 +7,17 @@
 
 ### Voice Input
 
-- [ ] **VOICE-01**: User can tap to activate microphone and speak
+- [x] **VOICE-01**: User can tap to activate microphone and speak
 - [ ] **VOICE-02**: Audio captured via MediaRecorder API (Safari PWA compatible)
 - [x] **VOICE-03**: Audio sent to backend for STT transcription (Deepgram or Whisper)
-- [ ] **VOICE-04**: Silence detection (VAD) automatically ends recording after 1.5-2s of silence
-- [ ] **VOICE-05**: User can tap to stop recording early
+- [x] **VOICE-04**: Silence detection (VAD) automatically ends recording after 1.5-2s of silence
+- [x] **VOICE-05**: User can tap to stop recording early
 
 ### Voice Output
 
-- [ ] **TTS-01**: AI response spoken via SpeechSynthesis API
+- [x] **TTS-01**: AI response spoken via SpeechSynthesis API
 - [ ] **TTS-02**: Best available voice selected (prefer Russian voice on iOS, e.g. Milena)
-- [ ] **TTS-03**: User can tap to interrupt/stop speaking
+- [x] **TTS-03**: User can tap to interrupt/stop speaking
 - [ ] **TTS-04**: Voice list loaded with polling workaround for Safari getVoices() quirk
 
 ### Conversation
@@ -31,7 +31,7 @@
 
 ### Mode Routing
 
-- [ ] **MODE-01**: App auto-switches visual mode based on Claude's JSON envelope response
+- [x] **MODE-01**: App auto-switches visual mode based on Claude's JSON envelope response
 - [ ] **MODE-02**: Smooth animated transitions between modes via Framer Motion (motion package)
 - [x] **MODE-03**: Fallback to Speaking mode if JSON parse fails
 
@@ -162,14 +162,14 @@
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| VOICE-01 | Phase 2 | Pending |
+| VOICE-01 | Phase 2 | Complete |
 | VOICE-02 | Phase 2 | Pending |
 | VOICE-03 | Phase 2 | Complete |
-| VOICE-04 | Phase 2 | Pending |
-| VOICE-05 | Phase 2 | Pending |
-| TTS-01 | Phase 2 | Pending |
+| VOICE-04 | Phase 2 | Complete |
+| VOICE-05 | Phase 2 | Complete |
+| TTS-01 | Phase 2 | Complete |
 | TTS-02 | Phase 2 | Pending |
-| TTS-03 | Phase 2 | Pending |
+| TTS-03 | Phase 2 | Complete |
 | TTS-04 | Phase 2 | Pending |
 | CONV-01 | Phase 2 | Complete |
 | CONV-02 | Phase 2 | Complete |
@@ -177,7 +177,7 @@
 | CONV-04 | Phase 2 | Complete |
 | CONV-05 | Phase 2 | Complete |
 | CONV-06 | Phase 2 | Complete |
-| MODE-01 | Phase 2 | Pending |
+| MODE-01 | Phase 2 | Complete |
 | MODE-02 | Phase 2 | Pending |
 | MODE-03 | Phase 2 | Complete |
 | LIST-01 | Phase 2 | Pending |
