@@ -13,7 +13,7 @@ A full-screen PWA voice assistant for iPad (Safari, landscape). The user speaks,
 - **Deployment**: Railway monolith with Docker — single container serves everything
 - **Device**: iPad Safari landscape — must work flawlessly in this specific environment
 - **APIs**: Claude (claude-sonnet-4-6), OpenWeatherMap, Aladhan, Google Calendar, Brave Search — all specified
-- **Database**: MongoDB via Motor — async driver required for FastAPI
+- **Database**: MongoDB via PyMongo Async (`AsyncMongoClient`) — Motor is deprecated (EOL May 2026)
 - **No auth**: Single user, no login flow — simplifies architecture significantly
 <!-- GSD:project-end -->
 
