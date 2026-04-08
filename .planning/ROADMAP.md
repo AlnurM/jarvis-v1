@@ -12,7 +12,7 @@ JARVIS is built in five phases that follow a strict dependency graph. Phase 1 pr
 
 Decimal phases appear between their surrounding integers in numeric order.
 
-- [ ] **Phase 1: Foundation** - Project scaffold, deployment pipeline, and database — everything needed to ship code to the target device
+- [x] **Phase 1: Foundation** - Project scaffold, deployment pipeline, and database — everything needed to ship code to the target device (completed 2026-04-08)
 - [ ] **Phase 2: Voice Loop Core** - The complete voice loop (listen → think → speak) with Claude integration and 3 core visual modes — the entire product in its simplest form
 - [ ] **Phase 3: Information Modes** - Weather and Prayer Times modes — first specialized modes validating end-to-end mode switching with simple REST APIs
 - [ ] **Phase 4: Extended Modes** - Search, Calendar (with Google OAuth), and Morning Briefing — full feature set complete
@@ -35,7 +35,7 @@ Plans:
 - [x] 01-01-PLAN.md — FastAPI backend scaffold with MongoDB lifespan, /api/health endpoint, and pydantic-settings config
 - [x] 01-02-PLAN.md — React/Vite PWA frontend with Tailwind v4 design tokens, Apple PWA meta tags, Zustand store, and JARVIS orb landing screen
 - [x] 01-03-PLAN.md — Multi-stage Dockerfile (node:20-slim build + python:3.12-slim runtime)
-- [ ] 01-04-PLAN.md — Git commit, Railway deploy, and iPad fullscreen PWA smoke test checkpoint
+- [x] 01-04-PLAN.md — Git commit, Railway deploy, and iPad fullscreen PWA smoke test checkpoint
 
 **UI hint**: yes
 
@@ -93,7 +93,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Foundation | 2/4 | In Progress|  |
+| 1. Foundation | 4/4 | Complete   | 2026-04-08 |
 | 2. Voice Loop Core | 0/TBD | Not started | - |
 | 3. Information Modes | 0/TBD | Not started | - |
 | 4. Extended Modes | 0/TBD | Not started | - |
