@@ -13,7 +13,7 @@ JARVIS is built in five phases that follow a strict dependency graph. Phase 1 pr
 Decimal phases appear between their surrounding integers in numeric order.
 
 - [x] **Phase 1: Foundation** - Project scaffold, deployment pipeline, and database — everything needed to ship code to the target device (completed 2026-04-08)
-- [ ] **Phase 2: Voice Loop Core** - The complete voice loop (listen → think → speak) with Claude integration and 3 core visual modes — the entire product in its simplest form
+- [x] **Phase 2: Voice Loop Core** - The complete voice loop (listen → think → speak) with Claude integration and 3 core visual modes — the entire product in its simplest form (completed 2026-04-08)
 - [ ] **Phase 3: Information Modes** - Weather and Prayer Times modes — first specialized modes validating end-to-end mode switching with simple REST APIs
 - [ ] **Phase 4: Extended Modes** - Search, Calendar (with Google OAuth), and Morning Briefing — full feature set complete
 - [ ] **Phase 5: Polish & Hardening** - Single round-trip optimization, settings persistence, animation performance, iOS edge case hardening
@@ -58,7 +58,7 @@ Plans:
 - [x] 02-04-PLAN.md — Frontend hooks: useVoiceRecorder (MediaRecorder + VAD), useVoiceOutput (SpeechSynthesis + Safari workarounds), useWaveVisualizer (Canvas AnalyserNode)
 - [x] 02-05-PLAN.md — Visual modes: ListeningMode (blue waveform), ThinkingMode (blue→purple orb), SpeakingMode (purple waveform + subtitles)
 - [x] 02-06-PLAN.md — App wiring: ModeRouter with AnimatePresence transitions + App.tsx FSM orchestration
-- [ ] 02-07-PLAN.md — iPad deployment + end-to-end validation checkpoint on real device
+- [x] 02-07-PLAN.md — iPad deployment + end-to-end validation checkpoint on real device
 
 **UI hint**: yes
 
@@ -104,7 +104,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Foundation | 4/4 | Complete   | 2026-04-08 |
-| 2. Voice Loop Core | 6/7 | In Progress|  |
+| 2. Voice Loop Core | 7/7 | Complete   | 2026-04-08 |
 | 3. Information Modes | 0/TBD | Not started | - |
 | 4. Extended Modes | 0/TBD | Not started | - |
 | 5. Polish & Hardening | 0/TBD | Not started | - |
