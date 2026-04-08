@@ -107,24 +107,24 @@
 
 ### Backend
 
-- [ ] **API-01**: FastAPI server serving static frontend via StaticFiles
-- [ ] **API-02**: Backend proxies all external API calls (Claude, Weather, Prayer, Search, Calendar)
+- [x] **API-01**: FastAPI server serving static frontend via StaticFiles
+- [x] **API-02**: Backend proxies all external API calls (Claude, Weather, Prayer, Search, Calendar)
 - [ ] **API-03**: Single httpx.AsyncClient for app lifetime (lifespan-scoped)
 - [ ] **API-04**: Backend fetches sub-API data during /api/chat call (no double round-trips)
 
 ### Database
 
-- [ ] **DB-01**: MongoDB connected via PyMongo Async (not Motor — deprecated)
-- [ ] **DB-02**: Collections: conversations, events, settings
-- [ ] **DB-03**: Collections initialized on startup
+- [x] **DB-01**: MongoDB connected via PyMongo Async (not Motor — deprecated)
+- [x] **DB-02**: Collections: conversations, events, settings
+- [x] **DB-03**: Collections initialized on startup
 - [ ] **DB-04**: Settings persistence (location, language, preferences)
 
 ### Deployment
 
 - [ ] **DEPLOY-01**: Multi-stage Dockerfile (Node build + Python runtime)
 - [ ] **DEPLOY-02**: Railway deployment with all config via environment variables
-- [ ] **DEPLOY-03**: MONGO_URL from Railway MongoDB plugin
-- [ ] **DEPLOY-04**: No hardcoded API keys or secrets
+- [x] **DEPLOY-03**: MONGO_URL from Railway MongoDB plugin
+- [x] **DEPLOY-04**: No hardcoded API keys or secrets
 
 ## v2 Requirements
 
@@ -223,18 +223,18 @@
 | PWA-02 | Phase 1 | Pending |
 | PWA-03 | Phase 1 | Pending |
 | PWA-04 | Phase 1 | Pending |
-| API-01 | Phase 1 | Pending |
-| API-02 | Phase 1 | Pending |
+| API-01 | Phase 1 | Complete |
+| API-02 | Phase 1 | Complete |
 | API-03 | Phase 5 | Pending |
 | API-04 | Phase 5 | Pending |
-| DB-01 | Phase 1 | Pending |
-| DB-02 | Phase 1 | Pending |
-| DB-03 | Phase 1 | Pending |
+| DB-01 | Phase 1 | Complete |
+| DB-02 | Phase 1 | Complete |
+| DB-03 | Phase 1 | Complete |
 | DB-04 | Phase 5 | Pending |
 | DEPLOY-01 | Phase 1 | Pending |
 | DEPLOY-02 | Phase 1 | Pending |
-| DEPLOY-03 | Phase 1 | Pending |
-| DEPLOY-04 | Phase 1 | Pending |
+| DEPLOY-03 | Phase 1 | Complete |
+| DEPLOY-04 | Phase 1 | Complete |
 
 **Coverage:**
 - v1 requirements: 73 total (note: original count of 65 was a generation error — actual count from requirement list is 73)
