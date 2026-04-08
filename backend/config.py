@@ -6,6 +6,7 @@ class Settings(BaseSettings):
     MONGODB_DB: str = "jarvis"
     PORT: int = 8080
     CLAUDE_API_KEY: str = ""
+    DEEPGRAM_API_KEY: str = ""
     OPENWEATHER_API_KEY: str = ""
     BRAVE_SEARCH_API_KEY: str = ""
     LATITUDE: float = 43.2220
