@@ -9,7 +9,7 @@
 
 - [ ] **VOICE-01**: User can tap to activate microphone and speak
 - [ ] **VOICE-02**: Audio captured via MediaRecorder API (Safari PWA compatible)
-- [ ] **VOICE-03**: Audio sent to backend for STT transcription (Deepgram or Whisper)
+- [x] **VOICE-03**: Audio sent to backend for STT transcription (Deepgram or Whisper)
 - [ ] **VOICE-04**: Silence detection (VAD) automatically ends recording after 1.5-2s of silence
 - [ ] **VOICE-05**: User can tap to stop recording early
 
@@ -22,18 +22,18 @@
 
 ### Conversation
 
-- [ ] **CONV-01**: Claude API integration with JARVIS persona (concise, helpful)
+- [x] **CONV-01**: Claude API integration with JARVIS persona (concise, helpful)
 - [ ] **CONV-02**: Bilingual ru/en auto-detection — responds in user's language
 - [ ] **CONV-03**: Conversation history maintained (last 20 messages)
-- [ ] **CONV-04**: Conversation history persisted to MongoDB
-- [ ] **CONV-05**: Claude returns structured JSON envelope with mode + text + data
+- [x] **CONV-04**: Conversation history persisted to MongoDB
+- [x] **CONV-05**: Claude returns structured JSON envelope with mode + text + data
 - [ ] **CONV-06**: System prompt enforces concise responses (2-3 sentences for general queries)
 
 ### Mode Routing
 
 - [ ] **MODE-01**: App auto-switches visual mode based on Claude's JSON envelope response
 - [ ] **MODE-02**: Smooth animated transitions between modes via Framer Motion (motion package)
-- [ ] **MODE-03**: Fallback to Speaking mode if JSON parse fails
+- [x] **MODE-03**: Fallback to Speaking mode if JSON parse fails
 
 ### Listening Mode
 
@@ -164,22 +164,22 @@
 |-------------|-------|--------|
 | VOICE-01 | Phase 2 | Pending |
 | VOICE-02 | Phase 2 | Pending |
-| VOICE-03 | Phase 2 | Pending |
+| VOICE-03 | Phase 2 | Complete |
 | VOICE-04 | Phase 2 | Pending |
 | VOICE-05 | Phase 2 | Pending |
 | TTS-01 | Phase 2 | Pending |
 | TTS-02 | Phase 2 | Pending |
 | TTS-03 | Phase 2 | Pending |
 | TTS-04 | Phase 2 | Pending |
-| CONV-01 | Phase 2 | Pending |
+| CONV-01 | Phase 2 | Complete |
 | CONV-02 | Phase 2 | Pending |
 | CONV-03 | Phase 2 | Pending |
-| CONV-04 | Phase 2 | Pending |
-| CONV-05 | Phase 2 | Pending |
+| CONV-04 | Phase 2 | Complete |
+| CONV-05 | Phase 2 | Complete |
 | CONV-06 | Phase 2 | Pending |
 | MODE-01 | Phase 2 | Pending |
 | MODE-02 | Phase 2 | Pending |
-| MODE-03 | Phase 2 | Pending |
+| MODE-03 | Phase 2 | Complete |
 | LIST-01 | Phase 2 | Pending |
 | LIST-02 | Phase 2 | Pending |
 | LIST-03 | Phase 2 | Pending |

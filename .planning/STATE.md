@@ -2,15 +2,15 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-status: verifying
-stopped_at: Phase 2 context gathered
-last_updated: "2026-04-08T16:31:30.049Z"
+status: executing
+stopped_at: Completed 02-01-PLAN.md
+last_updated: "2026-04-08T17:06:50.575Z"
 last_activity: 2026-04-08
 progress:
   total_phases: 5
   completed_phases: 1
-  total_plans: 4
-  completed_plans: 4
+  total_plans: 11
+  completed_plans: 5
   percent: 0
 ---
 
@@ -21,13 +21,13 @@ progress:
 See: .planning/PROJECT.md (updated 2026-04-08)
 
 **Core value:** Voice in → intelligent response out, with the right visual mode automatically selected
-**Current focus:** Phase 01 — foundation
+**Current focus:** Phase 02 — voice-loop-core
 
 ## Current Position
 
-Phase: 2
-Plan: Not started
-Status: Phase complete — ready for verification
+Phase: 02 (voice-loop-core) — EXECUTING
+Plan: 2 of 7
+Status: Ready to execute
 Last activity: 2026-04-08
 
 Progress: [░░░░░░░░░░] 0%
@@ -56,6 +56,7 @@ Progress: [░░░░░░░░░░] 0%
 | Phase 01-foundation P02 | 8 | 2 tasks | 13 files |
 | Phase 01-foundation P03 | 1 | 1 tasks | 1 files |
 | Phase 01-foundation P04 | 3 | 1 tasks | 6 files |
+| Phase 02-voice-loop-core P01 | 172 | 2 tasks | 5 files |
 
 ## Accumulated Context
 
@@ -75,6 +76,7 @@ Recent decisions affecting current work:
 - [Phase 01-foundation]: Tailwind v4 CSS-first via @tailwindcss/vite plugin — no tailwind.config.js
 - [Phase 01-foundation]: node:20-slim + python:3.12-slim multi-stage Dockerfile; npm ci for reproducibility; port 8080 hardcoded in CMD; Railway PORT=8080 must be set in dashboard
 - [Phase 01-foundation]: Git repo already initialized from prior plans — remaining scaffold files committed to complete repo state for Railway deploy
+- [Phase 02-voice-loop-core]: Wave 0 test scaffold uses AsyncClient+ASGITransport for async fixtures; mock_claude guards routers.chat import to work before plan 02-02
 
 ### Pending Todos
 
@@ -88,6 +90,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-04-08T16:31:30.046Z
-Stopped at: Phase 2 context gathered
-Resume file: .planning/phases/02-voice-loop-core/02-CONTEXT.md
+Last session: 2026-04-08T17:06:50.572Z
+Stopped at: Completed 02-01-PLAN.md
+Resume file: None
