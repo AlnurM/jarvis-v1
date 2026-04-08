@@ -162,85 +162,85 @@
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| VOICE-01 | — | Pending |
-| VOICE-02 | — | Pending |
-| VOICE-03 | — | Pending |
-| VOICE-04 | — | Pending |
-| VOICE-05 | — | Pending |
-| TTS-01 | — | Pending |
-| TTS-02 | — | Pending |
-| TTS-03 | — | Pending |
-| TTS-04 | — | Pending |
-| CONV-01 | — | Pending |
-| CONV-02 | — | Pending |
-| CONV-03 | — | Pending |
-| CONV-04 | — | Pending |
-| CONV-05 | — | Pending |
-| CONV-06 | — | Pending |
-| MODE-01 | — | Pending |
-| MODE-02 | — | Pending |
-| MODE-03 | — | Pending |
-| LIST-01 | — | Pending |
-| LIST-02 | — | Pending |
-| LIST-03 | — | Pending |
-| LIST-04 | — | Pending |
-| THINK-01 | — | Pending |
-| THINK-02 | — | Pending |
-| THINK-03 | — | Pending |
-| THINK-04 | — | Pending |
-| SPEAK-01 | — | Pending |
-| SPEAK-02 | — | Pending |
-| SPEAK-03 | — | Pending |
-| WEATH-01 | — | Pending |
-| WEATH-02 | — | Pending |
-| WEATH-03 | — | Pending |
-| WEATH-04 | — | Pending |
-| WEATH-05 | — | Pending |
-| PRAY-01 | — | Pending |
-| PRAY-02 | — | Pending |
-| PRAY-03 | — | Pending |
-| PRAY-04 | — | Pending |
-| PRAY-05 | — | Pending |
-| PRAY-06 | — | Pending |
-| SRCH-01 | — | Pending |
-| SRCH-02 | — | Pending |
-| SRCH-03 | — | Pending |
-| SRCH-04 | — | Pending |
-| SRCH-05 | — | Pending |
-| CAL-01 | — | Pending |
-| CAL-02 | — | Pending |
-| CAL-03 | — | Pending |
-| CAL-04 | — | Pending |
-| CAL-05 | — | Pending |
-| CAL-06 | — | Pending |
-| CAL-07 | — | Pending |
-| BRIEF-01 | — | Pending |
-| BRIEF-02 | — | Pending |
-| BRIEF-03 | — | Pending |
-| BRIEF-04 | — | Pending |
-| BRIEF-05 | — | Pending |
-| PWA-01 | — | Pending |
-| PWA-02 | — | Pending |
-| PWA-03 | — | Pending |
-| PWA-04 | — | Pending |
-| API-01 | — | Pending |
-| API-02 | — | Pending |
-| API-03 | — | Pending |
-| API-04 | — | Pending |
-| DB-01 | — | Pending |
-| DB-02 | — | Pending |
-| DB-03 | — | Pending |
-| DB-04 | — | Pending |
-| DEPLOY-01 | — | Pending |
-| DEPLOY-02 | — | Pending |
-| DEPLOY-03 | — | Pending |
-| DEPLOY-04 | — | Pending |
+| VOICE-01 | Phase 2 | Pending |
+| VOICE-02 | Phase 2 | Pending |
+| VOICE-03 | Phase 2 | Pending |
+| VOICE-04 | Phase 2 | Pending |
+| VOICE-05 | Phase 2 | Pending |
+| TTS-01 | Phase 2 | Pending |
+| TTS-02 | Phase 2 | Pending |
+| TTS-03 | Phase 2 | Pending |
+| TTS-04 | Phase 2 | Pending |
+| CONV-01 | Phase 2 | Pending |
+| CONV-02 | Phase 2 | Pending |
+| CONV-03 | Phase 2 | Pending |
+| CONV-04 | Phase 2 | Pending |
+| CONV-05 | Phase 2 | Pending |
+| CONV-06 | Phase 2 | Pending |
+| MODE-01 | Phase 2 | Pending |
+| MODE-02 | Phase 2 | Pending |
+| MODE-03 | Phase 2 | Pending |
+| LIST-01 | Phase 2 | Pending |
+| LIST-02 | Phase 2 | Pending |
+| LIST-03 | Phase 2 | Pending |
+| LIST-04 | Phase 2 | Pending |
+| THINK-01 | Phase 2 | Pending |
+| THINK-02 | Phase 2 | Pending |
+| THINK-03 | Phase 2 | Pending |
+| THINK-04 | Phase 2 | Pending |
+| SPEAK-01 | Phase 2 | Pending |
+| SPEAK-02 | Phase 2 | Pending |
+| SPEAK-03 | Phase 2 | Pending |
+| WEATH-01 | Phase 3 | Pending |
+| WEATH-02 | Phase 3 | Pending |
+| WEATH-03 | Phase 3 | Pending |
+| WEATH-04 | Phase 3 | Pending |
+| WEATH-05 | Phase 3 | Pending |
+| PRAY-01 | Phase 3 | Pending |
+| PRAY-02 | Phase 3 | Pending |
+| PRAY-03 | Phase 3 | Pending |
+| PRAY-04 | Phase 3 | Pending |
+| PRAY-05 | Phase 3 | Pending |
+| PRAY-06 | Phase 3 | Pending |
+| SRCH-01 | Phase 4 | Pending |
+| SRCH-02 | Phase 4 | Pending |
+| SRCH-03 | Phase 4 | Pending |
+| SRCH-04 | Phase 4 | Pending |
+| SRCH-05 | Phase 4 | Pending |
+| CAL-01 | Phase 4 | Pending |
+| CAL-02 | Phase 4 | Pending |
+| CAL-03 | Phase 4 | Pending |
+| CAL-04 | Phase 4 | Pending |
+| CAL-05 | Phase 4 | Pending |
+| CAL-06 | Phase 4 | Pending |
+| CAL-07 | Phase 4 | Pending |
+| BRIEF-01 | Phase 4 | Pending |
+| BRIEF-02 | Phase 4 | Pending |
+| BRIEF-03 | Phase 4 | Pending |
+| BRIEF-04 | Phase 4 | Pending |
+| BRIEF-05 | Phase 4 | Pending |
+| PWA-01 | Phase 1 | Pending |
+| PWA-02 | Phase 1 | Pending |
+| PWA-03 | Phase 1 | Pending |
+| PWA-04 | Phase 1 | Pending |
+| API-01 | Phase 1 | Pending |
+| API-02 | Phase 1 | Pending |
+| API-03 | Phase 5 | Pending |
+| API-04 | Phase 5 | Pending |
+| DB-01 | Phase 1 | Pending |
+| DB-02 | Phase 1 | Pending |
+| DB-03 | Phase 1 | Pending |
+| DB-04 | Phase 5 | Pending |
+| DEPLOY-01 | Phase 1 | Pending |
+| DEPLOY-02 | Phase 1 | Pending |
+| DEPLOY-03 | Phase 1 | Pending |
+| DEPLOY-04 | Phase 1 | Pending |
 
 **Coverage:**
-- v1 requirements: 65 total
-- Mapped to phases: 0
-- Unmapped: 65 ⚠️
+- v1 requirements: 73 total (note: original count of 65 was a generation error — actual count from requirement list is 73)
+- Mapped to phases: 73
+- Unmapped: 0 ✓
 
 ---
 *Requirements defined: 2026-04-08*
-*Last updated: 2026-04-08 after initial definition*
+*Last updated: 2026-04-08 after roadmap creation — traceability mapped to phases 1-5*
