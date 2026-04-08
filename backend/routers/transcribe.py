@@ -40,8 +40,8 @@ async def transcribe(websocket: WebSocket) -> None:
     try:
         # Synchronous context manager — NOT async
         with dg_client.listen.v1.connect(
-            model="nova-3",
-            language="multi",
+            model="nova-2",
+            language="ru",
             smart_format=True,
             interim_results=True,
             endpointing=300,
