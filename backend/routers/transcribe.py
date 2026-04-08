@@ -13,8 +13,11 @@ SDK note: deepgram-sdk 6.x uses a new Fern-generated API.
   - connection.start_listening() runs the receive loop
 """
 import asyncio
+import logging
 
 from deepgram import DeepgramClient
+
+logger = logging.getLogger(__name__)
 from deepgram.core.events import EventType
 from deepgram.listen.v1.socket_client import ListenV1Results
 from fastapi import APIRouter, WebSocket, WebSocketDisconnect
@@ -29,6 +32,7 @@ async def transcribe(websocket: WebSocket) -> None:
     """Relay binary audio from browser -> Deepgram -> transcript JSON back to browser."""
     await websocket.accept()
 
+    logger.info("WS accepted, connecting to Deepgram...")
     dg_client = DeepgramClient(api_key=settings.DEEPGRAM_API_KEY)
 
     try:
@@ -54,6 +58,7 @@ async def transcribe(websocket: WebSocket) -> None:
                     pass  # Ignore send errors if client disconnected
 
             connection.on(EventType.MESSAGE, on_message)
+            logger.info("Deepgram connection established, starting listener...")
 
             # Start listener task in background, send audio in foreground loop
             listen_task = asyncio.create_task(connection.start_listening())
@@ -73,8 +78,8 @@ async def transcribe(websocket: WebSocket) -> None:
                 except (asyncio.CancelledError, Exception):
                     pass
 
-    except Exception:
-        pass
+    except Exception as e:
+        logger.error("Deepgram relay error: %s", e, exc_info=True)
     finally:
         # websocket is already closed on disconnect; suppress double-close errors
         try:
