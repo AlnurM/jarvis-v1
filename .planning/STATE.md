@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: executing
-stopped_at: Completed 02-03-PLAN.md
-last_updated: "2026-04-08T17:19:09.777Z"
+stopped_at: Completed 02-04-PLAN.md
+last_updated: "2026-04-08T17:23:17.141Z"
 last_activity: 2026-04-08
 progress:
   total_phases: 5
   completed_phases: 1
   total_plans: 11
-  completed_plans: 7
+  completed_plans: 8
   percent: 0
 ---
 
@@ -26,7 +26,7 @@ See: .planning/PROJECT.md (updated 2026-04-08)
 ## Current Position
 
 Phase: 02 (voice-loop-core) — EXECUTING
-Plan: 4 of 7
+Plan: 5 of 7
 Status: Ready to execute
 Last activity: 2026-04-08
 
@@ -59,6 +59,7 @@ Progress: [░░░░░░░░░░] 0%
 | Phase 02-voice-loop-core P01 | 172 | 2 tasks | 5 files |
 | Phase 02-voice-loop-core P02 | 600 | 2 tasks | 6 files |
 | Phase 02-voice-loop-core P03 | 80 | 2 tasks | 2 files |
+| Phase 02-voice-loop-core P04 | 2 | 2 tasks | 3 files |
 
 ## Accumulated Context
 
@@ -84,6 +85,8 @@ Recent decisions affecting current work:
 - [Phase 02-voice-loop-core]: Claude output_config.format with type json_schema (D-17) — not the deprecated output_format parameter
 - [Phase 02-voice-loop-core]: crypto.randomUUID() for session IDs — no uuid package needed; available in Safari iOS 14.5+
 - [Phase 02-voice-loop-core]: AssistantState enum as single voice FSM source of truth — no boolean flags per D-12
+- [Phase 02-voice-loop-core]: transcriptRef overwrite pattern: Deepgram returns progressively longer finals — last value is most complete, overwrite not append
+- [Phase 02-voice-loop-core]: fftSize=256 locked for all AnalyserNode instances — higher values cause iPad frame-time variance per RESEARCH.md
 
 ### Pending Todos
 
@@ -97,6 +100,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-04-08T17:19:09.774Z
-Stopped at: Completed 02-03-PLAN.md
+Last session: 2026-04-08T17:23:17.138Z
+Stopped at: Completed 02-04-PLAN.md
 Resume file: None

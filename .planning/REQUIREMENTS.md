@@ -8,7 +8,7 @@
 ### Voice Input
 
 - [x] **VOICE-01**: User can tap to activate microphone and speak
-- [ ] **VOICE-02**: Audio captured via MediaRecorder API (Safari PWA compatible)
+- [x] **VOICE-02**: Audio captured via MediaRecorder API (Safari PWA compatible)
 - [x] **VOICE-03**: Audio sent to backend for STT transcription (Deepgram or Whisper)
 - [x] **VOICE-04**: Silence detection (VAD) automatically ends recording after 1.5-2s of silence
 - [x] **VOICE-05**: User can tap to stop recording early
@@ -16,9 +16,9 @@
 ### Voice Output
 
 - [x] **TTS-01**: AI response spoken via SpeechSynthesis API
-- [ ] **TTS-02**: Best available voice selected (prefer Russian voice on iOS, e.g. Milena)
+- [x] **TTS-02**: Best available voice selected (prefer Russian voice on iOS, e.g. Milena)
 - [x] **TTS-03**: User can tap to interrupt/stop speaking
-- [ ] **TTS-04**: Voice list loaded with polling workaround for Safari getVoices() quirk
+- [x] **TTS-04**: Voice list loaded with polling workaround for Safari getVoices() quirk
 
 ### Conversation
 
@@ -163,14 +163,14 @@
 | Requirement | Phase | Status |
 |-------------|-------|--------|
 | VOICE-01 | Phase 2 | Complete |
-| VOICE-02 | Phase 2 | Pending |
+| VOICE-02 | Phase 2 | Complete |
 | VOICE-03 | Phase 2 | Complete |
 | VOICE-04 | Phase 2 | Complete |
 | VOICE-05 | Phase 2 | Complete |
 | TTS-01 | Phase 2 | Complete |
-| TTS-02 | Phase 2 | Pending |
+| TTS-02 | Phase 2 | Complete |
 | TTS-03 | Phase 2 | Complete |
-| TTS-04 | Phase 2 | Pending |
+| TTS-04 | Phase 2 | Complete |
 | CONV-01 | Phase 2 | Complete |
 | CONV-02 | Phase 2 | Complete |
 | CONV-03 | Phase 2 | Complete |
