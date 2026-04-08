@@ -1,23 +1,132 @@
-import { useEffect } from 'react'
-import { OrbAnimation } from './components/OrbAnimation'
+/**
+ * App.tsx — Root component + Voice FSM orchestration
+ *
+ * FSM transition map (per D-15):
+ *   idle → listening: user taps (handleTap when state is 'idle')
+ *   listening → thinking: silence detected (inside useVoiceRecorder)
+ *   thinking → speaking: chatWithJarvis response received
+ *   speaking → idle: TTS ends (inside useVoiceOutput.speak onEnd)
+ *
+ * CRITICAL: startRecording() must be called from a synchronous event handler
+ * to satisfy iOS AudioContext activation policy (Pitfall 1 from RESEARCH.md).
+ * The handleTap function is called directly from onClick/onTouchEnd.
+ */
+import { useEffect, useCallback, useRef } from 'react'
+import { useAssistantStore } from './store/assistantStore'
+import { useVoiceRecorder } from './hooks/useVoiceRecorder'
+import { useVoiceOutput } from './hooks/useVoiceOutput'
+import { chatWithJarvis } from './api/client'
+import { ModeRouter } from './components/ModeRouter'
 
 function App() {
+  const {
+    state,
+    setState,
+    currentTranscript,
+    sessionId,
+    setResponse,
+    setMode,
+    setModeData,
+  } = useAssistantStore()
+
+  const { startRecording, stopRecording, analyserRef } = useVoiceRecorder()
+  const { speak, stopSpeaking } = useVoiceOutput()
+
+  // Track the current thinking state to cancel if user taps early
+  const thinkingAbortRef = useRef<AbortController | null>(null)
+
+  // Prevent context menu on long press (iPad)
   useEffect(() => {
     document.addEventListener('contextmenu', (e) => e.preventDefault())
   }, [])
 
+  /**
+   * Handle Claude API call when state enters 'thinking'.
+   * This effect runs whenever currentTranscript changes AND state is 'thinking'.
+   * The transcript is set by useVoiceRecorder when Deepgram returns a final result.
+   */
+  useEffect(() => {
+    if (state !== 'thinking' || !currentTranscript) return
+
+    const abortController = new AbortController()
+    thinkingAbortRef.current = abortController
+
+    const runChat = async () => {
+      try {
+        const envelope = await chatWithJarvis({
+          transcript: currentTranscript,
+          session_id: sessionId,
+        })
+
+        if (abortController.signal.aborted) return
+
+        // Apply envelope to store
+        setResponse(envelope.text)
+        // Map backend mode names to store AssistantMode type
+        const modeMap: Record<string, string> = {
+          speak: 'chat',
+          weather: 'weather',
+          prayer: 'prayer',
+          search: 'search',
+          calendar: 'calendar',
+          briefing: 'briefing',
+        }
+        setMode((modeMap[envelope.mode] ?? 'chat') as Parameters<typeof setMode>[0])
+        setModeData(null)  // Phase 2: no sub-API data yet (Phase 3+ adds weather/prayer data)
+
+        // Transition to speaking and start TTS (per D-15)
+        setState('speaking')
+        speak(envelope.text, envelope.text)
+      } catch (err) {
+        if (abortController.signal.aborted) return
+        console.error('Chat API error:', err)
+        // Fallback: recover FSM to idle on error
+        setState('idle')
+      }
+    }
+
+    runChat()
+
+    return () => {
+      abortController.abort()
+    }
+  }, [state, currentTranscript]) // eslint-disable-line react-hooks/exhaustive-deps
+
+  /**
+   * Main tap handler — synchronous entry point for iOS AudioContext.
+   * MUST remain synchronous and call startRecording() directly.
+   * (AudioContext.resume() must be called inside synchronous gesture handler — Pitfall 1)
+   */
+  const handleTap = useCallback(() => {
+    if (state === 'idle') {
+      // idle → listening (per D-15)
+      setState('listening')
+      startRecording()  // This is async internally but called here synchronously
+    } else if (state === 'speaking') {
+      // User taps during speech → stop TTS and return to idle (per D-11, TTS-03, D-36)
+      stopSpeaking()
+      // setState('idle') is called inside stopSpeaking()
+    } else if (state === 'listening') {
+      // User manually stops recording early (VOICE-05)
+      stopRecording()
+      setState('thinking')
+    }
+    // 'thinking' state taps are ignored — abort would require canceling the API call
+    // which is handled by the AbortController above if a new session starts
+  }, [state, setState, startRecording, stopRecording, stopSpeaking])
+
   return (
     <div
-      className="w-screen h-screen overflow-hidden flex flex-col items-center justify-center"
-      style={{ background: 'var(--color-background)' }}
+      className="w-screen h-screen overflow-hidden"
+      onClick={handleTap}
+      onTouchEnd={(e) => {
+        // Prevent ghost click after touch (iOS fires both touchend and click)
+        e.preventDefault()
+        handleTap()
+      }}
+      style={{ touchAction: 'none', userSelect: 'none' }}
     >
-      <OrbAnimation />
-      <p
-        className="mt-8 text-sm tracking-widest uppercase"
-        style={{ color: 'var(--color-on-surface-variant)', fontFamily: 'var(--font-label)' }}
-      >
-        Tap to speak
-      </p>
+      <ModeRouter analyserRef={analyserRef} onStopSpeaking={stopSpeaking} />
     </div>
   )
 }
