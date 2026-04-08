@@ -57,7 +57,7 @@ Plans:
 - [x] 02-03-PLAN.md — Frontend contracts: extend Zustand store with voice FSM + conversation history; extend API client with chatWithJarvis() and createTranscribeWS()
 - [x] 02-04-PLAN.md — Frontend hooks: useVoiceRecorder (MediaRecorder + VAD), useVoiceOutput (SpeechSynthesis + Safari workarounds), useWaveVisualizer (Canvas AnalyserNode)
 - [x] 02-05-PLAN.md — Visual modes: ListeningMode (blue waveform), ThinkingMode (blue→purple orb), SpeakingMode (purple waveform + subtitles)
-- [ ] 02-06-PLAN.md — App wiring: ModeRouter with AnimatePresence transitions + App.tsx FSM orchestration
+- [x] 02-06-PLAN.md — App wiring: ModeRouter with AnimatePresence transitions + App.tsx FSM orchestration
 - [ ] 02-07-PLAN.md — iPad deployment + end-to-end validation checkpoint on real device
 
 **UI hint**: yes
@@ -104,7 +104,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Foundation | 4/4 | Complete   | 2026-04-08 |
-| 2. Voice Loop Core | 5/7 | In Progress|  |
+| 2. Voice Loop Core | 6/7 | In Progress|  |
 | 3. Information Modes | 0/TBD | Not started | - |
 | 4. Extended Modes | 0/TBD | Not started | - |
 | 5. Polish & Hardening | 0/TBD | Not started | - |

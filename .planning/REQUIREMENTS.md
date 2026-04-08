@@ -32,7 +32,7 @@
 ### Mode Routing
 
 - [x] **MODE-01**: App auto-switches visual mode based on Claude's JSON envelope response
-- [ ] **MODE-02**: Smooth animated transitions between modes via Framer Motion (motion package)
+- [x] **MODE-02**: Smooth animated transitions between modes via Framer Motion (motion package)
 - [x] **MODE-03**: Fallback to Speaking mode if JSON parse fails
 
 ### Listening Mode
@@ -178,7 +178,7 @@
 | CONV-05 | Phase 2 | Complete |
 | CONV-06 | Phase 2 | Complete |
 | MODE-01 | Phase 2 | Complete |
-| MODE-02 | Phase 2 | Pending |
+| MODE-02 | Phase 2 | Complete |
 | MODE-03 | Phase 2 | Complete |
 | LIST-01 | Phase 2 | Complete |
 | LIST-02 | Phase 2 | Complete |
