@@ -38,7 +38,7 @@ async def transcribe(websocket: WebSocket) -> None:
     headers = {"Authorization": f"Token {settings.DEEPGRAM_API_KEY}"}
 
     try:
-        async with websockets.connect(DEEPGRAM_WS_URL, extra_headers=headers) as dg_ws:
+        async with websockets.connect(DEEPGRAM_WS_URL, additional_headers=headers) as dg_ws:
             logger.info("Deepgram connected")
 
             async def forward_transcripts():
