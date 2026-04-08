@@ -42,52 +42,53 @@ export async function chatWithJarvis(request: ChatRequest): Promise<ChatResponse
   return res.json()
 }
 
-// ── Transcription WebSocket ──────────────────────────────────────────────────
+// ── Transcription (REST) ────────────────────────────────────────────────────
 
-export interface TranscriptMessage {
-  type: 'transcript'
+export interface TranscriptResult {
+  type: string
   text: string
 }
 
 /**
- * Open a WebSocket connection to the Deepgram relay endpoint.
- *
- * Usage:
- *   const ws = createTranscribeWS(
- *     (text) => console.log('transcript:', text),
- *     () => console.log('closed')
- *   )
- *   ws.send(audioBlob)    // Send binary audio chunks
- *   ws.close()            // Close when done
- *
- * Protocol: send binary Blob chunks → receive JSON { type: 'transcript', text: string }
+ * Upload recorded audio blob to backend for Deepgram transcription.
+ * Returns the transcript text.
  */
+export async function transcribeAudio(audioBlob: Blob): Promise<string> {
+  const formData = new FormData()
+  formData.append('file', audioBlob, 'recording.mp4')
+
+  const res = await fetch(`${API_BASE}/transcribe`, {
+    method: 'POST',
+    body: formData,
+  })
+
+  if (!res.ok) {
+    throw new Error(`Transcribe error: ${res.status}`)
+  }
+
+  const data: TranscriptResult = await res.json()
+  return data.text || ''
+}
+
+// ── Transcription WebSocket (kept for future low-latency mode) ──────────────
+
 export function createTranscribeWS(
   onTranscript: (text: string) => void,
   onClose?: () => void
 ): WebSocket {
-  // Use wss:// in production (Railway TLS), ws:// in local dev
   const protocol = location.protocol === 'https:' ? 'wss:' : 'ws:'
   const ws = new WebSocket(`${protocol}//${location.host}/api/ws/transcribe`)
 
   ws.onmessage = (event) => {
     try {
-      const msg: TranscriptMessage = JSON.parse(event.data as string)
+      const msg = JSON.parse(event.data as string)
       if (msg.type === 'transcript' && msg.text) {
         onTranscript(msg.text)
       }
-    } catch {
-      // Ignore malformed messages
-    }
+    } catch { /* ignore */ }
   }
 
-  ws.onclose = () => {
-    onClose?.()
-  }
-
-  ws.onerror = (err) => {
-    console.error('TranscribeWS error:', err)
-  }
-
+  ws.onclose = () => onClose?.()
+  ws.onerror = (err) => console.error('TranscribeWS error:', err)
   return ws
 }

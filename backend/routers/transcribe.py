@@ -1,17 +1,19 @@
-"""WebSocket /api/ws/transcribe — Deepgram live transcription relay.
+"""Transcription endpoints — Deepgram STT relay.
 
-Receives binary audio chunks from browser MediaRecorder (Safari audio/mp4),
-relays to Deepgram Nova-2, streams transcript text back.
+Two modes:
+1. POST /api/transcribe — REST fallback. Browser records full audio, uploads as file.
+   Deepgram pre-recorded API transcribes it. Simpler, works everywhere.
+2. WebSocket /api/ws/transcribe — Streaming relay (lower latency when supported).
 
-Uses raw websockets instead of deepgram-sdk to avoid SDK version issues.
-Deepgram WebSocket API: wss://api.deepgram.com/v1/listen?model=nova-2&language=ru&...
+Uses raw websockets/httpx instead of deepgram-sdk to avoid SDK version issues.
 """
 import asyncio
 import json
 import logging
 
+import httpx
 import websockets
-from fastapi import APIRouter, WebSocket, WebSocketDisconnect
+from fastapi import APIRouter, WebSocket, WebSocketDisconnect, UploadFile, File
 
 from config import settings
 
@@ -27,6 +29,42 @@ DEEPGRAM_WS_URL = (
     "&interim_results=true"
     "&endpointing=300"
 )
+
+
+DEEPGRAM_REST_URL = "https://api.deepgram.com/v1/listen?model=nova-2&language=ru&smart_format=true"
+
+
+@router.post("/api/transcribe")
+async def transcribe_rest(file: UploadFile = File(...)):
+    """REST fallback: upload recorded audio, get transcript back."""
+    logger.info("REST transcribe: received file %s (%s)", file.filename, file.content_type)
+    audio_bytes = await file.read()
+    logger.info("Audio size: %d bytes", len(audio_bytes))
+
+    content_type = file.content_type or "audio/mp4"
+    async with httpx.AsyncClient(timeout=30.0) as client:
+        resp = await client.post(
+            DEEPGRAM_REST_URL,
+            headers={
+                "Authorization": f"Token {settings.DEEPGRAM_API_KEY}",
+                "Content-Type": content_type,
+            },
+            content=audio_bytes,
+        )
+
+    if resp.status_code != 200:
+        logger.error("Deepgram REST error %d: %s", resp.status_code, resp.text)
+        return {"type": "error", "text": ""}
+
+    data = resp.json()
+    transcript = (
+        data.get("results", {})
+        .get("channels", [{}])[0]
+        .get("alternatives", [{}])[0]
+        .get("transcript", "")
+    )
+    logger.info("REST transcript: %s", transcript)
+    return {"type": "transcript", "text": transcript}
 
 
 @router.websocket("/api/ws/transcribe")
