@@ -100,10 +100,10 @@
 
 ### PWA & Infrastructure
 
-- [ ] **PWA-01**: Full-screen PWA with manifest.json and service worker
-- [ ] **PWA-02**: apple-mobile-web-app-capable meta tag for Safari fullscreen
-- [ ] **PWA-03**: 100vw x 100vh viewport, no scrollbars, no browser UI
-- [ ] **PWA-04**: iPad landscape optimized layout
+- [x] **PWA-01**: Full-screen PWA with manifest.json and service worker
+- [x] **PWA-02**: apple-mobile-web-app-capable meta tag for Safari fullscreen
+- [x] **PWA-03**: 100vw x 100vh viewport, no scrollbars, no browser UI
+- [x] **PWA-04**: iPad landscape optimized layout
 
 ### Backend
 
@@ -121,7 +121,7 @@
 
 ### Deployment
 
-- [ ] **DEPLOY-01**: Multi-stage Dockerfile (Node build + Python runtime)
+- [x] **DEPLOY-01**: Multi-stage Dockerfile (Node build + Python runtime)
 - [ ] **DEPLOY-02**: Railway deployment with all config via environment variables
 - [x] **DEPLOY-03**: MONGO_URL from Railway MongoDB plugin
 - [x] **DEPLOY-04**: No hardcoded API keys or secrets
@@ -219,10 +219,10 @@
 | BRIEF-03 | Phase 4 | Pending |
 | BRIEF-04 | Phase 4 | Pending |
 | BRIEF-05 | Phase 4 | Pending |
-| PWA-01 | Phase 1 | Pending |
-| PWA-02 | Phase 1 | Pending |
-| PWA-03 | Phase 1 | Pending |
-| PWA-04 | Phase 1 | Pending |
+| PWA-01 | Phase 1 | Complete |
+| PWA-02 | Phase 1 | Complete |
+| PWA-03 | Phase 1 | Complete |
+| PWA-04 | Phase 1 | Complete |
 | API-01 | Phase 1 | Complete |
 | API-02 | Phase 1 | Complete |
 | API-03 | Phase 5 | Pending |
@@ -231,7 +231,7 @@
 | DB-02 | Phase 1 | Complete |
 | DB-03 | Phase 1 | Complete |
 | DB-04 | Phase 5 | Pending |
-| DEPLOY-01 | Phase 1 | Pending |
+| DEPLOY-01 | Phase 1 | Complete |
 | DEPLOY-02 | Phase 1 | Pending |
 | DEPLOY-03 | Phase 1 | Complete |
 | DEPLOY-04 | Phase 1 | Complete |
