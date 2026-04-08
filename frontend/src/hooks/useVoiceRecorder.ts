@@ -62,9 +62,16 @@ export function useVoiceRecorder() {
 
     const dataArray = new Uint8Array(analyserRef.current.frequencyBinCount)
     let silenceMs = 0
+    let lastTime = performance.now()
+    let hasDetectedSpeech = false  // Grace period: don't trigger silence until speech is detected
 
     const checkEnergy = () => {
       if (!analyserRef.current) return
+
+      const now = performance.now()
+      const dt = now - lastTime
+      lastTime = now
+
       analyserRef.current.getByteTimeDomainData(dataArray)
 
       // RMS energy: values 0-255 centered at 128
@@ -73,13 +80,16 @@ export function useVoiceRecorder() {
       )
       const isSilent = rms < SILENCE_THRESHOLD
 
-      if (isSilent) {
-        silenceMs += 50  // rAF interval approximation
-      } else {
+      if (!isSilent) {
+        hasDetectedSpeech = true
         silenceMs = 0
+      } else if (hasDetectedSpeech) {
+        // Only count silence AFTER speech has been detected
+        silenceMs += dt
       }
 
-      if (silenceMs >= SILENCE_MS) {
+      if (hasDetectedSpeech && silenceMs >= SILENCE_MS) {
+        console.log('[VAD] Silence detected after speech, flushing transcript')
         // Silence detected — flush accumulated transcript and transition atomically.
         // setCurrentTranscript and setState('thinking') happen in the same call stack
         // so App.tsx useEffect([state, currentTranscript]) sees both changes together.
@@ -114,6 +124,7 @@ export function useVoiceRecorder() {
     }
     // Resume is required — iOS starts AudioContext in 'suspended' state
     await audioContextRef.current.resume()
+    console.log('[recorder] AudioContext state:', audioContextRef.current.state)
 
     // Request microphone access
     let stream: MediaStream
@@ -124,6 +135,7 @@ export function useVoiceRecorder() {
       setState('idle')
       return
     }
+    console.log('[recorder] Mic stream acquired:', stream.getAudioTracks()[0]?.label)
     streamRef.current = stream
 
     // Connect stream to AnalyserNode for VAD + waveform visualization
@@ -138,6 +150,7 @@ export function useVoiceRecorder() {
         // Accumulate transcript in ref — do NOT call setCurrentTranscript here.
         // Deepgram sends multiple callbacks (partials + finals); we flush once on silence.
         // Overwrite rather than append since Deepgram returns progressively longer finals.
+        console.log('[recorder] Deepgram transcript:', text)
         transcriptRef.current = text
       },
       () => {
