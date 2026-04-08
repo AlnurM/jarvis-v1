@@ -84,5 +84,8 @@ async def http_client(mock_mongo):
         mock_http_client_obj = MagicMock()
         mock_http_client_obj.aclose = AsyncMock(return_value=None)
         with patch("main.httpx.AsyncClient", return_value=mock_http_client_obj):
+            # ASGITransport does not trigger lifespan in httpx 0.28.x;
+            # set app.state.db directly so routes that access request.app.state.db work.
+            app.state.db = mock_mongo
             async with AsyncClient(transport=ASGITransport(app=app), base_url="http://test") as ac:
                 yield ac
