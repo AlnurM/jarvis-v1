@@ -144,6 +144,19 @@ Architecture not yet mapped. Follow existing patterns found in the codebase.
 <!-- GSD:architecture-end -->
 
 <!-- GSD:workflow-start source:GSD defaults -->
+## Design Compliance
+
+**MANDATORY:** Before implementing any UI component or mode, read `design.md` and cross-reference the Stitch screens. After implementation, verify:
+
+1. **Design tokens match** — colors, typography (Inter + Space Grotesk), surface hierarchy, glassmorphism rules
+2. **No-Line Rule enforced** — no 1px borders for sectioning; use background shifts, luminous depth, or backdrop blur
+3. **Stitch screen fidelity** — compare implemented UI against the Stitch screen for that mode (IDs in `design.md`). Layout, spacing, colors, and animations must match
+4. **Nothing missing** — every visual element from the Stitch screen is accounted for; no shortcuts or omissions
+5. **Custom easing** — use `cubic-bezier(0.22, 1, 0.36, 1)` not standard 400ms easing
+6. **Text colors** — never use pure white (#FFFFFF) for body text; use `on-surface-variant` (#adaaaa)
+
+If a Stitch screen exists for the mode being built, it is the source of truth. Code that doesn't match the design is not done.
+
 ## GSD Workflow Enforcement
 
 Before using Edit, Write, or other file-changing tools, start work through a GSD command so planning artifacts and execution context stay in sync.
