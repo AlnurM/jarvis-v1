@@ -37,23 +37,23 @@
 
 ### Listening Mode
 
-- [ ] **LIST-01**: Dark background (#0a0a0a) with animated sound wave in electric blue (#00d4ff)
-- [ ] **LIST-02**: Canvas-based wave visualization reacting to audio input
-- [ ] **LIST-03**: "Listening..." text faded below wave
-- [ ] **LIST-04**: No other UI elements visible
+- [x] **LIST-01**: Dark background (#0a0a0a) with animated sound wave in electric blue (#00d4ff)
+- [x] **LIST-02**: Canvas-based wave visualization reacting to audio input
+- [x] **LIST-03**: "Listening..." text faded below wave
+- [x] **LIST-04**: No other UI elements visible
 
 ### Thinking Mode
 
-- [ ] **THINK-01**: Morphing particle orb animation (CSS/Canvas)
-- [ ] **THINK-02**: Color transitions blue → purple
-- [ ] **THINK-03**: No text displayed
-- [ ] **THINK-04**: Activates after user stops speaking, while API call is in flight
+- [x] **THINK-01**: Morphing particle orb animation (CSS/Canvas)
+- [x] **THINK-02**: Color transitions blue → purple
+- [x] **THINK-03**: No text displayed
+- [x] **THINK-04**: Activates after user stops speaking, while API call is in flight
 
 ### Speaking Mode
 
-- [ ] **SPEAK-01**: Wave animation in purple/violet (#9b59b6)
-- [ ] **SPEAK-02**: AI response text as subtitles at bottom (max 2 lines visible)
-- [ ] **SPEAK-03**: Subtitle text fades in synchronized with speech
+- [x] **SPEAK-01**: Wave animation in purple/violet (#9b59b6)
+- [x] **SPEAK-02**: AI response text as subtitles at bottom (max 2 lines visible)
+- [x] **SPEAK-03**: Subtitle text fades in synchronized with speech
 
 ### Weather Mode
 
@@ -180,17 +180,17 @@
 | MODE-01 | Phase 2 | Complete |
 | MODE-02 | Phase 2 | Pending |
 | MODE-03 | Phase 2 | Complete |
-| LIST-01 | Phase 2 | Pending |
-| LIST-02 | Phase 2 | Pending |
-| LIST-03 | Phase 2 | Pending |
-| LIST-04 | Phase 2 | Pending |
-| THINK-01 | Phase 2 | Pending |
-| THINK-02 | Phase 2 | Pending |
-| THINK-03 | Phase 2 | Pending |
-| THINK-04 | Phase 2 | Pending |
-| SPEAK-01 | Phase 2 | Pending |
-| SPEAK-02 | Phase 2 | Pending |
-| SPEAK-03 | Phase 2 | Pending |
+| LIST-01 | Phase 2 | Complete |
+| LIST-02 | Phase 2 | Complete |
+| LIST-03 | Phase 2 | Complete |
+| LIST-04 | Phase 2 | Complete |
+| THINK-01 | Phase 2 | Complete |
+| THINK-02 | Phase 2 | Complete |
+| THINK-03 | Phase 2 | Complete |
+| THINK-04 | Phase 2 | Complete |
+| SPEAK-01 | Phase 2 | Complete |
+| SPEAK-02 | Phase 2 | Complete |
+| SPEAK-03 | Phase 2 | Complete |
 | WEATH-01 | Phase 3 | Pending |
 | WEATH-02 | Phase 3 | Pending |
 | WEATH-03 | Phase 3 | Pending |
