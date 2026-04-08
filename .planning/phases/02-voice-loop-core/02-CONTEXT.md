@@ -39,7 +39,7 @@ Deliver the complete voice loop: user taps → microphone captures audio → bac
 ### Claude Integration
 - **D-16:** Claude API via Anthropic Python SDK (`AsyncAnthropic`), model: claude-sonnet-4-6
 - **D-17:** Structured JSON output using Claude's `output_config.format` with `type: json_schema` for guaranteed valid JSON (no parse errors, no retries)
-- **D-18:** JSON envelope schema: `{ mode: "search|weather|prayer|calendar|briefing|speak", text: "spoken response text", data: {} }`
+- **D-18:** JSON envelope schema: `{ mode: "search|weather|prayer|calendar|briefing|speak", text: "spoken response text", fetch: "weather|prayer|search|calendar|none", query: "optional search/API query string" }` (refined from original `data: {}` — fetch/query is more specific for mode routing)
 - **D-19:** Backend fetches all sub-API data during the same `/api/chat` call — frontend never does a second fetch after receiving the mode
 - **D-20:** System prompt sets JARVIS persona: concise (2-3 sentences for general queries), helpful, responds in user's detected language (ru/en)
 
