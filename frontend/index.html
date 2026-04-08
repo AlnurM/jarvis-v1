@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/png" href="/icons/icon-192.png" />
+
+    <!-- Viewport: viewport-fit=cover required for edge-to-edge on iPad (RESEARCH Pitfall 7) -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+
+    <!-- Apple PWA fullscreen (PWA-02) — vite-plugin-pwa does NOT inject these -->
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="JARVIS" />
+
+    <!-- Prevent bounce and text resize on iOS (PWA-03) -->
+    <style>
+      html, body {
+        overscroll-behavior: none;
+        -webkit-text-size-adjust: 100%;
+      }
+    </style>
+
+    <!-- Fonts (D-03): Inter (display) + Space Grotesk (label) via Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600&display=swap" rel="stylesheet" />
+
+    <title>JARVIS</title>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

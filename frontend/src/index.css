@@ -1,0 +1,38 @@
+@import "tailwindcss";
+
+@theme {
+  --color-background: #0e0e0e;
+  --color-surface-low: #131313;
+  --color-surface-high: #201f1f;
+  --color-primary: #85adff;
+  --color-secondary: #ad89ff;
+  --color-on-surface: #e6e1e5;
+  --color-on-surface-variant: #adaaaa;
+  --font-display: Inter, sans-serif;
+  --font-label: "Space Grotesk", sans-serif;
+  --ease-glass: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+html, body, #root {
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  overscroll-behavior: none;
+  -webkit-overflow-scrolling: auto;
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+/* PWA-04: iPad landscape optimized layout — orb stays centered, no letterboxing */
+@media screen and (orientation: landscape) {
+  #root {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    /* env(safe-area-inset-*) handles iPad notch/home-bar in landscape */
+    padding-left: env(safe-area-inset-left);
+    padding-right: env(safe-area-inset-right);
+  }
+}
