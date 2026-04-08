@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: executing
-stopped_at: Completed 02-01-PLAN.md
-last_updated: "2026-04-08T17:06:50.575Z"
+stopped_at: Completed 02-02-PLAN.md
+last_updated: "2026-04-08T17:15:50.092Z"
 last_activity: 2026-04-08
 progress:
   total_phases: 5
   completed_phases: 1
   total_plans: 11
-  completed_plans: 5
+  completed_plans: 6
   percent: 0
 ---
 
@@ -26,7 +26,7 @@ See: .planning/PROJECT.md (updated 2026-04-08)
 ## Current Position
 
 Phase: 02 (voice-loop-core) — EXECUTING
-Plan: 2 of 7
+Plan: 3 of 7
 Status: Ready to execute
 Last activity: 2026-04-08
 
@@ -57,6 +57,7 @@ Progress: [░░░░░░░░░░] 0%
 | Phase 01-foundation P03 | 1 | 1 tasks | 1 files |
 | Phase 01-foundation P04 | 3 | 1 tasks | 6 files |
 | Phase 02-voice-loop-core P01 | 172 | 2 tasks | 5 files |
+| Phase 02-voice-loop-core P02 | 600 | 2 tasks | 6 files |
 
 ## Accumulated Context
 
@@ -77,6 +78,9 @@ Recent decisions affecting current work:
 - [Phase 01-foundation]: node:20-slim + python:3.12-slim multi-stage Dockerfile; npm ci for reproducibility; port 8080 hardcoded in CMD; Railway PORT=8080 must be set in dashboard
 - [Phase 01-foundation]: Git repo already initialized from prior plans — remaining scaffold files committed to complete repo state for Railway deploy
 - [Phase 02-voice-loop-core]: Wave 0 test scaffold uses AsyncClient+ASGITransport for async fixtures; mock_claude guards routers.chat import to work before plan 02-02
+- [Phase 02-voice-loop-core]: deepgram-sdk 6.x uses Fern-generated API — client.listen.v1.connect() asynccontextmanager replaces old LiveOptions/asyncwebsocket pattern
+- [Phase 02-voice-loop-core]: ASGITransport does not trigger FastAPI lifespan in httpx 0.28.x — set app.state.db directly in test fixtures
+- [Phase 02-voice-loop-core]: Claude output_config.format with type json_schema (D-17) — not the deprecated output_format parameter
 
 ### Pending Todos
 
@@ -90,6 +94,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-04-08T17:06:50.572Z
-Stopped at: Completed 02-01-PLAN.md
+Last session: 2026-04-08T17:15:50.089Z
+Stopped at: Completed 02-02-PLAN.md
 Resume file: None

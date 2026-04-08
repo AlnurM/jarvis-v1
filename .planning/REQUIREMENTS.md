@@ -23,11 +23,11 @@
 ### Conversation
 
 - [x] **CONV-01**: Claude API integration with JARVIS persona (concise, helpful)
-- [ ] **CONV-02**: Bilingual ru/en auto-detection — responds in user's language
-- [ ] **CONV-03**: Conversation history maintained (last 20 messages)
+- [x] **CONV-02**: Bilingual ru/en auto-detection — responds in user's language
+- [x] **CONV-03**: Conversation history maintained (last 20 messages)
 - [x] **CONV-04**: Conversation history persisted to MongoDB
 - [x] **CONV-05**: Claude returns structured JSON envelope with mode + text + data
-- [ ] **CONV-06**: System prompt enforces concise responses (2-3 sentences for general queries)
+- [x] **CONV-06**: System prompt enforces concise responses (2-3 sentences for general queries)
 
 ### Mode Routing
 
@@ -172,11 +172,11 @@
 | TTS-03 | Phase 2 | Pending |
 | TTS-04 | Phase 2 | Pending |
 | CONV-01 | Phase 2 | Complete |
-| CONV-02 | Phase 2 | Pending |
-| CONV-03 | Phase 2 | Pending |
+| CONV-02 | Phase 2 | Complete |
+| CONV-03 | Phase 2 | Complete |
 | CONV-04 | Phase 2 | Complete |
 | CONV-05 | Phase 2 | Complete |
-| CONV-06 | Phase 2 | Pending |
+| CONV-06 | Phase 2 | Complete |
 | MODE-01 | Phase 2 | Pending |
 | MODE-02 | Phase 2 | Pending |
 | MODE-03 | Phase 2 | Complete |
