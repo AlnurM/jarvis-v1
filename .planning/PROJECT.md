@@ -12,12 +12,14 @@ Voice in → intelligent response out, with the right visual mode automatically 
 
 ### Validated
 
-(None yet — ship to validate)
+- ✓ Full-screen PWA with iPad Safari support (apple-mobile-web-app-capable) — Phase 1
+- ✓ FastAPI backend proxying all API calls (scaffold) — Phase 1
+- ✓ MongoDB via PyMongo Async for conversations, events, settings (scaffold) — Phase 1
+- ✓ Railway deployment — single Docker container (FastAPI + static frontend) — Phase 1
 
 ### Active
 
-- [ ] Full-screen PWA with iPad Safari support (apple-mobile-web-app-capable)
-- [ ] Voice input via Web Speech API (STT) with silence detection
+- [ ] Voice input via MediaRecorder + backend STT (Deepgram/Whisper)
 - [ ] Voice output via Web Speech API (TTS) with best available voice
 - [ ] Claude API integration with JARVIS persona (concise, helpful, ru/en auto-detect)
 - [ ] Conversation history maintained (last 20 messages, stored in MongoDB)
@@ -30,7 +32,6 @@ Voice in → intelligent response out, with the right visual mode automatically 
 - [ ] Search mode — Brave Search API results as glassmorphism cards
 - [ ] Calendar mode — Google Calendar read + voice-to-event creation
 - [ ] Morning briefing mode — tasks/weather/AI quote, auto-triggers at 7:00 AM
-- [ ] FastAPI backend proxying all API calls
 - [ ] MongoDB via Motor for conversations, events, settings
 - [ ] Railway deployment — single Docker container (FastAPI + static frontend)
 - [ ] Settings persistence (location, language, preferences) in MongoDB
@@ -90,4 +91,4 @@ This document evolves at phase transitions and milestone boundaries.
 4. Update Context with current state
 
 ---
-*Last updated: 2026-04-08 after initialization*
+*Last updated: 2026-04-08 after Phase 1 completion*
