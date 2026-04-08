@@ -29,7 +29,14 @@ Decimal phases appear between their surrounding integers in numeric order.
   2. The Railway deployment URL serves the React scaffold without errors, confirmed via browser on iPad
   3. FastAPI health check endpoint responds; MongoDB collections initialize on startup (no errors in Railway logs)
   4. All API keys and secrets are loaded from environment variables — no hardcoded values exist in the codebase
-**Plans**: TBD
+**Plans**: 4 plans
+
+Plans:
+- [ ] 01-01-PLAN.md — FastAPI backend scaffold with MongoDB lifespan, /api/health endpoint, and pydantic-settings config
+- [ ] 01-02-PLAN.md — React/Vite PWA frontend with Tailwind v4 design tokens, Apple PWA meta tags, Zustand store, and JARVIS orb landing screen
+- [ ] 01-03-PLAN.md — Multi-stage Dockerfile (node:20-slim build + python:3.12-slim runtime)
+- [ ] 01-04-PLAN.md — Git commit, Railway deploy, and iPad fullscreen PWA smoke test checkpoint
+
 **UI hint**: yes
 
 ### Phase 2: Voice Loop Core
@@ -86,7 +93,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Foundation | 0/TBD | Not started | - |
+| 1. Foundation | 0/4 | Not started | - |
 | 2. Voice Loop Core | 0/TBD | Not started | - |
 | 3. Information Modes | 0/TBD | Not started | - |
 | 4. Extended Modes | 0/TBD | Not started | - |
