@@ -34,7 +34,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 Plans:
 - [x] 01-01-PLAN.md — FastAPI backend scaffold with MongoDB lifespan, /api/health endpoint, and pydantic-settings config
 - [x] 01-02-PLAN.md — React/Vite PWA frontend with Tailwind v4 design tokens, Apple PWA meta tags, Zustand store, and JARVIS orb landing screen
-- [ ] 01-03-PLAN.md — Multi-stage Dockerfile (node:20-slim build + python:3.12-slim runtime)
+- [x] 01-03-PLAN.md — Multi-stage Dockerfile (node:20-slim build + python:3.12-slim runtime)
 - [ ] 01-04-PLAN.md — Git commit, Railway deploy, and iPad fullscreen PWA smoke test checkpoint
 
 **UI hint**: yes

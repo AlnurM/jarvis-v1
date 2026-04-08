@@ -122,7 +122,7 @@
 ### Deployment
 
 - [x] **DEPLOY-01**: Multi-stage Dockerfile (Node build + Python runtime)
-- [ ] **DEPLOY-02**: Railway deployment with all config via environment variables
+- [x] **DEPLOY-02**: Railway deployment with all config via environment variables
 - [x] **DEPLOY-03**: MONGO_URL from Railway MongoDB plugin
 - [x] **DEPLOY-04**: No hardcoded API keys or secrets
 
@@ -232,7 +232,7 @@
 | DB-03 | Phase 1 | Complete |
 | DB-04 | Phase 5 | Pending |
 | DEPLOY-01 | Phase 1 | Complete |
-| DEPLOY-02 | Phase 1 | Pending |
+| DEPLOY-02 | Phase 1 | Complete |
 | DEPLOY-03 | Phase 1 | Complete |
 | DEPLOY-04 | Phase 1 | Complete |
 
