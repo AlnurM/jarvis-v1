@@ -49,7 +49,17 @@ Plans:
   3. The thinking animation (morphing particle orb, blue-to-purple) plays while the API call is in flight
   4. The speaking animation (purple wave with subtitle text) plays while JARVIS speaks, and the user can tap to stop it early
   5. Conversation history persists — a follow-up question in the same session uses context from previous turns
-**Plans**: TBD
+**Plans**: 7 plans
+
+Plans:
+- [ ] 02-01-PLAN.md — Test scaffold (Wave 0): pytest fixtures, mock Claude/Deepgram, requirements.txt upgrade to anthropic 0.91.0 + deepgram-sdk 6.1.1
+- [ ] 02-02-PLAN.md — Backend routes: POST /api/chat (Claude structured output + MongoDB) and WebSocket /api/ws/transcribe (Deepgram relay)
+- [ ] 02-03-PLAN.md — Frontend contracts: extend Zustand store with voice FSM + conversation history; extend API client with chatWithJarvis() and createTranscribeWS()
+- [ ] 02-04-PLAN.md — Frontend hooks: useVoiceRecorder (MediaRecorder + VAD), useVoiceOutput (SpeechSynthesis + Safari workarounds), useWaveVisualizer (Canvas AnalyserNode)
+- [ ] 02-05-PLAN.md — Visual modes: ListeningMode (blue waveform), ThinkingMode (blue→purple orb), SpeakingMode (purple waveform + subtitles)
+- [ ] 02-06-PLAN.md — App wiring: ModeRouter with AnimatePresence transitions + App.tsx FSM orchestration
+- [ ] 02-07-PLAN.md — iPad deployment + end-to-end validation checkpoint on real device
+
 **UI hint**: yes
 
 ### Phase 3: Information Modes
@@ -94,7 +104,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Foundation | 4/4 | Complete   | 2026-04-08 |
-| 2. Voice Loop Core | 0/TBD | Not started | - |
+| 2. Voice Loop Core | 0/7 | Not started | - |
 | 3. Information Modes | 0/TBD | Not started | - |
 | 4. Extended Modes | 0/TBD | Not started | - |
 | 5. Polish & Hardening | 0/TBD | Not started | - |
