@@ -99,7 +99,13 @@ const glassCard: React.CSSProperties = {
 
 // ─── Component ────────────────────────────────────────────────────────────────
 
-export function WeatherMode() {
+// Props: onStartListening / onStopListening wired in Plan 05-03 (FloatingMic integration)
+interface WeatherModeProps {
+  onStartListening?: () => void
+  onStopListening?: () => void
+}
+
+export function WeatherMode(_props: WeatherModeProps = {}) {
   const modeData = useAssistantStore(s => s.modeData)
   const data = modeData as WeatherData | null
 

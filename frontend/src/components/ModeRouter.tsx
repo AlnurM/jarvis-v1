@@ -12,6 +12,7 @@
  */
 import { AnimatePresence, motion } from 'motion/react'
 import { useAssistantStore } from '../store/assistantStore'
+import type { AssistantMode } from '../store/assistantStore'
 import { ListeningMode } from '../modes/ListeningMode'
 import { ThinkingMode } from '../modes/ThinkingMode'
 import { SpeakingMode } from '../modes/SpeakingMode'
@@ -20,6 +21,10 @@ import { WeatherMode } from '../modes/WeatherMode'
 import { PrayerMode } from '../modes/PrayerMode'
 import { AppShell } from './AppShell'
 import type { RefObject } from 'react'
+
+// Content modes: these screens stay visible during all voice states (LOOP-02)
+// FloatingMic overlays the content screen; ModeRouter does NOT switch away on listening/thinking/speaking
+const CONTENT_MODES = new Set<AssistantMode>(['weather', 'prayer', 'search', 'calendar', 'briefing'])
 
 // Shared motion variants for all mode transitions (per D-38)
 const modeVariants = {
@@ -41,23 +46,38 @@ const modeVariants = {
 const MODE_LABELS: Record<string, { label: string; status?: string }> = {
   listening: { label: 'LISTENING PROTOCOL V3.0', status: 'SYSTEM SECURE' },
   speaking: { label: 'JARVIS CORE: SPEAKING', status: 'VOICE MODE' },
-  'idle-weather': { label: 'ATMOSPHERIC ANALYSIS', status: 'LIVE DATA' },
-  'idle-prayer': { label: 'SPIRITUAL PATTERNS: ALMATY', status: 'PRAYER TIMES' },
+  'content-weather': { label: 'ATMOSPHERIC ANALYSIS', status: 'LIVE DATA' },
+  'content-prayer': { label: 'SPIRITUAL PATTERNS: ALMATY', status: 'PRAYER TIMES' },
 }
 
 interface ModeRouterProps {
   analyserRef: RefObject<AnalyserNode | null>
   onStopSpeaking: () => void
+  onStartListening: () => void  // NEW — passed to FloatingMic in content modes
+  onStopListening: () => void   // NEW — passed to FloatingMic in content modes
 }
 
-export function ModeRouter({ analyserRef, onStopSpeaking }: ModeRouterProps) {
+export function ModeRouter({ analyserRef, onStopSpeaking, onStartListening, onStopListening }: ModeRouterProps) {
   const { state, mode } = useAssistantStore()
 
   // Determine which key/component to show
   let key: string
   let content: React.ReactNode
 
-  if (state === 'listening') {
+  // PRIORITY: Content modes stay visible regardless of voice state (LOOP-02, D-12/D-13)
+  // The FloatingMic button overlays the content screen to handle listening/thinking/speaking states.
+  // Key = content-${mode} ensures AnimatePresence re-triggers transition on mode change (Pitfall 1 — LOOP-03)
+  if (CONTENT_MODES.has(mode)) {
+    key = `content-${mode}`
+    let contentComponent: React.ReactNode = null
+    if (mode === 'weather') {
+      contentComponent = <WeatherMode onStartListening={onStartListening} onStopListening={onStopListening} />
+    } else if (mode === 'prayer') {
+      contentComponent = <PrayerMode onStartListening={onStartListening} onStopListening={onStopListening} />
+    }
+    // future modes: search, calendar, briefing
+    content = contentComponent
+  } else if (state === 'listening') {
     key = 'listening'
     content = <ListeningMode analyserRef={analyserRef} />
   } else if (state === 'thinking') {
@@ -66,14 +86,6 @@ export function ModeRouter({ analyserRef, onStopSpeaking }: ModeRouterProps) {
   } else if (state === 'speaking') {
     key = 'speaking'
     content = <SpeakingMode analyserRef={analyserRef} onTap={onStopSpeaking} />
-  } else if (state === 'idle' && mode === 'weather') {
-    // D-25: Weather persists at idle until user taps
-    key = 'idle-weather'  // distinct key triggers AnimatePresence re-animation (Pitfall 7)
-    content = <WeatherMode />
-  } else if (state === 'idle' && mode === 'prayer') {
-    // D-25: Prayer persists at idle until user taps
-    key = 'idle-prayer'
-    content = <PrayerMode />
   } else {
     // 'idle' with chat/other mode — orb landing screen (full-screen, no AppShell)
     key = `idle-${mode}`

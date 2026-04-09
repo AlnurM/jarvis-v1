@@ -82,7 +82,13 @@ function getPrayerStatus(
 
 // ─── Component ────────────────────────────────────────────────────────────────
 
-export function PrayerMode() {
+// Props: onStartListening / onStopListening wired in Plan 05-03 (FloatingMic integration)
+interface PrayerModeProps {
+  onStartListening?: () => void
+  onStopListening?: () => void
+}
+
+export function PrayerMode(_props: PrayerModeProps = {}) {
   const modeData = useAssistantStore(s => s.modeData)
   const data = modeData as PrayerData | null
 

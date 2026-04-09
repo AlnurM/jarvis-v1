@@ -18,10 +18,15 @@ import { useVoiceOutput } from './hooks/useVoiceOutput'
 import { chatWithJarvis } from './api/client'
 import { ModeRouter } from './components/ModeRouter'
 
+// Content modes: on these modes, FloatingMic handles its own tap.
+// Full-screen tap is ignored during active voice states to prevent double-fire (Pitfall 2, D-20).
+const CONTENT_MODES_SET = new Set(['weather', 'prayer', 'search', 'calendar', 'briefing'])
+
 function App() {
   const {
     state,
     setState,
+    mode,
     currentTranscript,
     sessionId,
     setResponse,
@@ -120,6 +125,10 @@ function App() {
       autoListenTimerRef.current = null
     }
 
+    // On content modes: FloatingMic handles its own tap. Full-screen tap is ignored
+    // during active voice states to prevent double-fire (Pitfall 2, D-20).
+    if (CONTENT_MODES_SET.has(mode) && state !== 'idle') return
+
     if (state === 'idle') {
       // idle → listening (per D-15)
       setState('listening')
@@ -135,7 +144,7 @@ function App() {
     }
     // 'thinking' state taps are ignored — abort would require canceling the API call
     // which is handled by the AbortController above if a new session starts
-  }, [state, setState, startRecording, stopRecording, stopSpeaking])
+  }, [state, mode, setState, startRecording, stopRecording, stopSpeaking])
 
   return (
     <div
@@ -156,7 +165,12 @@ function App() {
       }}
       style={{ touchAction: 'none', userSelect: 'none' }}
     >
-      <ModeRouter analyserRef={analyserRef} onStopSpeaking={stopSpeaking} />
+      <ModeRouter
+        analyserRef={analyserRef}
+        onStopSpeaking={stopSpeaking}
+        onStartListening={() => { setState('listening'); startRecording() }}
+        onStopListening={() => { stopRecording(); setState('thinking') }}
+      />
     </div>
   )
 }
