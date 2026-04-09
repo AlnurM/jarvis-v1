@@ -29,18 +29,18 @@ import type { RefObject } from 'react'
 // FloatingMic overlays the content screen; ModeRouter does NOT switch away on listening/thinking/speaking
 const CONTENT_MODES = new Set<AssistantMode>(['weather', 'prayer', 'search', 'calendar', 'briefing'])
 
-// Shared motion variants for all mode transitions (per D-38)
+// Shared motion variants — crossfade (no black frame between modes)
+// Both old and new are present simultaneously during transition.
+// position:absolute + inset:0 ensures they overlap perfectly.
 const modeVariants = {
-  initial: { opacity: 0, scale: 0.98 },
+  initial: { opacity: 0 },
   animate: {
     opacity: 1,
-    scale: 1,
-    transition: { duration: 0.4, ease: [0.22, 1, 0.36, 1] as const },
+    transition: { duration: 0.35, ease: [0.22, 1, 0.36, 1] as const },
   },
   exit: {
     opacity: 0,
-    scale: 0.98,
-    transition: { duration: 0.25, ease: [0.22, 1, 0.36, 1] as const },
+    transition: { duration: 0.35, ease: [0.22, 1, 0.36, 1] as const },
   },
 }
 
@@ -124,38 +124,28 @@ export function ModeRouter({ analyserRef, onStopSpeaking, onStartListening, onSt
   const shellInfo = MODE_LABELS[key]
   const needsShell = !!shellInfo
 
-  if (needsShell) {
-    return (
-      <AnimatePresence mode="wait">
+  // Crossfade wrapper — both old and new mode are mounted simultaneously.
+  // absolute + inset-0 makes them overlap; opacity handles the blend.
+  const inner = needsShell ? (
+    <AppShell modeLabel={shellInfo!.label} statusLabel={shellInfo!.status}>
+      {content}
+    </AppShell>
+  ) : content
+
+  return (
+    <div className="w-screen h-screen relative" style={{ background: 'var(--color-background)' }}>
+      <AnimatePresence>
         <motion.div
           key={key}
-          className="w-screen h-screen"
+          className="absolute inset-0"
           variants={modeVariants}
           initial="initial"
           animate="animate"
           exit="exit"
         >
-          <AppShell modeLabel={shellInfo.label} statusLabel={shellInfo.status}>
-            {content}
-          </AppShell>
+          {inner}
         </motion.div>
       </AnimatePresence>
-    )
-  }
-
-  // ThinkingMode and idle-chat: no shell, full screen
-  return (
-    <AnimatePresence mode="wait">
-      <motion.div
-        key={key}
-        className="w-screen h-screen"
-        variants={modeVariants}
-        initial="initial"
-        animate="animate"
-        exit="exit"
-      >
-        {content}
-      </motion.div>
-    </AnimatePresence>
+    </div>
   )
 }
