@@ -4,6 +4,7 @@
   /* Base surface hierarchy — values from Stitch Design System */
   --color-background: #0e0e0e;
   --color-surface-dim: #0e0e0e;
+  --color-surface-container-lowest: #0b0b0b;
   --color-surface-container-low: #131313;
   --color-surface-container: #1a1919;
   --color-surface-container-high: #201f1f;

@@ -88,7 +88,7 @@ export function WeatherMode() {
     return (
       <div
         className="w-screen h-screen flex items-center justify-center"
-        style={{ background: '#0e0e0e' }}
+        style={{ background: 'var(--color-background)' }}
       >
         <p
           style={{
