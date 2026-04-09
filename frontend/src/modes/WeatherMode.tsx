@@ -119,7 +119,7 @@ export function WeatherMode() {
         <motion.div
           className="text-8xl select-none"
           animate={{ scale: [1, 1.05, 1], opacity: [0.9, 1, 0.9] }}
-          transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
+          transition={{ duration: 4, repeat: Infinity, ease: [0.22, 1, 0.36, 1] }}
         >
           {getConditionEmoji(data.condition_id)}
         </motion.div>
@@ -179,12 +179,15 @@ export function WeatherMode() {
           {data.hourly.slice(0, 12).map((h) => (
             <div
               key={h.dt}
-              className="flex flex-col items-center gap-2 px-4 py-3 rounded-2xl"
+              className="flex flex-col items-center gap-2 px-4 py-3"
               style={{
-                /* Glassmorphism card — backdrop-blur + rgba, no borders (No-Line Rule) */
-                background: 'rgba(32, 31, 31, 0.4)',
+                /* Glassmorphism card — D-11 top-left gradient + backdrop-blur, no borders (No-Line Rule) */
+                background: 'linear-gradient(135deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0) 100%), rgba(32, 31, 31, 0.4)',
                 backdropFilter: 'blur(24px)',
                 WebkitBackdropFilter: 'blur(24px)',
+                /* Ambient shadow — primary-dim at 5% opacity per D-12, never black */
+                boxShadow: '0 0 30px rgba(133, 173, 255, 0.05)',
+                borderRadius: 'var(--radius-xl)',  /* 1.5rem per Stitch */
                 minWidth: '70px',
               }}
             >
