@@ -15,7 +15,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 - [x] **Phase 1: Foundation** - Project scaffold, deployment pipeline, and database — everything needed to ship code to the target device (completed 2026-04-08)
 - [x] **Phase 2: Voice Loop Core** - The complete voice loop (listen → think → speak) with Claude integration and 3 core visual modes — the entire product in its simplest form (completed 2026-04-08)
 - [x] **Phase 3: Information Modes** - Weather and Prayer Times modes — first specialized modes validating end-to-end mode switching with simple REST APIs (completed 2026-04-09)
-- [ ] **Phase 4: Design Audit & Rebuild** - Audit all existing modes against Stitch design screens and rebuild to pixel-perfect fidelity with correct tokens, glassmorphism, and animations
+- [x] **Phase 4: Design Audit & Rebuild** - Audit all existing modes against Stitch design screens and rebuild to pixel-perfect fidelity with correct tokens, glassmorphism, and animations (completed 2026-04-09)
 - [ ] **Phase 5: Extended Modes** - Search, Calendar (with Google OAuth), and Morning Briefing — full feature set complete
 - [ ] **Phase 6: Polish & Hardening** - Single round-trip optimization, settings persistence, animation performance, iOS edge case hardening
 
@@ -103,9 +103,9 @@ Plans:
 - [x] 04-05-PLAN.md — Codebase-wide design compliance audit + visual verification checkpoint
 - [x] 04-06-PLAN.md — [GAP] Create AppShell shared layout (sidebar + top bar) and wire into ModeRouter
 - [x] 04-07-PLAN.md — [GAP] Rebuild ListeningMode with mic icon, equalizer bars, status panels
-- [ ] 04-08-PLAN.md — [GAP] Rebuild SpeakingMode with tab bar, purple equalizer bars, weather widget
-- [ ] 04-09-PLAN.md — [GAP] Rebuild WeatherMode with 2-column layout, stats row, section labels
-- [ ] 04-10-PLAN.md — [GAP] Rebuild PrayerMode with tabs, countdown labels, date panel, card restyling
+- [x] 04-08-PLAN.md — [GAP] Rebuild SpeakingMode with tab bar, purple equalizer bars, weather widget
+- [x] 04-09-PLAN.md — [GAP] Rebuild WeatherMode with 2-column layout, stats row, section labels
+- [x] 04-10-PLAN.md — [GAP] Rebuild PrayerMode with tabs, countdown labels, date panel, card restyling
 - [x] 04-11-PLAN.md — [GAP] Add status text and floating particles to ThinkingMode
 
 **UI hint**: yes
@@ -143,6 +143,6 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6
 | 1. Foundation | 4/4 | Complete   | 2026-04-08 |
 | 2. Voice Loop Core | 7/7 | Complete   | 2026-04-08 |
 | 3. Information Modes | 4/4 | Complete   | 2026-04-09 |
-| 4. Design Audit & Rebuild | 8/11 | In Progress|  |
+| 4. Design Audit & Rebuild | 11/11 | Complete   | 2026-04-09 |
 | 5. Extended Modes | 0/TBD | Not started | - |
 | 6. Polish & Hardening | 0/TBD | Not started | - |
