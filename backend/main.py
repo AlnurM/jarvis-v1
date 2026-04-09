@@ -13,7 +13,7 @@ async def lifespan(app: FastAPI):
     # Startup — initialize stateful resources once (per D-10)
     app.state.mongo = AsyncMongoClient(settings.MONGO_URL)
     app.state.db = app.state.mongo[settings.MONGODB_DB]
-    app.state.http_client = httpx.AsyncClient(timeout=10.0)
+    app.state.http_client = httpx.AsyncClient(timeout=10.0, follow_redirects=True)
     # Touch collections on startup to verify connection + initialize (per DB-02, DB-03)
     await app.state.db["conversations"].find_one({})
     await app.state.db["events"].find_one({})
