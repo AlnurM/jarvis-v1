@@ -2,15 +2,15 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-status: verifying
-stopped_at: Phase 6 context gathered
-last_updated: "2026-04-09T13:51:19.223Z"
+status: executing
+stopped_at: Completed 06-01-PLAN.md
+last_updated: "2026-04-09T14:16:31.818Z"
 last_activity: 2026-04-09
 progress:
   total_phases: 7
   completed_phases: 5
-  total_plans: 29
-  completed_plans: 29
+  total_plans: 35
+  completed_plans: 30
   percent: 0
 ---
 
@@ -21,13 +21,13 @@ progress:
 See: .planning/PROJECT.md (updated 2026-04-08)
 
 **Core value:** Voice in → intelligent response out, with the right visual mode automatically selected
-**Current focus:** Phase 05 — voice-loop-weather-polish
+**Current focus:** Phase 06 — extended-modes
 
 ## Current Position
 
-Phase: 6
-Plan: Not started
-Status: Phase complete — ready for verification
+Phase: 06 (extended-modes) — EXECUTING
+Plan: 2 of 6
+Status: Ready to execute
 Last activity: 2026-04-09
 
 Progress: [░░░░░░░░░░] 0%
@@ -78,6 +78,7 @@ Progress: [░░░░░░░░░░] 0%
 | Phase 05-voice-loop-weather-polish P02 | 2 | 2 tasks | 5 files |
 | Phase 05-voice-loop-weather-polish P01 | 3 | 2 tasks | 2 files |
 | Phase 05-voice-loop-weather-polish P03 | 5 | 2 tasks | 2 files |
+| Phase 06-extended-modes P01 | 8 | 2 tasks | 6 files |
 
 ## Accumulated Context
 
@@ -140,6 +141,7 @@ Recent decisions affecting current work:
 - [Phase 05-voice-loop-weather-polish]: _fetch_prayer switched from MuslimSalat to Aladhan API to match test expectations
 - [Phase 05-voice-loop-weather-polish]: WeatherMode/PrayerMode accept onStartListening/onStopListening as optional props — backward-compatible if rendered without ModeRouter
 - [Phase 05-voice-loop-weather-polish]: Old inline mic button in WeatherMode removed; replaced with shared FloatingMic component (Plan 05-03)
+- [Phase 06-extended-modes]: Import helper functions inside test body (not module level) for RED scaffold validity — consistent with test_weather.py pattern
 
 ### Pending Todos
 
@@ -153,6 +155,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-04-09T13:51:19.217Z
-Stopped at: Phase 6 context gathered
-Resume file: .planning/phases/06-extended-modes/06-CONTEXT.md
+Last session: 2026-04-09T14:16:31.815Z
+Stopped at: Completed 06-01-PLAN.md
+Resume file: None

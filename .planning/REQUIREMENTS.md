@@ -80,26 +80,26 @@
 - [ ] **SRCH-01**: Floating glassmorphism cards (max 3 visible)
 - [ ] **SRCH-02**: Each card shows: favicon + source name, title, snippet
 - [ ] **SRCH-03**: Cards animate in from bottom
-- [ ] **SRCH-04**: Data from Brave Search API
-- [ ] **SRCH-05**: Triggered when Claude determines web search is needed
+- [x] **SRCH-04**: Data from Brave Search API
+- [x] **SRCH-05**: Triggered when Claude determines web search is needed
 
 ### Calendar Mode
 
 - [ ] **CAL-01**: Week view displayed in top half of screen
 - [ ] **CAL-02**: Events list in bottom half with glassmorphism cards
-- [ ] **CAL-03**: Read events from Google Calendar API
-- [ ] **CAL-04**: Voice-to-event creation ("add dentist Thursday 3pm")
-- [ ] **CAL-05**: Created events saved to MongoDB events collection
-- [ ] **CAL-06**: Google OAuth2 authentication flow for calendar access
+- [x] **CAL-03**: Read events from Google Calendar API
+- [x] **CAL-04**: Voice-to-event creation ("add dentist Thursday 3pm")
+- [x] **CAL-05**: Created events saved to MongoDB events collection
+- [x] **CAL-06**: Google OAuth2 authentication flow for calendar access
 - [ ] **CAL-07**: Triggered when user asks about schedule or says "add to calendar"
 
 ### Morning Briefing Mode
 
-- [ ] **BRIEF-01**: Split layout — tasks/events left, weather right
+- [x] **BRIEF-01**: Split layout — tasks/events left, weather right
 - [ ] **BRIEF-02**: AI-generated personalized morning summary via Claude
 - [ ] **BRIEF-03**: AI quote displayed at bottom
 - [ ] **BRIEF-04**: Auto-triggers at 7:00 AM if app is open (requires user gesture for audio)
-- [ ] **BRIEF-05**: Can be triggered manually by user request
+- [x] **BRIEF-05**: Can be triggered manually by user request
 
 ### Voice Loop
 
@@ -221,20 +221,20 @@
 | SRCH-01 | Phase 6 | Pending |
 | SRCH-02 | Phase 6 | Pending |
 | SRCH-03 | Phase 6 | Pending |
-| SRCH-04 | Phase 6 | Pending |
-| SRCH-05 | Phase 6 | Pending |
+| SRCH-04 | Phase 6 | Complete |
+| SRCH-05 | Phase 6 | Complete |
 | CAL-01 | Phase 6 | Pending |
 | CAL-02 | Phase 6 | Pending |
-| CAL-03 | Phase 6 | Pending |
-| CAL-04 | Phase 6 | Pending |
-| CAL-05 | Phase 6 | Pending |
-| CAL-06 | Phase 6 | Pending |
+| CAL-03 | Phase 6 | Complete |
+| CAL-04 | Phase 6 | Complete |
+| CAL-05 | Phase 6 | Complete |
+| CAL-06 | Phase 6 | Complete |
 | CAL-07 | Phase 6 | Pending |
-| BRIEF-01 | Phase 6 | Pending |
+| BRIEF-01 | Phase 6 | Complete |
 | BRIEF-02 | Phase 6 | Pending |
 | BRIEF-03 | Phase 6 | Pending |
 | BRIEF-04 | Phase 6 | Pending |
-| BRIEF-05 | Phase 6 | Pending |
+| BRIEF-05 | Phase 6 | Complete |
 | PWA-01 | Phase 1 | Complete |
 | PWA-02 | Phase 1 | Complete |
 | PWA-03 | Phase 1 | Complete |
