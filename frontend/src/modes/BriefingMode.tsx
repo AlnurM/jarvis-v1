@@ -324,10 +324,12 @@ export function BriefingMode({ onStartListening, onStopListening }: BriefingMode
       )}
 
       {/* ── FloatingMic — bottom right (per D-19) ── */}
-      <FloatingMic
-        onStartListening={onStartListening}
-        onStopListening={onStopListening}
-      />
+      {onStartListening && onStopListening && (
+        <FloatingMic
+          onStartListening={onStartListening}
+          onStopListening={onStopListening}
+        />
+      )}
     </motion.div>
   )
 }
