@@ -9,6 +9,9 @@ class Settings(BaseSettings):
     DEEPGRAM_API_KEY: str = ""
     OPENWEATHER_API_KEY: str = ""
     BRAVE_SEARCH_API_KEY: str = ""
+    GOOGLE_CLIENT_ID: str = ""
+    GOOGLE_CLIENT_SECRET: str = ""
+    GOOGLE_REDIRECT_URI: str = ""
     LATITUDE: float = 43.2220
     LONGITUDE: float = 76.8512
 
