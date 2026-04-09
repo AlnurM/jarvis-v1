@@ -2,15 +2,15 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-status: verifying
-stopped_at: Phase 3 context gathered
-last_updated: "2026-04-09T07:40:54.521Z"
+status: executing
+stopped_at: Completed 03-01-PLAN.md
+last_updated: "2026-04-09T08:02:42.723Z"
 last_activity: 2026-04-09
 progress:
   total_phases: 5
   completed_phases: 2
-  total_plans: 11
-  completed_plans: 11
+  total_plans: 15
+  completed_plans: 12
   percent: 0
 ---
 
@@ -21,13 +21,13 @@ progress:
 See: .planning/PROJECT.md (updated 2026-04-08)
 
 **Core value:** Voice in → intelligent response out, with the right visual mode automatically selected
-**Current focus:** Phase 02 — voice-loop-core
+**Current focus:** Phase 03 — information-modes
 
 ## Current Position
 
-Phase: 3
-Plan: Not started
-Status: Phase complete — ready for verification
+Phase: 03 (information-modes) — EXECUTING
+Plan: 2 of 4
+Status: Ready to execute
 Last activity: 2026-04-09
 
 Progress: [░░░░░░░░░░] 0%
@@ -63,6 +63,7 @@ Progress: [░░░░░░░░░░] 0%
 | Phase 02-voice-loop-core P05 | 138 | 2 tasks | 4 files |
 | Phase 02-voice-loop-core P06 | 10 | 2 tasks | 2 files |
 | Phase 02-voice-loop-core P07 | 30 | 1 tasks | 1 files |
+| Phase 03-information-modes P01 | 2 | 2 tasks | 2 files |
 
 ## Accumulated Context
 
@@ -95,6 +96,7 @@ Recent decisions affecting current work:
 - [Phase 02-voice-loop-core]: ModeRouter idle key includes mode name (idle-chat, idle-weather) to re-trigger AnimatePresence on mode changes in idle state
 - [Phase 02-voice-loop-core]: App.tsx modeMap uses Parameters<typeof setMode>[0] cast for type-safe enum mapping instead of any
 - [Phase 02-voice-loop-core]: backend/static/ excluded from git — Dockerfile COPY --from=frontend handles dist copy at build time
+- [Phase 03-information-modes]: Tests patch routers.chat._fetch_weather/_fetch_prayer directly to isolate dispatch logic; integration tests use sync client fixture with explicit mock_claude patch
 
 ### Pending Todos
 
@@ -108,6 +110,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-04-09T07:40:54.517Z
-Stopped at: Phase 3 context gathered
-Resume file: .planning/phases/03-information-modes/03-CONTEXT.md
+Last session: 2026-04-09T08:02:42.720Z
+Stopped at: Completed 03-01-PLAN.md
+Resume file: None

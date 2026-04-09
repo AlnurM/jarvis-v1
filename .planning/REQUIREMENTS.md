@@ -60,8 +60,8 @@
 - [ ] **WEATH-01**: Large temperature display center screen
 - [ ] **WEATH-02**: Animated weather icon based on condition
 - [ ] **WEATH-03**: Hourly forecast horizontal scroll
-- [ ] **WEATH-04**: Data from OpenWeatherMap API, default location Almaty
-- [ ] **WEATH-05**: Triggered when user asks about weather
+- [x] **WEATH-04**: Data from OpenWeatherMap API, default location Almaty
+- [x] **WEATH-05**: Triggered when user asks about weather
 
 ### Prayer Times Mode
 
@@ -69,8 +69,8 @@
 - [ ] **PRAY-02**: Countdown timer to next prayer
 - [ ] **PRAY-03**: All 5 daily prayers listed at bottom
 - [ ] **PRAY-04**: Current/next prayer highlighted
-- [ ] **PRAY-05**: Data from Aladhan API, coordinates for Almaty
-- [ ] **PRAY-06**: Triggered when user asks about prayer times
+- [x] **PRAY-05**: Data from Aladhan API, coordinates for Almaty
+- [x] **PRAY-06**: Triggered when user asks about prayer times
 
 ### Search Mode
 
@@ -198,14 +198,14 @@
 | WEATH-01 | Phase 3 | Pending |
 | WEATH-02 | Phase 3 | Pending |
 | WEATH-03 | Phase 3 | Pending |
-| WEATH-04 | Phase 3 | Pending |
-| WEATH-05 | Phase 3 | Pending |
+| WEATH-04 | Phase 3 | Complete |
+| WEATH-05 | Phase 3 | Complete |
 | PRAY-01 | Phase 3 | Pending |
 | PRAY-02 | Phase 3 | Pending |
 | PRAY-03 | Phase 3 | Pending |
 | PRAY-04 | Phase 3 | Pending |
-| PRAY-05 | Phase 3 | Pending |
-| PRAY-06 | Phase 3 | Pending |
+| PRAY-05 | Phase 3 | Complete |
+| PRAY-06 | Phase 3 | Complete |
 | SRCH-01 | Phase 4 | Pending |
 | SRCH-02 | Phase 4 | Pending |
 | SRCH-03 | Phase 4 | Pending |
