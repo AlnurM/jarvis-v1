@@ -14,6 +14,7 @@
  */
 import { motion } from 'motion/react'
 import { useAssistantStore } from '../store/assistantStore'
+import { FloatingMic } from '../components/FloatingMic'
 
 // ─── Type definitions ─────────────────────────────────────────────────────────
 
@@ -35,6 +36,7 @@ interface WeatherData {
   wind_deg?: number      // degrees 0-360
   visibility?: number    // km
   uv_index?: number      // 0-11+
+  city?: string          // from backend geocoding — NEW (Plan 05-01)
 }
 
 // ─── Helper functions ─────────────────────────────────────────────────────────
@@ -105,7 +107,7 @@ interface WeatherModeProps {
   onStopListening?: () => void
 }
 
-export function WeatherMode(_props: WeatherModeProps = {}) {
+export function WeatherMode({ onStartListening, onStopListening }: WeatherModeProps = {}) {
   const modeData = useAssistantStore(s => s.modeData)
   const data = modeData as WeatherData | null
 
@@ -181,7 +183,7 @@ export function WeatherMode(_props: WeatherModeProps = {}) {
             {data.condition_main}
           </p>
 
-          {/* Location subtitle */}
+          {/* Location subtitle — uses dynamic city from backend geocoding (WEATH-06) */}
           <p
             style={{
               fontFamily: 'var(--font-label)',
@@ -192,7 +194,7 @@ export function WeatherMode(_props: WeatherModeProps = {}) {
               opacity: 0.7,
             }}
           >
-            ALMATY, KAZAKHSTAN
+            {data.city ?? 'ALMATY'}
           </p>
         </div>
 
@@ -388,25 +390,10 @@ export function WeatherMode(_props: WeatherModeProps = {}) {
         </div>
       </div>
 
-      {/* ── Circular mic button — absolute bottom-right ── */}
-      <div
-        className="absolute bottom-6 right-6"
-        style={{
-          width: 48,
-          height: 48,
-          borderRadius: '50%',
-          background: 'linear-gradient(135deg, #85adff 0%, #6c9fff 100%)',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          boxShadow: '0 0 20px rgba(133, 173, 255, 0.3)',
-        }}
-      >
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#0e0e0e" strokeWidth="2">
-          <path d="M12 1a4 4 0 0 0-4 4v6a4 4 0 0 0 8 0V5a4 4 0 0 0-4-4z" />
-          <path d="M19 10v1a7 7 0 0 1-14 0v-1" />
-        </svg>
-      </div>
+      {/* ── FloatingMic — shared voice indicator (LOOP-02, Plan 05-03) ── */}
+      {onStartListening && onStopListening && (
+        <FloatingMic onStartListening={onStartListening} onStopListening={onStopListening} />
+      )}
     </motion.div>
   )
 }

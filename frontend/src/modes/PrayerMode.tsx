@@ -14,6 +14,7 @@
 import { useState, useEffect } from 'react'
 import { motion } from 'motion/react'
 import { useAssistantStore } from '../store/assistantStore'
+import { FloatingMic } from '../components/FloatingMic'
 
 // ─── Type definitions ─────────────────────────────────────────────────────────
 
@@ -88,7 +89,7 @@ interface PrayerModeProps {
   onStopListening?: () => void
 }
 
-export function PrayerMode(_props: PrayerModeProps = {}) {
+export function PrayerMode({ onStartListening, onStopListening }: PrayerModeProps = {}) {
   const modeData = useAssistantStore(s => s.modeData)
   const data = modeData as PrayerData | null
 
@@ -371,6 +372,11 @@ export function PrayerMode(_props: PrayerModeProps = {}) {
           </div>
         </div>
       </div>
+
+      {/* ── FloatingMic — shared voice indicator (LOOP-02, Plan 05-03) ── */}
+      {onStartListening && onStopListening && (
+        <FloatingMic onStartListening={onStartListening} onStopListening={onStopListening} />
+      )}
 
       {/* ── Bottom: 5 horizontal prayer cards ── */}
       <div className="px-8 pb-6 pt-4 flex gap-3 flex-shrink-0">
