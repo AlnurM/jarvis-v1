@@ -3,8 +3,8 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: executing
-stopped_at: Completed 04-02-PLAN.md
-last_updated: "2026-04-09T10:49:57.949Z"
+stopped_at: Completed 04-06-PLAN.md
+last_updated: "2026-04-09T11:23:38.713Z"
 last_activity: 2026-04-09
 progress:
   total_phases: 6
@@ -71,6 +71,7 @@ Progress: [░░░░░░░░░░] 0%
 | Phase 04-design-audit-rebuild P03 | 141 | 2 tasks | 1 files |
 | Phase 04-design-audit-rebuild P04 | 10 | 2 tasks | 2 files |
 | Phase 04-design-audit-rebuild P02 | 2 | 3 tasks | 3 files |
+| Phase 04 P06 | 2 | 2 tasks | 2 files |
 
 ## Accumulated Context
 
@@ -117,6 +118,8 @@ Recent decisions affecting current work:
 - [Phase 04-design-audit-rebuild]: WeatherMode/PrayerMode hourly/row cards use var(--radius-xl) (1.5rem) not rounded-2xl — matches Stitch border-radius spec
 - [Phase 04-design-audit-rebuild]: OrbAnimation hardcodes Stitch rgba gradient values; primaryColor/secondaryColor props kept as _-prefixed aliases; defaults map to container tokens
 - [Phase 04-design-audit-rebuild]: WAVE_COLOR corrected from #00d4ff (cyan) to #85adff (primary blue per Stitch Listening screen)
+- [Phase 04-design-audit-rebuild]: AppShell wraps Listening/Speaking/Weather/Prayer modes; ThinkingMode and idle orb remain full-screen without shell
+- [Phase 04-design-audit-rebuild]: MODE_LABELS map in ModeRouter keyed by AnimatePresence key string enables clean per-mode AppShell label routing
 
 ### Pending Todos
 
@@ -130,6 +133,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-04-09T10:40:32.046Z
-Stopped at: Completed 04-02-PLAN.md
+Last session: 2026-04-09T11:23:38.710Z
+Stopped at: Completed 04-06-PLAN.md
 Resume file: None
