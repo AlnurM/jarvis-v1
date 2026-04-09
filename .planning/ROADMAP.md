@@ -15,7 +15,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 - [x] **Phase 1: Foundation** - Project scaffold, deployment pipeline, and database — everything needed to ship code to the target device (completed 2026-04-08)
 - [x] **Phase 2: Voice Loop Core** - The complete voice loop (listen → think → speak) with Claude integration and 3 core visual modes — the entire product in its simplest form (completed 2026-04-08)
 - [x] **Phase 3: Information Modes** - Weather and Prayer Times modes — first specialized modes validating end-to-end mode switching with simple REST APIs (completed 2026-04-09)
-- [ ] **Phase 4: Design Audit & Rebuild** - Audit all existing modes against Stitch design screens and rebuild to pixel-perfect fidelity with correct tokens, glassmorphism, and animations
+- [x] **Phase 4: Design Audit & Rebuild** - Audit all existing modes against Stitch design screens and rebuild to pixel-perfect fidelity with correct tokens, glassmorphism, and animations (completed 2026-04-09)
 - [ ] **Phase 5: Extended Modes** - Search, Calendar (with Google OAuth), and Morning Briefing — full feature set complete
 - [ ] **Phase 6: Polish & Hardening** - Single round-trip optimization, settings persistence, animation performance, iOS edge case hardening
 
@@ -137,6 +137,6 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6
 | 1. Foundation | 4/4 | Complete   | 2026-04-08 |
 | 2. Voice Loop Core | 7/7 | Complete   | 2026-04-08 |
 | 3. Information Modes | 4/4 | Complete   | 2026-04-09 |
-| 4. Design Audit & Rebuild | 4/5 | In Progress|  |
+| 4. Design Audit & Rebuild | 5/5 | Complete   | 2026-04-09 |
 | 5. Extended Modes | 0/TBD | Not started | - |
 | 6. Polish & Hardening | 0/TBD | Not started | - |
