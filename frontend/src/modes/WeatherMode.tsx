@@ -1,13 +1,16 @@
 /**
- * WeatherMode — Full-screen weather display with animated condition icon and hourly forecast
+ * WeatherMode — Stitch-fidelity weather display
  * Stitch screen ID: 46d9c2600c1948658c68a31705074ca7
  *
  * Design:
- * - Background shifts based on weather condition code (D-10)
- * - Center: animated condition emoji + large temperature in Space Grotesk (D-11)
- * - Bottom: horizontal scrollable hourly forecast row with glassmorphism cards (D-12)
- * - No pure white text — #e8e8e8 or var(--color-on-surface-variant)
- * - No 1px borders — glassmorphism via backdrop-blur + rgba only
+ * - 2-column hero: large temp+condition left, large weather emoji right
+ * - TEMPORAL PROJECTION — HOURLY section label above hourly cards
+ * - Bottom stats row: 4 glassmorphism cards (Wind Direction, Humidity, Visibility, UV Index)
+ * - Circular mic button bottom-right (absolute)
+ * - Fills AppShell content area (w-full h-full, NOT w-screen h-screen)
+ * - No pure white text — #e8e8e8 or var(--color-on-surface-variant) (D-10)
+ * - No 1px borders — glassmorphism via backdrop-blur + rgba only (No-Line Rule)
+ * - Custom easing: [0.22, 1, 0.36, 1] (D-07)
  */
 import { motion } from 'motion/react'
 import { useAssistantStore } from '../store/assistantStore'
@@ -26,6 +29,12 @@ interface WeatherData {
   condition_main: string // "Clear", "Clouds", "Rain", etc.
   icon: string           // OWM icon code
   hourly: HourlyItem[]   // up to 24 items
+  // Optional stats — may not be present in backend response yet
+  humidity?: number      // percentage 0-100
+  wind_speed?: number    // km/h
+  wind_deg?: number      // degrees 0-360
+  visibility?: number    // km
+  uv_index?: number      // 0-11+
 }
 
 // ─── Helper functions ─────────────────────────────────────────────────────────
@@ -78,6 +87,16 @@ function formatHour(dt: number): string {
   })
 }
 
+// ─── Reusable glassmorphism card style ────────────────────────────────────────
+
+const glassCard: React.CSSProperties = {
+  background: 'linear-gradient(135deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0) 100%), rgba(32, 31, 31, 0.4)',
+  backdropFilter: 'blur(24px)',
+  WebkitBackdropFilter: 'blur(24px)',
+  boxShadow: '0 0 30px rgba(133, 173, 255, 0.05)',
+  borderRadius: 'var(--radius-xl)',
+}
+
 // ─── Component ────────────────────────────────────────────────────────────────
 
 export function WeatherMode() {
@@ -87,7 +106,7 @@ export function WeatherMode() {
   if (!data) {
     return (
       <div
-        className="w-screen h-screen flex items-center justify-center"
+        className="w-full h-full flex items-center justify-center"
         style={{ background: 'var(--color-background)' }}
       >
         <p
@@ -106,92 +125,113 @@ export function WeatherMode() {
 
   return (
     <motion.div
-      className="w-screen h-screen flex flex-col items-center justify-between overflow-hidden"
+      className="w-full h-full flex flex-col overflow-hidden relative"
       style={{ background: getConditionBg(data.condition_id) }}
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
     >
-      {/* ── Center: condition icon + temperature ── */}
-      <div className="flex-1 flex flex-col items-center justify-center gap-6">
+      {/* ── Hero section — 2-column layout ── */}
+      <div className="flex-1 flex items-center justify-center px-12 gap-12">
 
-        {/* Animated condition emoji icon */}
+        {/* Left column: temp + condition name + location */}
+        <div className="flex flex-col gap-3">
+          {/* Large temperature */}
+          <div className="flex items-start">
+            <span
+              style={{
+                fontFamily: 'var(--font-label)',
+                fontSize: 'clamp(5rem, 12vw, 9rem)',
+                fontWeight: 700,
+                color: '#e8e8e8',
+                letterSpacing: '-0.02em',
+                lineHeight: 1,
+              }}
+            >
+              {data.temp}
+            </span>
+            <span
+              style={{
+                fontFamily: 'var(--font-label)',
+                fontSize: 'clamp(2rem, 4vw, 3rem)',
+                color: 'var(--color-on-surface-variant)',
+                marginTop: '0.5rem',
+              }}
+            >
+              °C
+            </span>
+          </div>
+
+          {/* Condition name — Space Grotesk display weight */}
+          <p
+            style={{
+              fontFamily: 'var(--font-display)',
+              fontSize: '1.5rem',
+              fontWeight: 600,
+              color: 'var(--color-on-surface)',
+              letterSpacing: '0.02em',
+            }}
+          >
+            {data.condition_main}
+          </p>
+
+          {/* Location subtitle */}
+          <p
+            style={{
+              fontFamily: 'var(--font-label)',
+              fontSize: '0.625rem',
+              color: 'var(--color-on-surface-variant)',
+              letterSpacing: '0.15em',
+              textTransform: 'uppercase',
+              opacity: 0.7,
+            }}
+          >
+            ALMATY, KAZAKHSTAN
+          </p>
+        </div>
+
+        {/* Right column: large animated weather emoji */}
         <motion.div
-          className="text-8xl select-none"
+          style={{ fontSize: 'clamp(6rem, 15vw, 10rem)', lineHeight: 1 }}
           animate={{ scale: [1, 1.05, 1], opacity: [0.9, 1, 0.9] }}
           transition={{ duration: 4, repeat: Infinity, ease: [0.22, 1, 0.36, 1] }}
+          className="select-none"
         >
           {getConditionEmoji(data.condition_id)}
         </motion.div>
+      </div>
 
-        {/* Large temperature — Space Grotesk, not pure white (D-11) */}
-        <div className="flex items-start">
-          <span
-            style={{
-              fontFamily: 'var(--font-label)',  /* Space Grotesk — technical readout */
-              fontSize: 'clamp(5rem, 15vw, 10rem)',
-              fontWeight: 700,
-              color: '#e8e8e8',  /* near-white, not pure #FFFFFF */
-              letterSpacing: '-0.02em',
-              lineHeight: 1,
-            }}
-          >
-            {data.temp}
-          </span>
-          <span
-            style={{
-              fontFamily: 'var(--font-label)',
-              fontSize: 'clamp(2rem, 5vw, 4rem)',
-              color: 'var(--color-on-surface-variant)',
-              marginTop: '0.5rem',
-            }}
-          >
-            °C
-          </span>
-        </div>
-
-        {/* Condition label — Inter, on-surface-variant, spaced uppercase */}
+      {/* ── TEMPORAL PROJECTION section label ── */}
+      <div className="px-8 mb-3">
         <p
           style={{
-            fontFamily: 'var(--font-display)',  /* Inter — body text */
-            fontSize: '1.125rem',
+            fontFamily: 'var(--font-label)',
+            fontSize: '0.5rem',
             color: 'var(--color-on-surface-variant)',
-            letterSpacing: '0.15em',
+            letterSpacing: '0.2em',
             textTransform: 'uppercase',
+            opacity: 0.6,
           }}
         >
-          {data.condition_main}
+          TEMPORAL PROJECTION — HOURLY
         </p>
       </div>
 
-      {/* ── Bottom: hourly forecast horizontal scroll (D-12) ── */}
+      {/* ── Hourly forecast horizontal scroll ── */}
       <div
-        className="w-full pb-8 px-4"
-        style={{
-          overflowX: 'auto',
-          WebkitOverflowScrolling: 'touch',  /* Pitfall 8: smooth momentum scroll on iPad */
-        }}
+        className="px-8 mb-4"
+        style={{ overflowX: 'auto', WebkitOverflowScrolling: 'touch' }}
       >
-        <div
-          className="flex gap-3 pb-2"
-          style={{ width: 'max-content' }}
-        >
-          {data.hourly.slice(0, 12).map((h) => (
+        <div className="flex gap-3" style={{ width: 'max-content' }}>
+          {data.hourly.slice(0, 8).map((h) => (
             <div
               key={h.dt}
               className="flex flex-col items-center gap-2 px-4 py-3"
               style={{
-                /* Glassmorphism card — D-11 top-left gradient + backdrop-blur, no borders (No-Line Rule) */
-                background: 'linear-gradient(135deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0) 100%), rgba(32, 31, 31, 0.4)',
-                backdropFilter: 'blur(24px)',
-                WebkitBackdropFilter: 'blur(24px)',
-                /* Ambient shadow — primary-dim at 5% opacity per D-12, never black */
-                boxShadow: '0 0 30px rgba(133, 173, 255, 0.05)',
-                borderRadius: 'var(--radius-xl)',  /* 1.5rem per Stitch */
+                ...glassCard,
                 minWidth: '70px',
               }}
             >
-              {/* Hour label — Space Grotesk, on-surface-variant */}
               <span
                 style={{
                   fontFamily: 'var(--font-label)',
@@ -203,11 +243,7 @@ export function WeatherMode() {
               >
                 {formatHour(h.dt)}
               </span>
-
-              {/* Condition emoji for this hour */}
               <span className="text-2xl select-none">{iconToEmoji(h.icon)}</span>
-
-              {/* Temperature — Space Grotesk, near-white */}
               <span
                 style={{
                   fontFamily: 'var(--font-label)',
@@ -221,6 +257,149 @@ export function WeatherMode() {
             </div>
           ))}
         </div>
+      </div>
+
+      {/* ── Bottom stats row — 4 glassmorphism cards ── */}
+      <div className="px-8 pb-6 flex gap-3">
+
+        {/* Wind Direction card */}
+        <div style={{ ...glassCard, flex: 1, padding: '1rem' }}>
+          <span
+            style={{
+              fontFamily: 'var(--font-label)',
+              fontSize: '0.5rem',
+              color: 'var(--color-on-surface-variant)',
+              letterSpacing: '0.1em',
+              textTransform: 'uppercase',
+              opacity: 0.6,
+            }}
+          >
+            WIND DIRECTION
+          </span>
+          <p
+            style={{
+              fontFamily: 'var(--font-label)',
+              fontSize: '1.25rem',
+              fontWeight: 600,
+              color: 'var(--color-on-surface)',
+              marginTop: 8,
+              fontVariantNumeric: 'tabular-nums',
+            }}
+          >
+            {data.wind_deg != null ? `${data.wind_deg}°` : '--'}
+          </p>
+          <p
+            style={{
+              fontFamily: 'var(--font-label)',
+              fontSize: '0.625rem',
+              color: 'var(--color-on-surface-variant)',
+              marginTop: 2,
+            }}
+          >
+            {data.wind_speed != null ? `${data.wind_speed} km/h` : '--'}
+          </p>
+        </div>
+
+        {/* Humidity card */}
+        <div style={{ ...glassCard, flex: 1, padding: '1rem' }}>
+          <span
+            style={{
+              fontFamily: 'var(--font-label)',
+              fontSize: '0.5rem',
+              color: 'var(--color-on-surface-variant)',
+              letterSpacing: '0.1em',
+              textTransform: 'uppercase',
+              opacity: 0.6,
+            }}
+          >
+            HUMIDITY
+          </span>
+          <p
+            style={{
+              fontFamily: 'var(--font-label)',
+              fontSize: '1.25rem',
+              fontWeight: 600,
+              color: 'var(--color-on-surface)',
+              marginTop: 8,
+            }}
+          >
+            {data.humidity != null ? `${data.humidity}%` : '--%'}
+          </p>
+        </div>
+
+        {/* Visibility card */}
+        <div style={{ ...glassCard, flex: 1, padding: '1rem' }}>
+          <span
+            style={{
+              fontFamily: 'var(--font-label)',
+              fontSize: '0.5rem',
+              color: 'var(--color-on-surface-variant)',
+              letterSpacing: '0.1em',
+              textTransform: 'uppercase',
+              opacity: 0.6,
+            }}
+          >
+            VISIBILITY
+          </span>
+          <p
+            style={{
+              fontFamily: 'var(--font-label)',
+              fontSize: '1.25rem',
+              fontWeight: 600,
+              color: 'var(--color-on-surface)',
+              marginTop: 8,
+            }}
+          >
+            {data.visibility != null ? `${data.visibility} km` : '-- km'}
+          </p>
+        </div>
+
+        {/* UV Index card */}
+        <div style={{ ...glassCard, flex: 1, padding: '1rem' }}>
+          <span
+            style={{
+              fontFamily: 'var(--font-label)',
+              fontSize: '0.5rem',
+              color: 'var(--color-on-surface-variant)',
+              letterSpacing: '0.1em',
+              textTransform: 'uppercase',
+              opacity: 0.6,
+            }}
+          >
+            UV INDEX
+          </span>
+          <p
+            style={{
+              fontFamily: 'var(--font-label)',
+              fontSize: '1.25rem',
+              fontWeight: 600,
+              color: 'var(--color-on-surface)',
+              marginTop: 8,
+            }}
+          >
+            {data.uv_index != null ? data.uv_index.toFixed(1) : '--'}
+          </p>
+        </div>
+      </div>
+
+      {/* ── Circular mic button — absolute bottom-right ── */}
+      <div
+        className="absolute bottom-6 right-6"
+        style={{
+          width: 48,
+          height: 48,
+          borderRadius: '50%',
+          background: 'linear-gradient(135deg, #85adff 0%, #6c9fff 100%)',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          boxShadow: '0 0 20px rgba(133, 173, 255, 0.3)',
+        }}
+      >
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#0e0e0e" strokeWidth="2">
+          <path d="M12 1a4 4 0 0 0-4 4v6a4 4 0 0 0 8 0V5a4 4 0 0 0-4-4z" />
+          <path d="M19 10v1a7 7 0 0 1-14 0v-1" />
+        </svg>
       </div>
     </motion.div>
   )
