@@ -16,19 +16,21 @@ Voice in → intelligent response out, with the right visual mode automatically 
 - ✓ FastAPI backend proxying all API calls (scaffold) — Phase 1
 - ✓ MongoDB via PyMongo Async for conversations, events, settings (scaffold) — Phase 1
 - ✓ Railway deployment — single Docker container (FastAPI + static frontend) — Phase 1
+- ✓ Voice input via MediaRecorder + backend STT (Deepgram) — Phase 2
+- ✓ Voice output via Web Speech API (TTS) with best available voice — Phase 2
+- ✓ Claude API integration with JARVIS persona (concise, helpful, ru/en auto-detect) — Phase 2
+- ✓ Conversation history maintained (last 20 messages, stored in MongoDB) — Phase 2
+- ✓ Mode auto-switching based on Claude's JSON envelope response — Phase 2
+- ✓ Listening/Thinking/Speaking modes with design-compliant animations — Phase 2-4
+- ✓ Weather mode — full stats (wind, humidity, visibility, UV), dynamic city support — Phase 3-5
+- ✓ Prayer times mode — Aladhan API, countdown, all 5 prayers — Phase 3-4
+- ✓ Continuous background voice on content screens (FloatingMic) — Phase 5
+- ✓ Direct content-to-content transitions without mic screen — Phase 5
+- ✓ Dismiss intent ("домой") to return to idle orb — Phase 5
 
 ### Active
 
-- [ ] Voice input via MediaRecorder + backend STT (Deepgram/Whisper)
-- [ ] Voice output via Web Speech API (TTS) with best available voice
-- [ ] Claude API integration with JARVIS persona (concise, helpful, ru/en auto-detect)
-- [ ] Conversation history maintained (last 20 messages, stored in MongoDB)
-- [ ] Mode auto-switching based on Claude's JSON envelope response
-- [ ] Listening mode — animated sound wave on dark background
-- [ ] Thinking mode — morphing particle orb animation
-- [ ] Speaking mode — purple wave animation with subtitle overlay
-- [ ] Weather mode — OpenWeatherMap data for Almaty, animated icons, hourly forecast
-- [ ] Prayer times mode — Aladhan API, countdown to next prayer, all 5 listed
+- [ ] Search mode — Brave Search API results as glassmorphism cards
 - [ ] Search mode — Brave Search API results as glassmorphism cards
 - [ ] Calendar mode — Google Calendar read + voice-to-event creation
 - [ ] Morning briefing mode — tasks/weather/AI quote, auto-triggers at 7:00 AM
@@ -91,4 +93,4 @@ This document evolves at phase transitions and milestone boundaries.
 4. Update Context with current state
 
 ---
-*Last updated: 2026-04-08 after Phase 1 completion*
+*Last updated: 2026-04-09 after Phase 5 completion*
