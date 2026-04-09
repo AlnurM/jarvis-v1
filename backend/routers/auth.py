@@ -8,6 +8,10 @@ router = APIRouter()
 
 CALENDAR_SCOPES = ["https://www.googleapis.com/auth/calendar"]
 
+# Single-user: store the Flow instance between auth start and callback
+# so PKCE code_verifier is preserved across the redirect.
+_active_flow: Flow | None = None
+
 
 def _build_flow() -> Flow:
     """Build OAuth2 flow from config settings."""
@@ -28,8 +32,9 @@ def _build_flow() -> Flow:
 @router.get("/api/auth/google")
 async def google_auth_start():
     """Redirect to Google consent screen for Calendar access."""
-    flow = _build_flow()
-    auth_url, _state = flow.authorization_url(
+    global _active_flow
+    _active_flow = _build_flow()
+    auth_url, _state = _active_flow.authorization_url(
         access_type="offline",     # REQUIRED for refresh token
         prompt="consent",          # REQUIRED to always get refresh token (Pitfall 1)
         include_granted_scopes="true",
@@ -40,7 +45,11 @@ async def google_auth_start():
 @router.get("/api/auth/google/callback")
 async def google_auth_callback(request: Request, code: str, state: str = ""):
     """Handle Google OAuth2 callback — store refresh token in MongoDB."""
-    flow = _build_flow()
+    global _active_flow
+    if _active_flow is None:
+        return {"status": "error", "message": "No active auth flow. Visit /api/auth/google first."}
+    flow = _active_flow
+    _active_flow = None
     flow.fetch_token(code=code)
     creds = flow.credentials
 
