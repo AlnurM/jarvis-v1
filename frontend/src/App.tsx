@@ -35,6 +35,11 @@ function App() {
   // Track the current thinking state to cancel if user taps early
   const thinkingAbortRef = useRef<AbortController | null>(null)
 
+  // iOS ghost-click guard: touchend fires first, then click fires ~300ms later.
+  // e.preventDefault() on touchend is not reliable in all Safari versions for suppressing click.
+  // This ref prevents handleTap from firing twice on a single physical tap.
+  const touchHandledRef = useRef(false)
+
   // Prevent context menu on long press (iPad)
   useEffect(() => {
     document.addEventListener('contextmenu', (e) => e.preventDefault())
@@ -118,10 +123,18 @@ function App() {
   return (
     <div
       className="w-screen h-screen overflow-hidden"
-      onClick={handleTap}
+      onClick={() => {
+        // Only handle click if NOT already handled by touchend (iOS ghost-click guard)
+        if (touchHandledRef.current) {
+          touchHandledRef.current = false
+          return
+        }
+        handleTap()
+      }}
       onTouchEnd={(e) => {
-        // Prevent ghost click after touch (iOS fires both touchend and click)
+        // Prevent scroll/zoom on tap and suppress the ghost click that follows
         e.preventDefault()
+        touchHandledRef.current = true
         handleTap()
       }}
       style={{ touchAction: 'none', userSelect: 'none' }}

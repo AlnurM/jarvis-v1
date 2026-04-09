@@ -128,7 +128,12 @@ export function useVoiceRecorder() {
         return
       }
 
-      // Transition to thinking BEFORE transcription
+      // Show thinking spinner immediately while Deepgram REST processes audio
+      // NOTE: setState('thinking') is called HERE before transcription starts,
+      // so we MUST NOT check currentTranscript in the App.tsx thinking effect
+      // until transcription completes. This is handled by calling both
+      // setCurrentTranscript AND (re-)setState('thinking') together after transcription,
+      // so React 18 auto-batching delivers both to the effect simultaneously.
       setState('thinking')
 
       try {
@@ -137,9 +142,15 @@ export function useVoiceRecorder() {
 
         if (transcript) {
           addToHistory('user', transcript)
+          // CRITICAL ORDERING (REST race condition guard):
+          // App.tsx useEffect([state, currentTranscript]) fires when either changes.
+          // After the await above, state is already 'thinking'. Setting currentTranscript
+          // here re-triggers the effect. React 18 batches this synchronous pair so the
+          // effect sees state='thinking' + non-empty currentTranscript together.
+          // Do NOT call setState('thinking') again — state is already 'thinking'.
           setCurrentTranscript(transcript)
         } else {
-          console.warn('[recorder] Empty transcript')
+          console.warn('[recorder] Empty transcript — returning to idle')
           setState('idle')
         }
       } catch (err) {

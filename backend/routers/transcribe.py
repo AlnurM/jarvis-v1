@@ -23,15 +23,15 @@ router = APIRouter()
 
 DEEPGRAM_WS_URL = (
     "wss://api.deepgram.com/v1/listen"
-    "?model=nova-2"
-    "&language=ru"
+    "?model=nova-3"
+    "&language=multi"
     "&smart_format=true"
     "&interim_results=true"
     "&endpointing=300"
 )
 
 
-DEEPGRAM_REST_URL = "https://api.deepgram.com/v1/listen?model=nova-2&language=ru&smart_format=true"
+DEEPGRAM_REST_URL = "https://api.deepgram.com/v1/listen?model=nova-3&language=multi&smart_format=true"
 
 
 @router.post("/api/transcribe")
