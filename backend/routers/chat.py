@@ -62,13 +62,52 @@ class ChatResponse(BaseModel):
     data: dict | None = None  # Phase 3: weather or prayer payload (D-03)
 
 
-async def _fetch_weather(http_client, settings) -> dict:
-    """Fetch Almaty weather from OpenWeatherMap free API (2.5)."""
+async def _fetch_uv_index(http_client, lat: float, lon: float) -> float | None:
+    """Fetch UV index from Open-Meteo (free, no API key required)."""
+    try:
+        resp = await http_client.get(
+            "https://api.open-meteo.com/v1/forecast",
+            params={"latitude": lat, "longitude": lon, "current": "uv_index"}
+        )
+        resp.raise_for_status()
+        return resp.json()["current"]["uv_index"]
+    except Exception as e:
+        print(f"[WARN] UV index fetch failed: {e}")
+        return None
+
+
+async def _fetch_weather(http_client, settings, city: str = "") -> dict:
+    """Fetch weather from OpenWeatherMap free API (2.5).
+
+    If city is provided, geocodes via OWM /geo/1.0/direct to get lat/lon.
+    Falls back silently to Almaty defaults on geocoding failure or empty city.
+    """
+    # Default to Almaty coordinates
+    lat = settings.LATITUDE
+    lon = settings.LONGITUDE
+    city_name = "Almaty"
+
+    # Geocode if city provided
+    if city.strip():
+        try:
+            geo_resp = await http_client.get(
+                "https://api.openweathermap.org/geo/1.0/direct",
+                params={"q": city.strip(), "limit": 1, "appid": settings.OPENWEATHER_API_KEY}
+            )
+            geo_resp.raise_for_status()
+            geo_data = geo_resp.json()
+            if geo_data:
+                lat = geo_data[0]["lat"]
+                lon = geo_data[0]["lon"]
+                city_name = geo_data[0]["name"]
+        except Exception as e:
+            print(f"[WARN] Geocoding failed for '{city}', falling back to Almaty: {e}")
+
     # Current weather
     current_url = "https://api.openweathermap.org/data/2.5/weather"
     current_params = {
-        "lat": settings.LATITUDE,
-        "lon": settings.LONGITUDE,
+        "lat": lat,
+        "lon": lon,
         "appid": settings.OPENWEATHER_API_KEY,
         "units": "metric",
     }
@@ -81,6 +120,9 @@ async def _fetch_weather(http_client, settings) -> dict:
     forecast_resp = await http_client.get(forecast_url, params=current_params)
     forecast_resp.raise_for_status()
     forecast_raw = forecast_resp.json()
+
+    # UV index from Open-Meteo (non-blocking; None on failure)
+    uv_result = await _fetch_uv_index(http_client, lat, lon)
 
     return {
         "temp": round(current_raw["main"]["temp"]),
@@ -95,6 +137,12 @@ async def _fetch_weather(http_client, settings) -> dict:
             }
             for h in forecast_raw.get("list", [])[:12]
         ],
+        "city": city_name,
+        "humidity": current_raw["main"]["humidity"],
+        "wind_speed": round(current_raw["wind"]["speed"] * 3.6, 1),
+        "wind_deg": current_raw["wind"].get("deg", 0),
+        "visibility": round(current_raw.get("visibility", 0) / 1000, 1),
+        "uv_index": uv_result,
     }
 
 
@@ -191,7 +239,7 @@ async def chat(request: Request, body: ChatRequest) -> ChatResponse:
     fetched_data = None
     if fetch_type == "weather":
         try:
-            fetched_data = await _fetch_weather(request.app.state.http_client, settings)
+            fetched_data = await _fetch_weather(request.app.state.http_client, settings, city=envelope.get("query", ""))
         except Exception as e:
             print(f"[WARN] Weather fetch failed: {e}")
     elif fetch_type == "prayer":
