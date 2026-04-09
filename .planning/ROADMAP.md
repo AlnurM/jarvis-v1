@@ -97,9 +97,9 @@ Plans:
 
 Plans:
 - [x] 04-01-PLAN.md — Pull Stitch Design System screen, expand @theme tokens, fix Space Grotesk font weight
-- [ ] 04-02-PLAN.md — Pull Stitch Thinking/Listening screens, rebuild OrbAnimation + ThinkingMode + ListeningMode
-- [ ] 04-03-PLAN.md — Pull Stitch Speaking screen, rebuild SpeakingMode
-- [ ] 04-04-PLAN.md — Pull Stitch Weather/Prayer screens, rebuild WeatherMode + PrayerMode
+- [x] 04-02-PLAN.md — Pull Stitch Thinking/Listening screens, rebuild OrbAnimation + ThinkingMode + ListeningMode
+- [x] 04-03-PLAN.md — Pull Stitch Speaking screen, rebuild SpeakingMode
+- [x] 04-04-PLAN.md — Pull Stitch Weather/Prayer screens, rebuild WeatherMode + PrayerMode
 - [ ] 04-05-PLAN.md — Codebase-wide design compliance audit + visual verification checkpoint
 
 **UI hint**: yes
@@ -137,6 +137,6 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6
 | 1. Foundation | 4/4 | Complete   | 2026-04-08 |
 | 2. Voice Loop Core | 7/7 | Complete   | 2026-04-08 |
 | 3. Information Modes | 4/4 | Complete   | 2026-04-09 |
-| 4. Design Audit & Rebuild | 0/5 | Not started | - |
+| 4. Design Audit & Rebuild | 4/5 | In Progress|  |
 | 5. Extended Modes | 0/TBD | Not started | - |
 | 6. Polish & Hardening | 0/TBD | Not started | - |

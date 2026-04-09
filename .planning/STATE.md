@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: executing
-stopped_at: Completed 04-01-PLAN.md
-last_updated: "2026-04-09T10:32:01.017Z"
+stopped_at: Completed 04-04-PLAN.md
+last_updated: "2026-04-09T10:40:28.955Z"
 last_activity: 2026-04-09
 progress:
   total_phases: 6
   completed_phases: 3
   total_plans: 20
-  completed_plans: 16
+  completed_plans: 19
   percent: 0
 ---
 
@@ -26,7 +26,7 @@ See: .planning/PROJECT.md (updated 2026-04-08)
 ## Current Position
 
 Phase: 04 (design-audit-rebuild) — EXECUTING
-Plan: 2 of 5
+Plan: 5 of 5
 Status: Ready to execute
 Last activity: 2026-04-09
 
@@ -68,6 +68,9 @@ Progress: [░░░░░░░░░░] 0%
 | Phase 03-information-modes P03 | 3 | 2 tasks | 2 files |
 | Phase 03 P04 | 5 | 2 tasks | 3 files |
 | Phase 04-design-audit-rebuild P01 | 1 | 2 tasks | 2 files |
+| Phase 04-design-audit-rebuild P03 | 141 | 2 tasks | 1 files |
+| Phase 04-design-audit-rebuild P04 | 10 | 2 tasks | 2 files |
+| Phase 04-design-audit-rebuild P02 | 2 | 3 tasks | 3 files |
 
 ## Accumulated Context
 
@@ -109,6 +112,11 @@ Recent decisions affecting current work:
 - [Phase 03]: handleTap cancels autoListenTimer before state check to prevent double-start when user taps within 500ms window
 - [Phase 03]: idle-weather / idle-prayer as distinct AnimatePresence keys to re-trigger animation on Speaking->idle-weather transition (Pitfall 7 avoidance)
 - [Phase 04-design-audit-rebuild]: Token values sourced from design.md section 7 + plan fallbacks; primary-dim/secondary-dim set to full brand colors (usage sites apply alpha for glow); primary-container (#1a2540) and secondary-container (#1e1530) as dark tinted AI Pulse variants
+- [Phase 04-design-audit-rebuild]: WAVE_COLOR updated from #9b59b6 to #ad89ff (secondary token) matching Stitch screen 8554ef1a3efa42f9a07ad8774a690a7d
+- [Phase 04-design-audit-rebuild]: Glassmorphism card added to SpeakingMode subtitle with linear-gradient(135deg) + blur(24px) + WebkitBackdropFilter for iPad Safari
+- [Phase 04-design-audit-rebuild]: WeatherMode/PrayerMode hourly/row cards use var(--radius-xl) (1.5rem) not rounded-2xl — matches Stitch border-radius spec
+- [Phase 04-design-audit-rebuild]: OrbAnimation hardcodes Stitch rgba gradient values; primaryColor/secondaryColor props kept as _-prefixed aliases; defaults map to container tokens
+- [Phase 04-design-audit-rebuild]: WAVE_COLOR corrected from #00d4ff (cyan) to #85adff (primary blue per Stitch Listening screen)
 
 ### Pending Todos
 
@@ -122,6 +130,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-04-09T10:32:01.014Z
-Stopped at: Completed 04-01-PLAN.md
+Last session: 2026-04-09T10:40:23.557Z
+Stopped at: Completed 04-04-PLAN.md
 Resume file: None
