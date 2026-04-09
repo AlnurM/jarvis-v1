@@ -63,31 +63,37 @@ class ChatResponse(BaseModel):
 
 
 async def _fetch_weather(http_client, settings) -> dict:
-    """Fetch Almaty weather from OpenWeatherMap One Call 3.0 (D-05)."""
-    url = "https://api.openweathermap.org/data/3.0/onecall"
-    params = {
+    """Fetch Almaty weather from OpenWeatherMap free API (2.5)."""
+    # Current weather
+    current_url = "https://api.openweathermap.org/data/2.5/weather"
+    current_params = {
         "lat": settings.LATITUDE,
         "lon": settings.LONGITUDE,
         "appid": settings.OPENWEATHER_API_KEY,
         "units": "metric",
-        "exclude": "minutely,daily,alerts",
     }
-    resp = await http_client.get(url, params=params)
-    resp.raise_for_status()
-    raw = resp.json()
-    current = raw["current"]
+    current_resp = await http_client.get(current_url, params=current_params)
+    current_resp.raise_for_status()
+    current_raw = current_resp.json()
+
+    # 5-day / 3-hour forecast (free tier)
+    forecast_url = "https://api.openweathermap.org/data/2.5/forecast"
+    forecast_resp = await http_client.get(forecast_url, params=current_params)
+    forecast_resp.raise_for_status()
+    forecast_raw = forecast_resp.json()
+
     return {
-        "temp": round(current["temp"]),
-        "condition_id": current["weather"][0]["id"],
-        "condition_main": current["weather"][0]["main"],
-        "icon": current["weather"][0]["icon"],
+        "temp": round(current_raw["main"]["temp"]),
+        "condition_id": current_raw["weather"][0]["id"],
+        "condition_main": current_raw["weather"][0]["main"],
+        "icon": current_raw["weather"][0]["icon"],
         "hourly": [
             {
                 "dt": h["dt"],
-                "temp": round(h["temp"]),
+                "temp": round(h["main"]["temp"]),
                 "icon": h["weather"][0]["icon"],
             }
-            for h in raw.get("hourly", [])[:24]
+            for h in forecast_raw.get("list", [])[:12]
         ],
     }
 
