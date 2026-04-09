@@ -139,12 +139,7 @@ Plans:
   2. User says "what's on my calendar this week?" and sees a week view with events from Google Calendar
   3. User says "add dentist Thursday 3pm" and the event is created in Google Calendar and saved to MongoDB
   4. User says "morning briefing" (or app is open at 7:00 AM after prior user gesture) and sees the split layout with weather, events, Claude-generated summary, and a quote
-**Plans**: 3 plans
-
-Plans:
-- [ ] 05-01-PLAN.md — Backend weather data completion (city, UV, stats) + system prompt updates
-- [ ] 05-02-PLAN.md — FloatingMic component + ModeRouter CONTENT_MODES refactor + App.tsx FSM
-- [ ] 05-03-PLAN.md — Wire FloatingMic into WeatherMode/PrayerMode, city display, device checkpoint
+**Plans**: TBD
 **UI hint**: yes
 
 ### Phase 7: Polish & Hardening
@@ -155,12 +150,7 @@ Plans:
   1. Sub-API data (weather, prayer, calendar) arrives with the Claude response in a single round-trip — no visible flash of empty mode UI
   2. User settings (location, language preference) persist across app restarts
   3. Animations run without jank on iPad — waveform and particle orb maintain smooth frame rate under load
-**Plans**: 3 plans
-
-Plans:
-- [ ] 05-01-PLAN.md — Backend weather data completion (city, UV, stats) + system prompt updates
-- [ ] 05-02-PLAN.md — FloatingMic component + ModeRouter CONTENT_MODES refactor + App.tsx FSM
-- [ ] 05-03-PLAN.md — Wire FloatingMic into WeatherMode/PrayerMode, city display, device checkpoint
+**Plans**: TBD
 
 ## Progress
 
