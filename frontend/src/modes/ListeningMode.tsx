@@ -2,7 +2,7 @@
  * ListeningMode — Audio-reactive Canvas waveform visualization (per LIST-01 to LIST-04)
  * Stitch screen ID: d6bf4b24d8844d3ba4aa32d422a6a8c4
  *
- * Design: Dark #0a0a0a background, electric blue #00d4ff waveform, "Listening..." label.
+ * Design: Dark #0e0e0e background, primary blue #85adff waveform, "Listening..." label.
  * Canvas waveform reacts to actual audio levels from AnalyserNode.
  * No other UI elements — fully immersive (LIST-04).
  */
@@ -14,8 +14,8 @@ interface ListeningModeProps {
   analyserRef: React.RefObject<AnalyserNode | null>
 }
 
-// Electric blue waveform per LIST-01, D-25
-const WAVE_COLOR = '#00d4ff'
+// Primary blue waveform per Stitch Listening Mode screen — #85adff (var(--color-primary))
+const WAVE_COLOR = '#85adff'
 
 export function ListeningMode({ analyserRef }: ListeningModeProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null)
@@ -48,7 +48,7 @@ export function ListeningMode({ analyserRef }: ListeningModeProps) {
   return (
     <div
       className="w-screen h-screen flex flex-col items-center justify-center overflow-hidden"
-      style={{ background: '#0a0a0a' }}
+      style={{ background: 'var(--color-background)' }}
     >
       {/* Audio-reactive waveform canvas (LIST-02) */}
       <canvas
@@ -60,12 +60,12 @@ export function ListeningMode({ analyserRef }: ListeningModeProps) {
         }}
       />
 
-      {/* "Listening..." label — Space Grotesk, faded (LIST-03, D-27) */}
+      {/* "Listening..." label — Space Grotesk, on-surface-variant (LIST-03, D-27) */}
       <p
         className="mt-8 text-sm tracking-widest uppercase"
         style={{
           fontFamily: 'var(--font-label)',
-          color: `${WAVE_COLOR}60`,  // 38% opacity — faded per D-27
+          color: 'var(--color-on-surface-variant)',  // #adaaaa — never pure white
           letterSpacing: '0.15em',
         }}
       >
