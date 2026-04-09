@@ -9,15 +9,11 @@
 import { motion } from 'motion/react'
 import { OrbAnimation } from '../components/OrbAnimation'
 
-// THINK-02: Blue → purple color transition during thinking
-const THINKING_PRIMARY = '#85adff'   // var(--color-primary)
-const THINKING_SECONDARY = '#ad89ff' // var(--color-secondary)
-
 export function ThinkingMode() {
   return (
     <div
       className="w-screen h-screen flex items-center justify-center overflow-hidden"
-      style={{ background: '#0a0a0a' }}
+      style={{ background: 'var(--color-background)' }}
     >
       {/* Outer ambient glow — adds depth per design.md Elevation principle */}
       <motion.div
@@ -25,7 +21,7 @@ export function ThinkingMode() {
         style={{
           width: 400,
           height: 400,
-          background: `radial-gradient(circle, ${THINKING_SECONDARY}40 0%, transparent 60%)`,
+          background: 'radial-gradient(circle, rgba(173, 137, 255, 0.15) 0%, transparent 60%)',
           filter: 'blur(60px)',
         }}
         animate={{
@@ -35,7 +31,7 @@ export function ThinkingMode() {
         transition={{
           duration: 2.5,
           repeat: Infinity,
-          ease: [0.22, 1, 0.36, 1],  // per D-38, design.md Do's and Don'ts
+          ease: [0.22, 1, 0.36, 1],
         }}
       />
 
@@ -49,13 +45,9 @@ export function ThinkingMode() {
             'hue-rotate(0deg) brightness(1)',
           ],
         }}
-        transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
+        transition={{ duration: 3, repeat: Infinity, ease: [0.22, 1, 0.36, 1] }}
       >
-        <OrbAnimation
-          primaryColor={THINKING_PRIMARY}
-          secondaryColor={THINKING_SECONDARY}
-          scale={1.2}
-        />
+        <OrbAnimation scale={1.2} />
       </motion.div>
 
       {/* THINK-03: No text displayed */}
