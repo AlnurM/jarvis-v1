@@ -90,9 +90,11 @@ None — all three modes (SearchMode, CalendarMode, BriefingMode) render real ba
 
 - frontend/src/modes/SearchMode.tsx: FOUND
 - frontend/src/modes/CalendarMode.tsx: FOUND
+- .planning/phases/06-extended-modes/06-06-SUMMARY.md: FOUND
 - 36/36 tests pass: CONFIRMED
 - grep requirements.txt Dockerfile: FOUND
 - grep "fetch_type ==" chat.py returns 5 matches: CONFIRMED
 - SYSTEM_PROMPT contains search, calendar, briefing: CONFIRMED
 - frontend vite build: CLEAN
 - Commit b393a69: FOUND
+- Commit 2d9883e: FOUND
