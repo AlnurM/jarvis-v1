@@ -68,7 +68,7 @@ export function useVoiceOutput() {
    * @param text — The text to speak
    * @param assistantText — Optional: add to conversation history as assistant message
    */
-  const speak = useCallback((text: string, assistantText?: string) => {
+  const speak = useCallback((text: string, assistantText?: string, onComplete?: () => void) => {
     // Cancel any existing speech to clear the queue
     speechSynthesis.cancel()
 
@@ -84,6 +84,7 @@ export function useVoiceOutput() {
     utterance.onend = () => {
       if (assistantText) addToHistory('assistant', assistantText)
       setState('idle')  // FSM: speaking → idle (per D-15)
+      onComplete?.()    // Phase 3: auto-listen hook (D-19, LOOP-01)
     }
 
     utterance.onerror = (e) => {

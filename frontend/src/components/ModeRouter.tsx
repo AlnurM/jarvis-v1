@@ -13,6 +13,8 @@ import { ListeningMode } from '../modes/ListeningMode'
 import { ThinkingMode } from '../modes/ThinkingMode'
 import { SpeakingMode } from '../modes/SpeakingMode'
 import { OrbAnimation } from './OrbAnimation'
+import { WeatherMode } from '../modes/WeatherMode'
+import { PrayerMode } from '../modes/PrayerMode'
 import type { RefObject } from 'react'
 
 // Shared motion variants for all mode transitions (per D-38)
@@ -51,8 +53,16 @@ export function ModeRouter({ analyserRef, onStopSpeaking }: ModeRouterProps) {
   } else if (state === 'speaking') {
     key = 'speaking'
     content = <SpeakingMode analyserRef={analyserRef} onTap={onStopSpeaking} />
+  } else if (state === 'idle' && mode === 'weather') {
+    // D-25: Weather persists at idle until user taps
+    key = 'idle-weather'  // distinct key triggers AnimatePresence re-animation (Pitfall 7)
+    content = <WeatherMode />
+  } else if (state === 'idle' && mode === 'prayer') {
+    // D-25: Prayer persists at idle until user taps
+    key = 'idle-prayer'
+    content = <PrayerMode />
   } else {
-    // 'idle' — show orb landing screen (original Phase 1 idle view)
+    // 'idle' with chat/other mode — orb landing screen
     key = `idle-${mode}`
     content = (
       <div

@@ -34,6 +34,7 @@ function App() {
 
   // Track the current thinking state to cancel if user taps early
   const thinkingAbortRef = useRef<AbortController | null>(null)
+  const autoListenTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)  // Phase 3: LOOP-01
 
   // iOS ghost-click guard: touchend fires first, then click fires ~300ms later.
   // e.preventDefault() on touchend is not reliable in all Safari versions for suppressing click.
@@ -81,7 +82,17 @@ function App() {
 
         // Transition to speaking and start TTS (per D-15)
         setState('speaking')
-        speak(envelope.text, envelope.text)
+        // Phase 3 LOOP-01: auto-listen after success (D-19, D-20, D-23)
+        speak(envelope.text, envelope.text, () => {
+          // onComplete fires after setState('idle') in useVoiceOutput
+          // D-21: 500ms delay — orb shows in idle state briefly before waveform
+          autoListenTimerRef.current = setTimeout(() => {
+            autoListenTimerRef.current = null
+            // Only start if still idle (D-22 guard — handleTap clears timer if user taps first)
+            setState('listening')
+            startRecording()
+          }, 500)
+        })
       } catch (err) {
         if (abortController.signal.aborted) return
         console.error('Chat API error:', err)
@@ -103,6 +114,12 @@ function App() {
    * (AudioContext.resume() must be called inside synchronous gesture handler — Pitfall 1)
    */
   const handleTap = useCallback(() => {
+    // Phase 3: Cancel pending auto-listen timer if user taps during 500ms window (D-22)
+    if (autoListenTimerRef.current !== null) {
+      clearTimeout(autoListenTimerRef.current)
+      autoListenTimerRef.current = null
+    }
+
     if (state === 'idle') {
       // idle → listening (per D-15)
       setState('listening')
