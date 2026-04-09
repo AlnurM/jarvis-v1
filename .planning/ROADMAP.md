@@ -100,7 +100,7 @@ Plans:
 - [x] 04-02-PLAN.md — Pull Stitch Thinking/Listening screens, rebuild OrbAnimation + ThinkingMode + ListeningMode
 - [x] 04-03-PLAN.md — Pull Stitch Speaking screen, rebuild SpeakingMode
 - [x] 04-04-PLAN.md — Pull Stitch Weather/Prayer screens, rebuild WeatherMode + PrayerMode
-- [ ] 04-05-PLAN.md — Codebase-wide design compliance audit + visual verification checkpoint
+- [x] 04-05-PLAN.md — Codebase-wide design compliance audit + visual verification checkpoint
 
 **UI hint**: yes
 Canonical refs: design.md
