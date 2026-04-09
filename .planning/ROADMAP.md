@@ -125,8 +125,8 @@ Canonical refs: design.md
 **Plans**: 3 plans
 
 Plans:
-- [ ] 05-01-PLAN.md — Backend weather data completion (city, UV, stats) + system prompt updates
-- [ ] 05-02-PLAN.md — FloatingMic component + ModeRouter CONTENT_MODES refactor + App.tsx FSM
+- [x] 05-01-PLAN.md — Backend weather data completion (city, UV, stats) + system prompt updates
+- [x] 05-02-PLAN.md — FloatingMic component + ModeRouter CONTENT_MODES refactor + App.tsx FSM
 - [ ] 05-03-PLAN.md — Wire FloatingMic into WeatherMode/PrayerMode, city display, device checkpoint
 **UI hint**: yes
 
@@ -163,6 +163,6 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7
 | 2. Voice Loop Core | 7/7 | Complete   | 2026-04-08 |
 | 3. Information Modes | 4/4 | Complete   | 2026-04-09 |
 | 4. Design Audit & Rebuild | 11/11 | Complete   | 2026-04-09 |
-| 5. Voice Loop & Weather Polish | 0/3 | Not started | - |
+| 5. Voice Loop & Weather Polish | 2/3 | In Progress|  |
 | 6. Extended Modes | 0/TBD | Not started | - |
 | 7. Polish & Hardening | 0/TBD | Not started | - |

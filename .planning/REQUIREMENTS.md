@@ -62,6 +62,9 @@
 - [x] **WEATH-03**: Hourly forecast horizontal scroll
 - [x] **WEATH-04**: Data from OpenWeatherMap API, default location Almaty
 - [x] **WEATH-05**: Triggered when user asks about weather
+- [x] **WEATH-06**: Weather stats row shows real data — wind speed, wind direction, humidity, visibility, UV index (backend extracts from OWM response)
+- [x] **WEATH-07**: Default city is Almaty — never ask "какой город?" when no city specified
+- [x] **WEATH-08**: If user specifies a city ("погода в Москве"), Claude extracts city name, backend geocodes and fetches weather for that city
 
 ### Prayer Times Mode
 
@@ -101,6 +104,9 @@
 ### Voice Loop
 
 - [x] **LOOP-01**: After JARVIS finishes speaking, microphone auto-reactivates for continuous conversation without re-tapping
+- [x] **LOOP-02**: On content screens (weather, prayer, search, calendar, briefing), voice listening continues in background — screen stays on content, FloatingMic component shows pulsing indicator
+- [x] **LOOP-03**: Direct content-to-content transitions — user can say "а намаз?" while on WeatherMode and go straight to PrayerMode without intermediate mic screen
+- [x] **LOOP-04**: Content screens persist until user explicitly says "домой" / "спасибо" / "хватит" — no auto-timeout, no return to idle on silence
 
 ### PWA & Infrastructure
 
@@ -206,45 +212,51 @@
 | PRAY-04 | Phase 3 | Complete |
 | PRAY-05 | Phase 3 | Complete |
 | PRAY-06 | Phase 3 | Complete |
-| SRCH-01 | Phase 4 | Pending |
-| SRCH-02 | Phase 4 | Pending |
-| SRCH-03 | Phase 4 | Pending |
-| SRCH-04 | Phase 4 | Pending |
-| SRCH-05 | Phase 4 | Pending |
-| CAL-01 | Phase 4 | Pending |
-| CAL-02 | Phase 4 | Pending |
-| CAL-03 | Phase 4 | Pending |
-| CAL-04 | Phase 4 | Pending |
-| CAL-05 | Phase 4 | Pending |
-| CAL-06 | Phase 4 | Pending |
-| CAL-07 | Phase 4 | Pending |
-| BRIEF-01 | Phase 4 | Pending |
-| BRIEF-02 | Phase 4 | Pending |
-| BRIEF-03 | Phase 4 | Pending |
-| BRIEF-04 | Phase 4 | Pending |
-| BRIEF-05 | Phase 4 | Pending |
+| LOOP-02 | Phase 5 | Complete |
+| LOOP-03 | Phase 5 | Complete |
+| LOOP-04 | Phase 5 | Complete |
+| WEATH-06 | Phase 5 | Complete |
+| WEATH-07 | Phase 5 | Complete |
+| WEATH-08 | Phase 5 | Complete |
+| SRCH-01 | Phase 6 | Pending |
+| SRCH-02 | Phase 6 | Pending |
+| SRCH-03 | Phase 6 | Pending |
+| SRCH-04 | Phase 6 | Pending |
+| SRCH-05 | Phase 6 | Pending |
+| CAL-01 | Phase 6 | Pending |
+| CAL-02 | Phase 6 | Pending |
+| CAL-03 | Phase 6 | Pending |
+| CAL-04 | Phase 6 | Pending |
+| CAL-05 | Phase 6 | Pending |
+| CAL-06 | Phase 6 | Pending |
+| CAL-07 | Phase 6 | Pending |
+| BRIEF-01 | Phase 6 | Pending |
+| BRIEF-02 | Phase 6 | Pending |
+| BRIEF-03 | Phase 6 | Pending |
+| BRIEF-04 | Phase 6 | Pending |
+| BRIEF-05 | Phase 6 | Pending |
 | PWA-01 | Phase 1 | Complete |
 | PWA-02 | Phase 1 | Complete |
 | PWA-03 | Phase 1 | Complete |
 | PWA-04 | Phase 1 | Complete |
 | API-01 | Phase 1 | Complete |
 | API-02 | Phase 1 | Complete |
-| API-03 | Phase 5 | Pending |
-| API-04 | Phase 5 | Pending |
+| API-03 | Phase 7 | Pending |
+| API-04 | Phase 7 | Pending |
 | DB-01 | Phase 1 | Complete |
 | DB-02 | Phase 1 | Complete |
 | DB-03 | Phase 1 | Complete |
-| DB-04 | Phase 5 | Pending |
+| DB-04 | Phase 7 | Pending |
 | DEPLOY-01 | Phase 1 | Complete |
 | DEPLOY-02 | Phase 1 | Complete |
 | DEPLOY-03 | Phase 1 | Complete |
 | DEPLOY-04 | Phase 1 | Complete |
 
 **Coverage:**
-- v1 requirements: 73 total (note: original count of 65 was a generation error — actual count from requirement list is 73)
-- Mapped to phases: 73
+- v1 requirements: 79 total (73 original + 6 new: LOOP-02/03/04, WEATH-06/07/08)
+- Mapped to phases: 79
 - Unmapped: 0 ✓
 
 ---
 *Requirements defined: 2026-04-08*
-*Last updated: 2026-04-08 after roadmap creation — traceability mapped to phases 1-5*
+*Last updated: 2026-04-09 — Phase 5 (Voice Loop & Weather Polish) inserted, phases 5→6 and 6→7 renumbered*
