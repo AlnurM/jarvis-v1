@@ -165,7 +165,7 @@ export function CalendarMode({ onStartListening, onStopListening }: CalendarMode
     eventsByDay[toDateKey(day)] = []
   }
   for (const event of events) {
-    const key = event.start.slice(0, 10)
+    const key = (event.start ?? '').slice(0, 10)
     if (key in eventsByDay) {
       eventsByDay[key].push(event)
     }

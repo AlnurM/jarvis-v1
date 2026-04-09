@@ -111,7 +111,7 @@ export function WeatherMode({ onStartListening, onStopListening }: WeatherModePr
   const modeData = useAssistantStore(s => s.modeData)
   const data = modeData as WeatherData | null
 
-  if (!data) {
+  if (!data || data.temp == null || !Array.isArray(data.hourly)) {
     return (
       <div
         className="w-full h-full flex items-center justify-center"

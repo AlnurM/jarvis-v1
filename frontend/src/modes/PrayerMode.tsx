@@ -96,8 +96,10 @@ export function PrayerMode({ onStartListening, onStopListening }: PrayerModeProp
 
   const [countdown, setCountdown] = useState<{ nextName: PrayerName; secondsLeft: number } | null>(null)
 
+  const isValidPrayerData = data != null && typeof data.Fajr === 'string'
+
   useEffect(() => {
-    if (!data) return
+    if (!isValidPrayerData) return
 
     // Initialize immediately so there's no blank frame on first render
     setCountdown(computeCountdown(data))
@@ -107,7 +109,7 @@ export function PrayerMode({ onStartListening, onStopListening }: PrayerModeProp
     return () => clearInterval(timer)
   }, [data])
 
-  if (!data || !countdown) {
+  if (!isValidPrayerData || !countdown) {
     return (
       <div
         className="w-full h-full flex items-center justify-center"

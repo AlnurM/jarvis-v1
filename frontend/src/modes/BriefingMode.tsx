@@ -75,6 +75,16 @@ export function BriefingMode({ onStartListening, onStopListening }: BriefingMode
   const modeData = useAssistantStore((s) => s.modeData)
   const data = modeData as BriefingData | null
 
+  if (!data || !data.weather || !data.summary) {
+    return (
+      <div className="w-full h-full flex items-center justify-center" style={{ background: 'var(--color-background)' }}>
+        <p style={{ color: 'var(--color-on-surface-variant)', fontFamily: 'var(--font-label)', fontSize: '1rem' }}>
+          Briefing loading...
+        </p>
+      </div>
+    )
+  }
+
   return (
     <motion.div
       className="w-full h-full flex flex-col overflow-hidden relative"
