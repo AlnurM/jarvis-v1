@@ -93,7 +93,7 @@ Plans:
   3. No-Line Rule enforced — no 1px borders for sectioning; background shifts, luminous depth, or backdrop blur only
   4. Custom easing cubic-bezier(0.22, 1, 0.36, 1) used for all mode transitions — no standard 400ms easing
   5. Text colors use on-surface-variant (#adaaaa) for body text — never pure white (#FFFFFF)
-**Plans**: 5 plans
+**Plans**: 11 plans
 
 Plans:
 - [x] 04-01-PLAN.md — Pull Stitch Design System screen, expand @theme tokens, fix Space Grotesk font weight
@@ -101,6 +101,12 @@ Plans:
 - [x] 04-03-PLAN.md — Pull Stitch Speaking screen, rebuild SpeakingMode
 - [x] 04-04-PLAN.md — Pull Stitch Weather/Prayer screens, rebuild WeatherMode + PrayerMode
 - [x] 04-05-PLAN.md — Codebase-wide design compliance audit + visual verification checkpoint
+- [ ] 04-06-PLAN.md — [GAP] Create AppShell shared layout (sidebar + top bar) and wire into ModeRouter
+- [ ] 04-07-PLAN.md — [GAP] Rebuild ListeningMode with mic icon, equalizer bars, status panels
+- [ ] 04-08-PLAN.md — [GAP] Rebuild SpeakingMode with tab bar, purple equalizer bars, weather widget
+- [ ] 04-09-PLAN.md — [GAP] Rebuild WeatherMode with 2-column layout, stats row, section labels
+- [ ] 04-10-PLAN.md — [GAP] Rebuild PrayerMode with tabs, countdown labels, date panel, card restyling
+- [ ] 04-11-PLAN.md — [GAP] Add status text and floating particles to ThinkingMode
 
 **UI hint**: yes
 Canonical refs: design.md
@@ -137,6 +143,6 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6
 | 1. Foundation | 4/4 | Complete   | 2026-04-08 |
 | 2. Voice Loop Core | 7/7 | Complete   | 2026-04-08 |
 | 3. Information Modes | 4/4 | Complete   | 2026-04-09 |
-| 4. Design Audit & Rebuild | 4/5 | In Progress|  |
+| 4. Design Audit & Rebuild | 5/11 | In Progress|  |
 | 5. Extended Modes | 0/TBD | Not started | - |
 | 6. Polish & Hardening | 0/TBD | Not started | - |
