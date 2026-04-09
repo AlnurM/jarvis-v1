@@ -2,7 +2,7 @@
 
 ## Overview
 
-JARVIS is built in five phases that follow a strict dependency graph. Phase 1 proves the deployment pipeline before any voice work begins. Phase 2 builds and validates the voice loop on the real target iPad — this is the critical path because the entire product is the loop. Phase 3 adds the two simplest specialized modes (Weather and Prayer Times) to validate end-to-end mode switching with zero auth complexity. Phase 4 adds the three remaining modes (Search, Calendar, Morning Briefing), with Google OAuth saved for last. Phase 5 hardens the system quality: single round-trip optimization, settings persistence, iOS edge case handling, and animation performance on real iPad hardware.
+JARVIS is built in six phases that follow a strict dependency graph. Phase 1 proves the deployment pipeline before any voice work begins. Phase 2 builds and validates the voice loop on the real target iPad — this is the critical path because the entire product is the loop. Phase 3 adds the two simplest specialized modes (Weather and Prayer Times) to validate end-to-end mode switching with zero auth complexity. Phase 4 audits all existing visual modes against the Stitch design screens and rebuilds them to pixel-perfect fidelity. Phase 5 adds the three remaining modes (Search, Calendar, Morning Briefing), with Google OAuth saved for last. Phase 6 hardens the system quality: single round-trip optimization, settings persistence, iOS edge case handling, and animation performance on real iPad hardware.
 
 ## Phases
 
@@ -15,8 +15,9 @@ Decimal phases appear between their surrounding integers in numeric order.
 - [x] **Phase 1: Foundation** - Project scaffold, deployment pipeline, and database — everything needed to ship code to the target device (completed 2026-04-08)
 - [x] **Phase 2: Voice Loop Core** - The complete voice loop (listen → think → speak) with Claude integration and 3 core visual modes — the entire product in its simplest form (completed 2026-04-08)
 - [x] **Phase 3: Information Modes** - Weather and Prayer Times modes — first specialized modes validating end-to-end mode switching with simple REST APIs (completed 2026-04-09)
-- [ ] **Phase 4: Extended Modes** - Search, Calendar (with Google OAuth), and Morning Briefing — full feature set complete
-- [ ] **Phase 5: Polish & Hardening** - Single round-trip optimization, settings persistence, animation performance, iOS edge case hardening
+- [ ] **Phase 4: Design Audit & Rebuild** - Audit all existing modes against Stitch design screens and rebuild to pixel-perfect fidelity with correct tokens, glassmorphism, and animations
+- [ ] **Phase 5: Extended Modes** - Search, Calendar (with Google OAuth), and Morning Briefing — full feature set complete
+- [ ] **Phase 6: Polish & Hardening** - Single round-trip optimization, settings persistence, animation performance, iOS edge case hardening
 
 ## Phase Details
 
@@ -82,9 +83,23 @@ Plans:
 
 **UI hint**: yes
 
-### Phase 4: Extended Modes
-**Goal**: User can search the web, manage their Google Calendar by voice, and receive a morning briefing — all specialized modes are complete
+### Phase 4: Design Audit & Rebuild
+**Goal**: Every existing visual mode matches its Stitch design screen pixel-for-pixel — correct design tokens, glassmorphism surfaces, typography, spacing, colors, and animation easing
 **Depends on**: Phase 3
+**Requirements**: (design compliance — cross-cutting quality gate)
+**Success Criteria** (what must be TRUE):
+  1. Design tokens (@theme CSS layer) match Stitch design system — colors, typography (Inter + Space Grotesk), surface hierarchy, glassmorphism rules
+  2. ListeningMode, ThinkingMode, SpeakingMode, WeatherMode, and PrayerMode each match their corresponding Stitch screen
+  3. No-Line Rule enforced — no 1px borders for sectioning; background shifts, luminous depth, or backdrop blur only
+  4. Custom easing cubic-bezier(0.22, 1, 0.36, 1) used for all mode transitions — no standard 400ms easing
+  5. Text colors use on-surface-variant (#adaaaa) for body text — never pure white (#FFFFFF)
+**Plans**: TBD
+**UI hint**: yes
+Canonical refs: design.md
+
+### Phase 5: Extended Modes
+**Goal**: User can search the web, manage their Google Calendar by voice, and receive a morning briefing — all specialized modes are complete
+**Depends on**: Phase 4
 **Requirements**: SRCH-01, SRCH-02, SRCH-03, SRCH-04, SRCH-05, CAL-01, CAL-02, CAL-03, CAL-04, CAL-05, CAL-06, CAL-07, BRIEF-01, BRIEF-02, BRIEF-03, BRIEF-04, BRIEF-05
 **Success Criteria** (what must be TRUE):
   1. User asks a factual question triggering web search, and up to 3 glassmorphism result cards animate in from the bottom with favicon, title, and snippet
@@ -94,9 +109,9 @@ Plans:
 **Plans**: TBD
 **UI hint**: yes
 
-### Phase 5: Polish & Hardening
+### Phase 6: Polish & Hardening
 **Goal**: The voice loop and all modes feel production-quality on the target iPad — latency is minimized, animations are smooth, settings persist, and iOS edge cases are handled gracefully
-**Depends on**: Phase 4
+**Depends on**: Phase 5
 **Requirements**: API-03, API-04, DB-04
 **Success Criteria** (what must be TRUE):
   1. Sub-API data (weather, prayer, calendar) arrives with the Claude response in a single round-trip — no visible flash of empty mode UI
@@ -107,12 +122,13 @@ Plans:
 ## Progress
 
 **Execution Order:**
-Phases execute in numeric order: 1 → 2 → 3 → 4 → 5
+Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Foundation | 4/4 | Complete   | 2026-04-08 |
 | 2. Voice Loop Core | 7/7 | Complete   | 2026-04-08 |
 | 3. Information Modes | 4/4 | Complete   | 2026-04-09 |
-| 4. Extended Modes | 0/TBD | Not started | - |
-| 5. Polish & Hardening | 0/TBD | Not started | - |
+| 4. Design Audit & Rebuild | 0/TBD | Not started | - |
+| 5. Extended Modes | 0/TBD | Not started | - |
+| 6. Polish & Hardening | 0/TBD | Not started | - |
