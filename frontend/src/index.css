@@ -1,28 +1,40 @@
 @import "tailwindcss";
 
 @theme {
-  /* Base surface hierarchy */
+  /* Base surface hierarchy — values from Stitch Design System */
   --color-background: #0e0e0e;
-  --color-surface-container-lowest: #0b0b0b;
+  --color-surface-dim: #0e0e0e;
   --color-surface-container-low: #131313;
+  --color-surface-container: #1a1919;
   --color-surface-container-high: #201f1f;
-  --color-surface-container-highest: #2a2929;
+  --color-surface-container-highest: #262626;
+  --color-surface-variant: #262626;
+  --color-surface-bright: #2c2c2c;
 
-  /* Brand colors */
+  /* Brand colors — values from Stitch */
   --color-primary: #85adff;
-  --color-primary-dim: #85adff;
-  --color-primary-container: #1a2540;
-  --color-primary-fixed: #c7d8ff;
+  --color-primary-container: #6c9fff;
+  --color-primary-dim: #0070eb;
+  --color-primary-fixed: #6c9fff;
+  --color-primary-fixed-dim: #5191ff;
   --color-secondary: #ad89ff;
-  --color-secondary-dim: #ad89ff;
-  --color-secondary-container: #1e1530;
+  --color-secondary-container: #5714be;
+  --color-secondary-dim: #8654ef;
+  --color-secondary-fixed: #dbc9ff;
+  --color-tertiary: #fab0ff;
+  --color-tertiary-container: #f39cfb;
 
   /* Text colors */
   --color-on-surface: #e6e1e5;
   --color-on-surface-variant: #adaaaa;
 
-  /* Borders */
-  --color-outline-variant: #3a3838;
+  /* Borders — values from Stitch */
+  --color-outline: #777575;
+  --color-outline-variant: #494847;
+
+  /* Error */
+  --color-error: #ff716c;
+  --color-error-dim: #d7383b;
 
   /* Typography */
   --font-display: Inter, sans-serif;
@@ -31,8 +43,10 @@
   /* Easing */
   --ease-glass: cubic-bezier(0.22, 1, 0.36, 1);
 
-  /* Radius */
+  /* Radius — from Stitch */
   --radius-xl: 1.5rem;
+  --radius-2xl: 2rem;
+  --radius-3xl: 3rem;
 }
 
 html, body, #root {
