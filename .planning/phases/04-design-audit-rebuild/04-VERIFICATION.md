@@ -2,167 +2,97 @@
 phase: 04-design-audit-rebuild
 verified: 2026-04-09T00:00:00Z
 status: gaps_found
-score: 4/5 must-haves verified
-re_verification: false
+score: 2/5 must-haves verified
+re_verification: true
 gaps:
-  - truth: "Design tokens (@theme CSS layer) match Stitch design system — colors, typography (Inter + Space Grotesk), surface hierarchy, glassmorphism rules"
-    status: partial
-    reason: "surface-container-lowest token is missing from @theme — only surface-container-highest exists. Plan 01 acceptance criteria required both."
-    artifacts:
-      - path: "frontend/src/index.css"
-        issue: "Missing --color-surface-container-lowest token; plan required it, it is absent from the @theme block"
-    missing:
-      - "Add --color-surface-container-lowest: #0b0b0b (or Stitch-derived value) to @theme in frontend/src/index.css"
-  - truth: "WeatherMode and PrayerMode null/loading states use var(--color-background) for background"
+  - truth: "ListeningMode matches Stitch screen"
     status: failed
-    reason: "Both WeatherMode.tsx (line 91) and PrayerMode.tsx (line 104) use hardcoded '#0e0e0e' in their null/loading fallback divs instead of var(--color-background). The main rendered paths are correct, but the fallback paths are not token-referenced."
+    reason: "Stitch shows: circular mic icon with blue-purple gradient fill centered, audio equalizer bars below (not canvas wave), 'Listening...' bold text, 'AUDIO STREAM ACTIVE' Space Grotesk label, left sidebar nav with mode icons, bottom status panels (AMBIENT NOISE, GAIN, CONFIDENCE). Current implementation: only canvas waveform + 'Listening...' text on dark background. Layout completely different."
+    artifacts:
+      - path: "frontend/src/modes/ListeningMode.tsx"
+        issue: "Missing: circular mic icon, equalizer bar visualization, AUDIO STREAM ACTIVE label, left sidebar, bottom status panels, overall layout structure"
+    missing:
+      - "Add circular mic icon with gradient fill (primary→secondary) centered in upper area"
+      - "Replace or supplement canvas wave with equalizer-style vertical bars below mic"
+      - "Add 'AUDIO STREAM ACTIVE' label in Space Grotesk below Listening text"
+      - "Add left sidebar with JARVIS logo and mode nav icons (ASSISTANT, WEATHER, SCHEDULE, PATH)"
+      - "Add bottom-right status panels: AMBIENT NOISE indicator, GAIN slider, CONFIDENCE percentage"
+      - "Add bottom-left status text: 'CORE PROCESSING UNIT 01 // LISTENING PROTOCOL V3.0'"
+  - truth: "SpeakingMode matches Stitch screen"
+    status: failed
+    reason: "Stitch shows: top tab bar (DIAGNOSTICS, VOICE MODE, PROTOCOLS), purple vertical equalizer bars (not canvas wave), response quote in glassmorphism card above the bars, small weather widget top-right (72° Clear), bottom-left circular avatar button. Current: canvas wave with subtitle text below."
+    artifacts:
+      - path: "frontend/src/modes/SpeakingMode.tsx"
+        issue: "Missing: top tab bar, vertical bar visualization style, weather mini-widget, avatar button, layout structure"
+    missing:
+      - "Add top tab bar with DIAGNOSTICS / VOICE MODE / PROTOCOLS labels"
+      - "Change wave visualization from canvas sine wave to vertical equalizer bars in #ad89ff"
+      - "Move response text above the bars in a glassmorphism card"
+      - "Add mini weather widget top-right showing temp + condition"
+      - "Add circular avatar/mic button bottom-left"
+  - truth: "WeatherMode matches Stitch screen"
+    status: partial
+    reason: "Stitch shows: header with 'ATMOSPHERIC ANALYSIS' + location, large temp (68°) with condition name and subtitle, large condition icon right side, 'TEMPORAL PROJECTION - HOURLY' section label, hourly cards row, bottom stats row (Wind Direction, Humidity 88%, Visibility 12km, UV 4.2), mic button bottom-right, left sidebar. Current: has temp + hourly cards but missing stats row, section labels, different layout proportions."
     artifacts:
       - path: "frontend/src/modes/WeatherMode.tsx"
-        issue: "Line 91: style={{ background: '#0e0e0e' }} — should be var(--color-background)"
-      - path: "frontend/src/modes/PrayerMode.tsx"
-        issue: "Line 104: style={{ background: '#0e0e0e' }} — should be var(--color-background)"
+        issue: "Missing: ATMOSPHERIC ANALYSIS header, stats row (humidity/wind/visibility/UV), section labels, proper 2-column layout, mic button"
     missing:
-      - "Replace '#0e0e0e' with 'var(--color-background)' in WeatherMode.tsx null state (line 91)"
-      - "Replace '#0e0e0e' with 'var(--color-background)' in PrayerMode.tsx null state (line 104)"
+      - "Add 'ATMOSPHERIC ANALYSIS' header with location label in Space Grotesk"
+      - "Restructure to 2-column: left=temp+condition, right=weather icon"
+      - "Add 'TEMPORAL PROJECTION - HOURLY' label above hourly cards"
+      - "Add bottom stats row: Wind Direction, Humidity, Visibility, UV Index as glassmorphism cards"
+      - "Add circular mic button bottom-right"
+  - truth: "PrayerMode matches Stitch screen"
+    status: partial
+    reason: "Stitch shows: header with 'SPIRITUAL PATTERNS: ALMA...' + tabs (PRAYER TIMES, QIBLA, MEDITATION), 'NEXT PRAYER' label above large prayer name, countdown with labeled segments (HOURS/MINUTES/SECONDS), green location pill button, right panel with date info (Wednesday 24 May, Islamic date, Golden Hour indicator), 5 prayer cards at bottom each with time + name + status, highlighted current prayer with glow. Current: has prayer name + countdown + cards but missing header tabs, date panel, location pill, different card styling."
+    artifacts:
+      - path: "frontend/src/modes/PrayerMode.tsx"
+        issue: "Missing: header tabs, NEXT PRAYER label, countdown segment labels, location pill, right-side date panel, Islamic date, Golden Hour indicator"
+    missing:
+      - "Add 'SPIRITUAL PATTERNS' header with PRAYER TIMES / QIBLA / MEDITATION tabs"
+      - "Add 'NEXT PRAYER' label above prayer name"
+      - "Add HOURS / MINUTES / SECONDS labels under countdown digits"
+      - "Add green location pill button with city + time"
+      - "Add right-side date panel: weekday + date, Islamic date, Golden Hour status"
+      - "Restyle prayer cards to match Stitch: time prominent, name below, status indicator"
+  - truth: "ThinkingMode matches Stitch screen"
+    status: partial
+    reason: "Stitch shows: large blue-purple orb (matches current), 'JARVIS PROCESSING QUERY...' text top-left, small floating particles around orb, status text bottom-right. Current: has correct orb but no status text or particles. Note: THINK-03 requirement says 'No text displayed' but Stitch design shows text — Stitch is source of truth per CLAUDE.md."
+    artifacts:
+      - path: "frontend/src/modes/ThinkingMode.tsx"
+        issue: "Missing: processing status text, floating particles around orb"
+    missing:
+      - "Add 'JARVIS PROCESSING QUERY...' text top-left in Space Grotesk"
+      - "Add small floating particles around the orb"
+      - "Add subtle status text bottom-right"
 human_verification:
   - test: "Visual fidelity of all 5 modes against Stitch screens on iPad Safari"
-    expected: "Each mode matches its Stitch screen pixel-for-pixel — colors, layout, easing feel, glassmorphism surfaces"
-    why_human: "Visual appearance, mode transition feel (glass easing vs snappy), backdrop-blur rendering, and glassmorphism surface quality cannot be verified programmatically"
-  - test: "Mode transition easing feel — cubic-bezier(0.22, 1, 0.36, 1) perceived as 'heavy glass'"
-    expected: "Transitions feel weighted and natural, not the default snappy React transition"
-    why_human: "Easing perception is subjective and requires real interaction on target device"
+    expected: "Each mode matches its Stitch screen — layout, colors, typography, cards, icons, sidebars"
+    why_human: "Visual layout and proportions require eyes-on verification"
 ---
 
-# Phase 04: Design Audit & Rebuild Verification Report
+# Phase 04: Design Audit & Rebuild — Re-Verification Report
 
-**Phase Goal:** Every existing visual mode matches its Stitch design screen pixel-for-pixel — correct design tokens, glassmorphism surfaces, typography, spacing, colors, and animation easing
-**Verified:** 2026-04-09
+**Phase Goal:** Every existing visual mode matches its Stitch design screen pixel-for-pixel
+**Verified:** 2026-04-09 (re-verification after layout audit)
 **Status:** gaps_found
-**Re-verification:** No — initial verification
+**Score:** 2/5 — tokens/easing correct, but layouts do not match Stitch screens
 
-## Goal Achievement
+## What Passed (from initial verification)
+- Design tokens match Stitch values
+- No-Line Rule enforced (0 violations)
+- Custom easing used everywhere (0 violations)
+- Text colors correct (0 pure white violations)
+- Glassmorphism gradient + backdrop-filter on all cards
 
-### Observable Truths
+## What Failed (layout gaps)
+All 5 modes have **correct tokens/colors/easing** but **wrong layouts**:
 
-| # | Truth | Status | Evidence |
-|---|-------|--------|---------|
-| 1 | Design tokens (@theme CSS layer) match Stitch design system | PARTIAL | 17 tokens present; --color-surface-container-lowest missing |
-| 2 | ListeningMode, ThinkingMode, SpeakingMode, WeatherMode, and PrayerMode each match their Stitch screen | VERIFIED | All modes rebuilt; main paths use correct tokens, easing, glassmorphism |
-| 3 | No-Line Rule enforced — no 1px borders; background shifts/blur only | VERIFIED | grep returns zero border violations across all mode files |
-| 4 | Custom easing cubic-bezier(0.22, 1, 0.36, 1) used for all mode transitions | VERIFIED | 11 array-form occurrences; zero string easing violations |
-| 5 | Text colors use on-surface-variant (#adaaaa) for body text — never pure white | VERIFIED | 12 usages of var(--color-on-surface-variant); zero #FFFFFF occurrences in modes |
-
-**Score:** 4/5 truths verified (Truth 1 partial; Truth 2 has minor gap in null states)
-
----
-
-### Required Artifacts
-
-| Artifact | Expected | Status | Details |
-|----------|----------|--------|---------|
-| `frontend/src/index.css` | Complete @theme token layer | PARTIAL | 17/18 tokens present — surface-container-lowest absent |
-| `frontend/index.html` | Space Grotesk wght@400;500;600;700 | VERIFIED | Line 26 confirmed |
-| `frontend/src/components/OrbAnimation.tsx` | AI Pulse with correct tokens and easing | VERIFIED | Uses var(--color-primary-container), [0.22, 1, 0.36, 1] x2 |
-| `frontend/src/modes/ThinkingMode.tsx` | Thinking mode matching Stitch | VERIFIED | var(--color-background), no easeInOut, [0.22, 1, 0.36, 1] x2 |
-| `frontend/src/modes/ListeningMode.tsx` | Listening mode matching Stitch | VERIFIED | var(--color-background), WAVE_COLOR=#85adff, on-surface-variant label |
-| `frontend/src/modes/SpeakingMode.tsx` | Speaking mode matching Stitch | VERIFIED | var(--color-background), WAVE_COLOR=#ad89ff, glassmorphism subtitle card |
-| `frontend/src/modes/WeatherMode.tsx` | Weather mode matching Stitch | STUB (null path) | Main path verified; null state hardcodes '#0e0e0e' (line 91) |
-| `frontend/src/modes/PrayerMode.tsx` | Prayer mode matching Stitch | STUB (null path) | Main path verified; null state hardcodes '#0e0e0e' (line 104) |
-| `frontend/src/components/ModeRouter.tsx` | ModeRouter with correct easing | VERIFIED | [0.22, 1, 0.36, 1] x2, AnimatePresence, var(--color-background) in idle |
+1. **ListeningMode** — Missing sidebar, mic icon, equalizer bars, status panels
+2. **SpeakingMode** — Missing tab bar, wrong wave style, missing weather widget
+3. **WeatherMode** — Missing stats row, section labels, 2-column layout
+4. **PrayerMode** — Missing header tabs, date panel, location pill, countdown labels
+5. **ThinkingMode** — Missing status text, floating particles (minor)
 
 ---
-
-### Key Link Verification
-
-| From | To | Via | Status | Details |
-|------|----|-----|--------|---------|
-| `OrbAnimation.tsx` | `index.css` | var(--color-primary-container) | WIRED | Pattern confirmed at line 13 |
-| `ThinkingMode.tsx` | `OrbAnimation.tsx` | import + scale={1.2} | WIRED | Line 10 import, line 50 usage |
-| `WeatherMode.tsx` | `index.css` | var(--color-*) references | WIRED | Multiple var() calls confirmed |
-| `PrayerMode.tsx` | `index.css` | var(--color-*) references | WIRED | Multiple var() calls confirmed |
-| `ModeRouter.tsx` | all mode components | AnimatePresence wrapping | WIRED | AnimatePresence mode="wait" confirmed |
-
----
-
-### Data-Flow Trace (Level 4)
-
-Not applicable — this phase is a design compliance audit, not a data-rendering feature phase. Mode components consume data from Zustand store (WeatherMode, PrayerMode) or props (ListeningMode, SpeakingMode); data plumbing is out of scope for Phase 04.
-
----
-
-### Behavioral Spot-Checks
-
-| Behavior | Command | Result | Status |
-|----------|---------|--------|--------|
-| Frontend build compiles clean | `npm run build` | ✓ built in 910ms, 0 errors | PASS |
-| No string easing violations | grep easeInOut across modes | 0 matches | PASS |
-| No hardcoded #0a0a0a | grep #0a0a0a across modes | 0 matches | PASS |
-| No pure white text | grep #FFFFFF across modes | 0 matches | PASS |
-| No 1px border violations | grep "border:" across modes (excl. radius) | 0 matches | PASS |
-| Old token names removed | grep "surface-low[^e]" | 0 matches | PASS |
-| surface-container-lowest present | grep in index.css | NOT FOUND | FAIL |
-| WeatherMode null state uses token | grep "#0e0e0e" in WeatherMode | Line 91 match | FAIL |
-| PrayerMode null state uses token | grep "#0e0e0e" in PrayerMode | Line 104 match | FAIL |
-
----
-
-### Requirements Coverage
-
-No formal requirement IDs were declared in any of the 5 plan frontmatter blocks (all `requirements: []`). Phase 04 was structured as a cross-cutting design quality gate with success criteria from the roadmap rather than tracked requirement IDs.
-
-| Success Criterion | Status | Evidence |
-|-------------------|--------|---------|
-| Design tokens match Stitch — colors, typography, surface hierarchy | PARTIAL | 17/18 tokens; surface-container-lowest missing |
-| ListeningMode/ThinkingMode/SpeakingMode/WeatherMode/PrayerMode match Stitch | PARTIAL | Main paths match; null states have hardcoded #0e0e0e |
-| No-Line Rule — no 1px borders | SATISFIED | Zero violations found |
-| Custom easing cubic-bezier(0.22, 1, 0.36, 1) for all transitions | SATISFIED | 11 array-form usages; zero string easing |
-| Text colors use on-surface-variant — never pure white | SATISFIED | Zero #FFFFFF; 12 on-surface-variant usages |
-
----
-
-### Anti-Patterns Found
-
-| File | Line | Pattern | Severity | Impact |
-|------|------|---------|----------|--------|
-| `frontend/src/modes/WeatherMode.tsx` | 91 | `background: '#0e0e0e'` hardcoded in null state | Warning | If token value ever changes, null state diverges visually |
-| `frontend/src/modes/PrayerMode.tsx` | 104 | `background: '#0e0e0e'` hardcoded in null state | Warning | Same as above |
-| `frontend/src/index.css` | (absent) | `--color-surface-container-lowest` not defined | Warning | Plan 01 acceptance criteria lists this as required; if any mode references it, renders transparent |
-
-Note: The `#e8e8e8` near-white in WeatherMode (line 134) and PrayerMode (line 154) are intentional per design comments ("near-white, not pure #FFFFFF") and are NOT violations — they comply with the No-Pure-White rule.
-
----
-
-### Human Verification Required
-
-#### 1. Visual Fidelity Against Stitch Screens
-
-**Test:** Deploy locally (`cd frontend && npm run dev`), open in iPad Safari (or desktop browser), navigate through each mode: Idle orb, Listening, Thinking, Speaking, Weather, Prayer.
-
-**Expected:** Each matches its Stitch screen — OrbAnimation breathes with correct blue-to-purple shift; ListeningMode shows #85adff waveform on dark background; ThinkingMode shows breathing orb with ambient glow; SpeakingMode shows #ad89ff waveform with glassmorphism subtitle card; WeatherMode shows temperature in Space Grotesk with glassmorphism hourly cards; PrayerMode shows next prayer name large with glassmorphism rows.
-
-**Why human:** Visual appearance, backdrop-blur rendering quality, and layout fidelity require eyes-on verification against the Stitch reference images.
-
-#### 2. Mode Transition Easing Feel
-
-**Test:** Trigger mode transitions by simulating voice states (idle → listening → thinking → speaking → idle).
-
-**Expected:** Transitions feel weighted/glass-like, not the default snappy React fade. The cubic-bezier(0.22, 1, 0.36, 1) "heavy glass" easing should be perceptibly different from a standard ease-in-out.
-
-**Why human:** Easing perception is subjective and requires real interaction; cannot be verified by code inspection alone.
-
----
-
-### Gaps Summary
-
-Two categories of gaps were found:
-
-**Gap 1 — Missing token (minor, low-risk):** `--color-surface-container-lowest` is absent from the `@theme` block in `frontend/src/index.css`. Plan 01 explicitly listed this as a required acceptance criterion. The value `#0b0b0b` was proposed as fallback. No mode currently references this token by name, so the impact is limited — but it was a stated deliverable and is absent.
-
-**Gap 2 — Hardcoded backgrounds in null states (minor, consistency):** Both `WeatherMode.tsx` (line 91) and `PrayerMode.tsx` (line 104) use the literal string `'#0e0e0e'` in their data-unavailable fallback renders. The value happens to match `--color-background`, so visually identical today, but this is inconsistent with the token-first pattern enforced everywhere else. The plan for PrayerMode explicitly stated "REPLACE `background: '#0e0e0e'` with `background: 'var(--color-background)'`" — meaning the main component path was fixed, but the null state was overlooked.
-
-These are both minor consistency/completeness issues rather than blocking visual failures. The core goal — all 5 modes matching their Stitch screens with correct tokens, easing, and glassmorphism — is substantially achieved.
-
----
-
-_Verified: 2026-04-09_
-_Verifier: Claude (gsd-verifier)_
+_Re-verified: 2026-04-09_
