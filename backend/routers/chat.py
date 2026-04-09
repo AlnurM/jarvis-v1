@@ -1,13 +1,17 @@
 """POST /api/chat — Claude integration with structured output + MongoDB conversation persistence."""
+import asyncio
 import json
 import uuid
 from collections import deque
-from datetime import datetime, UTC
+from datetime import datetime, UTC, timezone, timedelta
 from typing import Any
 
 import anthropic
 from fastapi import APIRouter, Request
 from pydantic import BaseModel
+from google.oauth2.credentials import Credentials
+from google.auth.transport.requests import Request as GoogleAuthRequest
+from googleapiclient.discovery import build as build_google_service
 
 from config import settings
 
@@ -48,6 +52,15 @@ SYSTEM_PROMPT = (
     "For weather requests, use fetch='weather'. Set query to the city name if the user specifies "
     "one (e.g., 'погода в Москве' → query='Москва'). Leave query empty for default location "
     "(Almaty). Never ask the user which city — default to Almaty. "
+    "For web search requests (finding information, facts, news, 'найди', 'поищи', 'search for'), "
+    "use fetch='search' and set query to the search terms. "
+    "For prayer time requests, use fetch='prayer'. "
+    "For calendar requests (schedule, events, 'что на календаре', 'what's on my calendar'), "
+    "use fetch='calendar' and leave query empty for reading. "
+    "For adding calendar events ('добавь в календарь', 'add to calendar', 'запланируй'), "
+    "use fetch='calendar' and set query to a JSON string: "
+    '{"title": "event name", "date": "YYYY-MM-DD", "time": "HH:MM", "duration_minutes": 60}. '
+    "Default duration is 60 minutes unless context implies otherwise. "
     "When the user says домой, спасибо, хватит, назад, хорошо, home, thanks, enough, go back, "
     "or similar dismiss phrases, return mode='speak' and a brief acknowledgment (1 sentence). "
     "Never ask for confirmation when dismissing."
@@ -177,6 +190,125 @@ async def _fetch_prayer(http_client) -> dict:
     }
 
 
+async def _fetch_search(http_client, settings, query: str) -> dict:
+    """Fetch web search results from Brave Search API (per D-01)."""
+    resp = await http_client.get(
+        "https://api.search.brave.com/res/v1/web/search",
+        params={"q": query, "count": 3},
+        headers={"X-Subscription-Token": settings.BRAVE_SEARCH_API_KEY, "Accept": "application/json"}
+    )
+    resp.raise_for_status()
+    raw = resp.json()
+    results = []
+    for item in raw.get("web", {}).get("results", [])[:3]:
+        favicon = item.get("meta_url", {}).get("favicon", "")
+        netloc = item.get("meta_url", {}).get("netloc", "")
+        # Pitfall 3: Brave favicon may be empty — fall back to Google favicon service
+        if not favicon and netloc:
+            favicon = f"https://www.google.com/s2/favicons?sz=32&domain={netloc}"
+        results.append({
+            "title": item.get("title", ""),
+            "url": item.get("url", ""),
+            "description": item.get("description", ""),
+            "favicon": favicon,
+            "source": netloc,
+        })
+    return {"results": results}
+
+
+CALENDAR_SCOPES = ["https://www.googleapis.com/auth/calendar"]
+
+
+def _build_calendar_service(refresh_token: str):
+    """Build Google Calendar API service (sync — call via asyncio.to_thread). Per Pitfall 2."""
+    creds = Credentials(
+        token=None,
+        refresh_token=refresh_token,
+        client_id=settings.GOOGLE_CLIENT_ID,
+        client_secret=settings.GOOGLE_CLIENT_SECRET,
+        token_uri="https://oauth2.googleapis.com/token",
+        scopes=CALENDAR_SCOPES,
+    )
+    creds.refresh(GoogleAuthRequest())
+    return build_google_service("calendar", "v3", credentials=creds, cache_discovery=False)
+
+
+async def _fetch_calendar(db) -> dict:
+    """Fetch this week's events from Google Calendar (per D-10, CAL-03)."""
+    settings_doc = await db["settings"].find_one({"key": "google_refresh_token"})
+    if not settings_doc or not settings_doc.get("value"):
+        return {"error": "calendar_not_authorized", "events": []}
+
+    refresh_token = settings_doc["value"]
+    service = await asyncio.to_thread(_build_calendar_service, refresh_token)
+
+    now = datetime.now(timezone.utc)
+    week_start = (now - timedelta(days=now.weekday())).replace(hour=0, minute=0, second=0, microsecond=0)
+    week_end = week_start + timedelta(days=7)
+
+    def _list_events():
+        result = service.events().list(
+            calendarId="primary",
+            timeMin=week_start.isoformat(),
+            timeMax=week_end.isoformat(),
+            singleEvents=True,
+            orderBy="startTime",
+            maxResults=20,
+        ).execute()
+        return result
+
+    raw_result = await asyncio.to_thread(_list_events)
+    raw_events = raw_result.get("items", []) if isinstance(raw_result, dict) else raw_result
+    events = []
+    for e in raw_events:
+        start = e["start"].get("dateTime", e["start"].get("date", ""))
+        end = e["end"].get("dateTime", e["end"].get("date", ""))
+        events.append({"id": e["id"], "title": e.get("summary", ""), "start": start, "end": end})
+
+    return {"events": events, "week_start": week_start.isoformat()}
+
+
+async def _create_calendar_event(db, title: str, start: str, end: str) -> dict:
+    """Create a Google Calendar event and persist to MongoDB (per CAL-03)."""
+    settings_doc = await db["settings"].find_one({"key": "google_refresh_token"})
+    if not settings_doc or not settings_doc.get("value"):
+        return {"error": "calendar_not_authorized"}
+
+    refresh_token = settings_doc["value"]
+    service = await asyncio.to_thread(_build_calendar_service, refresh_token)
+
+    event_body = {
+        "summary": title,
+        "start": {"dateTime": start},
+        "end": {"dateTime": end},
+    }
+
+    def _insert_event():
+        return service.events().insert(calendarId="primary", body=event_body).execute()
+
+    created = await asyncio.to_thread(_insert_event)
+
+    created_start = created["start"].get("dateTime", created["start"].get("date", ""))
+    created_end = created["end"].get("dateTime", created["end"].get("date", ""))
+    result = {
+        "id": created["id"],
+        "title": created.get("summary", title),
+        "start": created_start,
+        "end": created_end,
+    }
+
+    # Persist to MongoDB events collection
+    await db["events"].insert_one({
+        "gcal_id": result["id"],
+        "title": result["title"],
+        "start": result["start"],
+        "end": result["end"],
+        "created_at": datetime.now(UTC).isoformat(),
+    })
+
+    return result
+
+
 async def _call_claude(transcript: str, history: list[dict]) -> dict[str, Any]:
     """Call Claude with structured output. Returns parsed envelope dict."""
     messages = list(history) + [{"role": "user", "content": transcript}]
@@ -249,6 +381,35 @@ async def chat(request: Request, body: ChatRequest) -> ChatResponse:
             fetched_data = await _fetch_prayer(request.app.state.http_client)
         except Exception as e:
             print(f"[WARN] Prayer fetch failed: {e}")
+    elif fetch_type == "search":
+        try:
+            fetched_data = await _fetch_search(request.app.state.http_client, settings, envelope.get("query", ""))
+        except Exception as e:
+            print(f"[WARN] Search fetch failed: {e}")
+    elif fetch_type == "calendar":
+        try:
+            query_str = envelope.get("query", "")
+            if query_str.strip().startswith("{"):
+                # Create calendar event — query is a JSON string with event details
+                try:
+                    event_params = json.loads(query_str)
+                    date_str = event_params.get("date", "")
+                    time_str = event_params.get("time", "00:00")
+                    duration_min = int(event_params.get("duration_minutes", 60))
+                    start_dt = datetime.fromisoformat(f"{date_str}T{time_str}:00+06:00")
+                    end_dt = start_dt + timedelta(minutes=duration_min)
+                    fetched_data = await _create_calendar_event(
+                        request.app.state.db,
+                        title=event_params.get("title", ""),
+                        start=start_dt.isoformat(),
+                        end=end_dt.isoformat(),
+                    )
+                except Exception as e:
+                    print(f"[WARN] Calendar event creation failed: {e}")
+            else:
+                fetched_data = await _fetch_calendar(request.app.state.db)
+        except Exception as e:
+            print(f"[WARN] Calendar fetch failed: {e}")
     envelope["data"] = fetched_data
 
     return ChatResponse(**envelope)
