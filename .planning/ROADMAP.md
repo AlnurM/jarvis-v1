@@ -2,7 +2,7 @@
 
 ## Overview
 
-JARVIS is built in six phases that follow a strict dependency graph. Phase 1 proves the deployment pipeline before any voice work begins. Phase 2 builds and validates the voice loop on the real target iPad — this is the critical path because the entire product is the loop. Phase 3 adds the two simplest specialized modes (Weather and Prayer Times) to validate end-to-end mode switching with zero auth complexity. Phase 4 audits all existing visual modes against the Stitch design screens and rebuilds them to pixel-perfect fidelity. Phase 5 adds the three remaining modes (Search, Calendar, Morning Briefing), with Google OAuth saved for last. Phase 6 hardens the system quality: single round-trip optimization, settings persistence, iOS edge case handling, and animation performance on real iPad hardware.
+JARVIS is built in seven phases that follow a strict dependency graph. Phase 1 proves the deployment pipeline before any voice work begins. Phase 2 builds and validates the voice loop on the real target iPad — this is the critical path because the entire product is the loop. Phase 3 adds the two simplest specialized modes (Weather and Prayer Times) to validate end-to-end mode switching with zero auth complexity. Phase 4 audits all existing visual modes against the Stitch design screens and rebuilds them to pixel-perfect fidelity. Phase 5 makes the voice loop seamless — continuous background listening on content screens, weather widget completion, and dynamic city support. Phase 6 adds the three remaining modes (Search, Calendar, Morning Briefing), with Google OAuth saved for last. Phase 7 hardens the system quality: single round-trip optimization, settings persistence, iOS edge case handling, and animation performance on real iPad hardware.
 
 ## Phases
 
@@ -16,8 +16,9 @@ Decimal phases appear between their surrounding integers in numeric order.
 - [x] **Phase 2: Voice Loop Core** - The complete voice loop (listen → think → speak) with Claude integration and 3 core visual modes — the entire product in its simplest form (completed 2026-04-08)
 - [x] **Phase 3: Information Modes** - Weather and Prayer Times modes — first specialized modes validating end-to-end mode switching with simple REST APIs (completed 2026-04-09)
 - [x] **Phase 4: Design Audit & Rebuild** - Audit all existing modes against Stitch design screens and rebuild to pixel-perfect fidelity with correct tokens, glassmorphism, and animations (completed 2026-04-09)
-- [ ] **Phase 5: Extended Modes** - Search, Calendar (with Google OAuth), and Morning Briefing — full feature set complete
-- [ ] **Phase 6: Polish & Hardening** - Single round-trip optimization, settings persistence, animation performance, iOS edge case hardening
+- [ ] **Phase 5: Voice Loop & Weather Polish** - Continuous background listening on content screens, weather widget data completion, dynamic city support
+- [ ] **Phase 6: Extended Modes** - Search, Calendar (with Google OAuth), and Morning Briefing — full feature set complete
+- [ ] **Phase 7: Polish & Hardening** - Single round-trip optimization, settings persistence, animation performance, iOS edge case hardening
 
 ## Phase Details
 
@@ -111,32 +112,60 @@ Plans:
 **UI hint**: yes
 Canonical refs: design.md
 
-### Phase 5: Extended Modes
-**Goal**: User can search the web, manage their Google Calendar by voice, and receive a morning briefing — all specialized modes are complete
+### Phase 5: Voice Loop & Weather Polish
+**Goal**: Voice contact never breaks — after showing a content screen (weather, prayer), JARVIS keeps listening in the background without returning to the mic screen. Weather widgets show real data. City defaults to Almaty but supports other cities on request.
 **Depends on**: Phase 4
+**Requirements**: LOOP-02, LOOP-03, LOOP-04, WEATH-06, WEATH-07, WEATH-08
+**Success Criteria** (what must be TRUE):
+  1. After JARVIS speaks on a content screen (weather/prayer), the screen stays — FloatingMic pulses to show background listening is active
+  2. User can say "а намаз?" while on WeatherMode and transition directly to PrayerMode without an intermediate mic screen
+  3. User says "домой" / "спасибо" / "хватит" and returns to idle orb — this is the only way to leave a content screen by voice
+  4. Weather stats row shows real wind speed, wind direction, humidity, visibility, and UV index (no more '--' placeholders)
+  5. "Покажи погоду" defaults to Almaty without asking. "Погода в Москве" shows Moscow weather.
+**Plans**: 3 plans
+
+Plans:
+- [ ] 05-01-PLAN.md — Backend weather data completion (city, UV, stats) + system prompt updates
+- [ ] 05-02-PLAN.md — FloatingMic component + ModeRouter CONTENT_MODES refactor + App.tsx FSM
+- [ ] 05-03-PLAN.md — Wire FloatingMic into WeatherMode/PrayerMode, city display, device checkpoint
+**UI hint**: yes
+
+### Phase 6: Extended Modes
+**Goal**: User can search the web, manage their Google Calendar by voice, and receive a morning briefing — all specialized modes are complete
+**Depends on**: Phase 5
 **Requirements**: SRCH-01, SRCH-02, SRCH-03, SRCH-04, SRCH-05, CAL-01, CAL-02, CAL-03, CAL-04, CAL-05, CAL-06, CAL-07, BRIEF-01, BRIEF-02, BRIEF-03, BRIEF-04, BRIEF-05
 **Success Criteria** (what must be TRUE):
   1. User asks a factual question triggering web search, and up to 3 glassmorphism result cards animate in from the bottom with favicon, title, and snippet
   2. User says "what's on my calendar this week?" and sees a week view with events from Google Calendar
   3. User says "add dentist Thursday 3pm" and the event is created in Google Calendar and saved to MongoDB
   4. User says "morning briefing" (or app is open at 7:00 AM after prior user gesture) and sees the split layout with weather, events, Claude-generated summary, and a quote
-**Plans**: TBD
+**Plans**: 3 plans
+
+Plans:
+- [ ] 05-01-PLAN.md — Backend weather data completion (city, UV, stats) + system prompt updates
+- [ ] 05-02-PLAN.md — FloatingMic component + ModeRouter CONTENT_MODES refactor + App.tsx FSM
+- [ ] 05-03-PLAN.md — Wire FloatingMic into WeatherMode/PrayerMode, city display, device checkpoint
 **UI hint**: yes
 
-### Phase 6: Polish & Hardening
+### Phase 7: Polish & Hardening
 **Goal**: The voice loop and all modes feel production-quality on the target iPad — latency is minimized, animations are smooth, settings persist, and iOS edge cases are handled gracefully
-**Depends on**: Phase 5
+**Depends on**: Phase 6
 **Requirements**: API-03, API-04, DB-04
 **Success Criteria** (what must be TRUE):
   1. Sub-API data (weather, prayer, calendar) arrives with the Claude response in a single round-trip — no visible flash of empty mode UI
   2. User settings (location, language preference) persist across app restarts
   3. Animations run without jank on iPad — waveform and particle orb maintain smooth frame rate under load
-**Plans**: TBD
+**Plans**: 3 plans
+
+Plans:
+- [ ] 05-01-PLAN.md — Backend weather data completion (city, UV, stats) + system prompt updates
+- [ ] 05-02-PLAN.md — FloatingMic component + ModeRouter CONTENT_MODES refactor + App.tsx FSM
+- [ ] 05-03-PLAN.md — Wire FloatingMic into WeatherMode/PrayerMode, city display, device checkpoint
 
 ## Progress
 
 **Execution Order:**
-Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6
+Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
@@ -144,5 +173,6 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6
 | 2. Voice Loop Core | 7/7 | Complete   | 2026-04-08 |
 | 3. Information Modes | 4/4 | Complete   | 2026-04-09 |
 | 4. Design Audit & Rebuild | 11/11 | Complete   | 2026-04-09 |
-| 5. Extended Modes | 0/TBD | Not started | - |
-| 6. Polish & Hardening | 0/TBD | Not started | - |
+| 5. Voice Loop & Weather Polish | 0/3 | Not started | - |
+| 6. Extended Modes | 0/TBD | Not started | - |
+| 7. Polish & Hardening | 0/TBD | Not started | - |
