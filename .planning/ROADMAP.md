@@ -14,7 +14,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 
 - [x] **Phase 1: Foundation** - Project scaffold, deployment pipeline, and database — everything needed to ship code to the target device (completed 2026-04-08)
 - [x] **Phase 2: Voice Loop Core** - The complete voice loop (listen → think → speak) with Claude integration and 3 core visual modes — the entire product in its simplest form (completed 2026-04-08)
-- [ ] **Phase 3: Information Modes** - Weather and Prayer Times modes — first specialized modes validating end-to-end mode switching with simple REST APIs
+- [x] **Phase 3: Information Modes** - Weather and Prayer Times modes — first specialized modes validating end-to-end mode switching with simple REST APIs (completed 2026-04-09)
 - [ ] **Phase 4: Extended Modes** - Search, Calendar (with Google OAuth), and Morning Briefing — full feature set complete
 - [ ] **Phase 5: Polish & Hardening** - Single round-trip optimization, settings persistence, animation performance, iOS edge case hardening
 
@@ -78,7 +78,7 @@ Plans:
 - [x] 03-01-PLAN.md — Wave 0 TDD: failing tests for backend weather and prayer fetch helpers (test_weather.py, test_prayer.py)
 - [x] 03-02-PLAN.md — Backend fetch pipeline: _fetch_weather + _fetch_prayer helpers, ChatResponse.data field, fetch dispatch in chat(); frontend ChatResponse interface extended
 - [x] 03-03-PLAN.md — Frontend mode components: WeatherMode.tsx (temp, icon, hourly scroll) and PrayerMode.tsx (next prayer, countdown, 5-prayer list)
-- [ ] 03-04-PLAN.md — Integration wiring: ModeRouter weather/prayer branches, useVoiceOutput onComplete, App.tsx auto-listen (LOOP-01); device validation checkpoint
+- [x] 03-04-PLAN.md — Integration wiring: ModeRouter weather/prayer branches, useVoiceOutput onComplete, App.tsx auto-listen (LOOP-01); device validation checkpoint
 
 **UI hint**: yes
 
@@ -113,6 +113,6 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5
 |-------|----------------|--------|-----------|
 | 1. Foundation | 4/4 | Complete   | 2026-04-08 |
 | 2. Voice Loop Core | 7/7 | Complete   | 2026-04-08 |
-| 3. Information Modes | 3/4 | In Progress|  |
+| 3. Information Modes | 4/4 | Complete   | 2026-04-09 |
 | 4. Extended Modes | 0/TBD | Not started | - |
 | 5. Polish & Hardening | 0/TBD | Not started | - |
