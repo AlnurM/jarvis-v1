@@ -63,7 +63,9 @@ SYSTEM_PROMPT = (
     "Default duration is 60 minutes unless context implies otherwise. "
     "When the user says домой, спасибо, хватит, назад, хорошо, home, thanks, enough, go back, "
     "or similar dismiss phrases, return mode='speak' and a brief acknowledgment (1 sentence). "
-    "Never ask for confirmation when dismissing."
+    "Never ask for confirmation when dismissing. "
+    "For morning briefing requests ('утренний брифинг', 'morning briefing', 'доброе утро', 'good morning'), "
+    "use fetch='briefing' and leave query empty. "
 )
 
 # In-memory session history: session_id -> deque of last 20 messages (per D-21)
@@ -309,6 +311,52 @@ async def _create_calendar_event(db, title: str, start: str, end: str) -> dict:
     return result
 
 
+async def _fetch_briefing(http_client, db, settings) -> dict:
+    """Fetch morning briefing: weather + calendar + AI summary + quote (per D-14, D-15)."""
+    # Fetch weather and calendar in parallel
+    weather_task = _fetch_weather(http_client, settings, city="")
+    calendar_task = _fetch_calendar(db)
+    weather, calendar = await asyncio.gather(weather_task, calendar_task, return_exceptions=True)
+
+    # Handle fetch errors gracefully
+    if isinstance(weather, Exception):
+        weather = {"temp": "N/A", "condition_main": "unavailable"}
+    if isinstance(calendar, Exception):
+        calendar = {"events": []}
+
+    events = calendar.get("events", [])
+    event_titles = [e.get("title", "Untitled") for e in events[:5]]
+
+    # Second Claude call — free text, not structured JSON schema (per D-15)
+    briefing_prompt = (
+        f"Weather in Almaty: {weather.get('temp', 'N/A')}°C, {weather.get('condition_main', 'unknown')}. "
+        f"Today's events: {event_titles if event_titles else 'No events'}. "
+        "Write a warm, personal 2-sentence morning summary in Russian. "
+        "Then write one short inspirational quote. "
+        'Reply ONLY as JSON: {"summary": "...", "quote": "..."}'
+    )
+    try:
+        response = await client.messages.create(
+            model="claude-sonnet-4-6",
+            max_tokens=300,
+            messages=[{"role": "user", "content": briefing_prompt}],
+        )
+        briefing_text = json.loads(response.content[0].text)
+        summary = briefing_text.get("summary", "")
+        quote = briefing_text.get("quote", "")
+    except Exception as e:
+        print(f"[WARN] Briefing Claude call failed: {e}")
+        summary = "Доброе утро! Новый день — новые возможности."
+        quote = "Будущее принадлежит тем, кто верит в красоту своей мечты."
+
+    return {
+        "weather": weather if isinstance(weather, dict) else {},
+        "events": events,
+        "summary": summary,
+        "quote": quote,
+    }
+
+
 async def _call_claude(transcript: str, history: list[dict]) -> dict[str, Any]:
     """Call Claude with structured output. Returns parsed envelope dict."""
     messages = list(history) + [{"role": "user", "content": transcript}]
@@ -410,6 +458,11 @@ async def chat(request: Request, body: ChatRequest) -> ChatResponse:
                 fetched_data = await _fetch_calendar(request.app.state.db)
         except Exception as e:
             print(f"[WARN] Calendar fetch failed: {e}")
+    elif fetch_type == "briefing":
+        try:
+            fetched_data = await _fetch_briefing(request.app.state.http_client, request.app.state.db, settings)
+        except Exception as e:
+            print(f"[WARN] Briefing fetch failed: {e}")
     envelope["data"] = fetched_data
 
     return ChatResponse(**envelope)
