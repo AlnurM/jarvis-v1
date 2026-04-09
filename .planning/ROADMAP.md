@@ -143,8 +143,8 @@ Plans:
 
 Plans:
 - [x] 06-01-PLAN.md — Wave 0: Google packages, config, test scaffolds
-- [ ] 06-02-PLAN.md — Search mode (backend Brave API + frontend SearchMode + ModeRouter)
-- [ ] 06-03-PLAN.md — Calendar OAuth routes + backend calendar fetch
+- [x] 06-02-PLAN.md — Search mode (backend Brave API + frontend SearchMode + ModeRouter)
+- [x] 06-03-PLAN.md — Calendar OAuth routes + backend calendar fetch
 - [ ] 06-04-PLAN.md — Calendar event creation + CalendarMode frontend + ModeRouter
 - [ ] 06-05-PLAN.md — Morning Briefing (backend + BriefingMode frontend + auto-trigger)
 - [ ] 06-06-PLAN.md — Final integration: full test suite, Dockerfile, device validation
@@ -172,5 +172,5 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7
 | 3. Information Modes | 4/4 | Complete   | 2026-04-09 |
 | 4. Design Audit & Rebuild | 11/11 | Complete   | 2026-04-09 |
 | 5. Voice Loop & Weather Polish | 2/3 | In Progress|  |
-| 6. Extended Modes | 1/6 | In Progress|  |
+| 6. Extended Modes | 3/6 | In Progress|  |
 | 7. Polish & Hardening | 0/TBD | Not started | - |
