@@ -3,8 +3,8 @@
  * Stitch screen ID: 8554ef1a3efa42f9a07ad8774a690a7d
  *
  * Design:
- * - Wave animation in purple/violet #9b59b6 (SPEAK-01, D-33)
- * - AI response text as subtitles at bottom, max 2 lines visible (SPEAK-02, D-34)
+ * - Wave animation in secondary purple #ad89ff (var(--color-secondary)) per Stitch
+ * - AI response text as subtitles at bottom in glassmorphism card
  * - Subtitle fades in with speech progress (SPEAK-03, D-35)
  * - Tap anywhere stops TTS and returns to idle (D-36, TTS-03)
  *
@@ -23,8 +23,8 @@ interface SpeakingModeProps {
   onTap?: () => void  // Tap handler from App.tsx — calls stopSpeaking
 }
 
-// Violet/purple per SPEAK-01, D-33
-const WAVE_COLOR = '#9b59b6'
+// Secondary purple per Stitch screen 8554ef1a3efa42f9a07ad8774a690a7d
+const WAVE_COLOR = '#ad89ff'
 
 export function SpeakingMode({ analyserRef, onTap }: SpeakingModeProps) {
   const { response } = useAssistantStore()
@@ -83,24 +83,25 @@ export function SpeakingMode({ analyserRef, onTap }: SpeakingModeProps) {
   return (
     <div
       className="w-screen h-screen flex flex-col items-center justify-center overflow-hidden relative"
-      style={{ background: '#0a0a0a' }}
+      style={{ background: 'var(--color-background)' }}
       onClick={onTap}
       onTouchEnd={onTap}
     >
-      {/* Atmospheric glow behind waveform */}
+      {/* Atmospheric glow behind waveform — secondary-dim ambient shadow per D-12 */}
       <div
-        className="absolute rounded-full"
+        className="absolute rounded-full pointer-events-none"
         style={{
-          width: 300,
-          height: 300,
+          width: 400,
+          height: 400,
           background: `radial-gradient(circle, ${WAVE_COLOR}30 0%, transparent 70%)`,
-          filter: 'blur(60px)',
-          top: '30%',
-          transform: 'translateY(-50%)',
+          filter: 'blur(80px)',
+          top: '35%',
+          left: '50%',
+          transform: 'translate(-50%, -50%)',
         }}
       />
 
-      {/* Purple waveform canvas (SPEAK-01) */}
+      {/* Secondary purple waveform canvas (SPEAK-01) */}
       <canvas
         ref={canvasRef}
         className="w-full"
@@ -112,33 +113,42 @@ export function SpeakingMode({ analyserRef, onTap }: SpeakingModeProps) {
         }}
       />
 
-      {/* Subtitle text — fades in per SPEAK-03 */}
+      {/* Subtitle glassmorphism card — per Stitch: glass card with gradient + backdrop blur */}
       {response && (
         <motion.div
           key={subtitleText}
           initial={{ opacity: 0, y: 8 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}  // per D-38
-          className="absolute bottom-16 px-8 text-center"
-          style={{ zIndex: 2 }}
+          transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+          className="absolute bottom-16 px-8"
+          style={{ zIndex: 2, maxWidth: '70vw' }}
         >
-          <p
-            className="text-base leading-relaxed"
+          <div
             style={{
-              // SPEAK-02: max 2 lines — overflow hidden
-              display: '-webkit-box',
-              WebkitLineClamp: 2,
-              WebkitBoxOrient: 'vertical',
-              overflow: 'hidden',
-              // design.md: never pure white — use on-surface-variant
-              color: 'var(--color-on-surface-variant)',
-              fontFamily: 'var(--font-display)',
-              maxWidth: '70vw',
-              textShadow: `0 0 20px ${WAVE_COLOR}80`,
+              background: 'linear-gradient(135deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0) 100%)',
+              backdropFilter: 'blur(24px)',
+              WebkitBackdropFilter: 'blur(24px)',
+              borderRadius: '1.5rem',
+              padding: '1rem 1.5rem',
             }}
           >
-            {subtitleText}
-          </p>
+            <p
+              className="text-base leading-relaxed text-center"
+              style={{
+                // SPEAK-02: max 2 lines — overflow hidden
+                display: '-webkit-box',
+                WebkitLineClamp: 2,
+                WebkitBoxOrient: 'vertical',
+                overflow: 'hidden',
+                // design.md: never pure white — use on-surface-variant
+                color: 'var(--color-on-surface-variant)',
+                fontFamily: 'var(--font-display)',
+                textShadow: `0 0 20px ${WAVE_COLOR}80`,
+              }}
+            >
+              {subtitleText}
+            </p>
+          </div>
         </motion.div>
       )}
 
