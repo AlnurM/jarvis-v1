@@ -17,6 +17,7 @@ import { useVoiceRecorder } from './hooks/useVoiceRecorder'
 import { useVoiceOutput } from './hooks/useVoiceOutput'
 import { chatWithJarvis } from './api/client'
 import { ModeRouter } from './components/ModeRouter'
+import { ErrorBoundary } from './components/ErrorBoundary'
 
 // Content modes: on these modes, FloatingMic handles its own tap.
 // Full-screen tap is ignored during active voice states to prevent double-fire (Pitfall 2, D-20).
@@ -196,12 +197,14 @@ function App() {
       }}
       style={{ touchAction: 'none', userSelect: 'none' }}
     >
-      <ModeRouter
-        analyserRef={analyserRef}
-        onStopSpeaking={stopSpeaking}
-        onStartListening={() => { setState('listening'); startRecording() }}
-        onStopListening={() => { stopRecording(); setState('thinking') }}
-      />
+      <ErrorBoundary>
+        <ModeRouter
+          analyserRef={analyserRef}
+          onStopSpeaking={stopSpeaking}
+          onStartListening={() => { setState('listening'); startRecording() }}
+          onStopListening={() => { stopRecording(); setState('thinking') }}
+        />
+      </ErrorBoundary>
 
       {/* Morning briefing auto-trigger overlay (per D-17, BRIEF-04) */}
       {/* iOS AudioContext requires user gesture — this overlay is the gesture (Pitfall 6) */}
