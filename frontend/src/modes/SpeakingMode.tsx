@@ -1,164 +1,201 @@
 /**
- * SpeakingMode — Purple waveform + subtitle text overlay (per SPEAK-01 to SPEAK-03)
+ * SpeakingMode — Top tab bar, purple vertical equalizer bars, response card, weather widget, avatar
  * Stitch screen ID: 8554ef1a3efa42f9a07ad8774a690a7d
  *
  * Design:
- * - Wave animation in secondary purple #ad89ff (var(--color-secondary)) per Stitch
- * - AI response text as subtitles at bottom in glassmorphism card
- * - Subtitle fades in with speech progress (SPEAK-03, D-35)
+ * - Top tab bar: DIAGNOSTICS / VOICE MODE (active) / PROTOCOLS
+ * - Purple vertical equalizer bars (10 bars, #ad89ff gradient) react to analyser or animate statically
+ * - AI response text in glassmorphism card ABOVE bars
+ * - Mini weather widget decorative top-right
+ * - Circular avatar button bottom-left
  * - Tap anywhere stops TTS and returns to idle (D-36, TTS-03)
- *
- * The analyserRef prop is connected to the same AudioContext as during listening,
- * but for SpeakingMode the waveform reacts to the TTS audio output routed
- * through an AnalyserNode. If no analyser is connected (TTS on system audio bus),
- * the waveform animates as a static sine wave fallback.
  */
-import { useEffect, useRef } from 'react'
+import { useState, useEffect } from 'react'
 import { motion } from 'motion/react'
 import { useAssistantStore } from '../store/assistantStore'
-import { useWaveVisualizer } from '../hooks/useWaveVisualizer'
 
 interface SpeakingModeProps {
   analyserRef?: React.RefObject<AnalyserNode | null>
   onTap?: () => void  // Tap handler from App.tsx — calls stopSpeaking
 }
 
-// Secondary purple per Stitch screen 8554ef1a3efa42f9a07ad8774a690a7d
-const WAVE_COLOR = '#ad89ff'
-
 export function SpeakingMode({ analyserRef, onTap }: SpeakingModeProps) {
   const { response } = useAssistantStore()
-  const canvasRef = useRef<HTMLCanvasElement>(null)
-  const { startVisualization, stopVisualization } = useWaveVisualizer()
+  const [barHeights, setBarHeights] = useState<number[]>(Array(10).fill(20))
 
-  // Start waveform if analyser is available (connected to audio source)
+  // Audio-reactive bars — same pattern as ListeningMode but 10 bars
   useEffect(() => {
-    const canvas = canvasRef.current
     const analyser = analyserRef?.current
-
-    if (!canvas) return
     if (!analyser) {
-      // Fallback: draw a gentle static waveform to indicate speaking state
-      const ctx = canvas.getContext('2d')
-      if (!ctx) return
-      // Static flatline with slight curve — shows JARVIS is speaking even without analyser data
-      ctx.clearRect(0, 0, canvas.width, canvas.height)
-      ctx.beginPath()
-      ctx.strokeStyle = WAVE_COLOR
-      ctx.lineWidth = 2.5
-      ctx.moveTo(0, canvas.height / 2)
-      ctx.bezierCurveTo(
-        canvas.width * 0.25, canvas.height * 0.3,
-        canvas.width * 0.75, canvas.height * 0.7,
-        canvas.width, canvas.height / 2
-      )
-      ctx.stroke()
-      return
+      // Static bezier fallback — gentle pulsing bars when no analyser connected
+      const interval = setInterval(() => {
+        setBarHeights(Array.from({ length: 10 }, (_, i) => {
+          const center = 5
+          const dist = Math.abs(i - center)
+          return 30 + Math.random() * (50 - dist * 8)
+        }))
+      }, 200)
+      return () => clearInterval(interval)
     }
 
-    const dpr = window.devicePixelRatio || 1
-    canvas.width = canvas.offsetWidth * dpr
-    canvas.height = canvas.offsetHeight * dpr
-    const ctx = canvas.getContext('2d')
-    ctx?.scale(dpr, dpr)
+    const bufferLength = analyser.frequencyBinCount
+    const dataArray = new Uint8Array(bufferLength)
+    let rafId: number
 
-    const cleanup = startVisualization(canvas, analyser, WAVE_COLOR)
-    return cleanup
-  }, [analyserRef, startVisualization])
-
-  // Cleanup visualization on unmount
-  useEffect(() => {
-    return () => {
-      stopVisualization()
+    const update = () => {
+      analyser.getByteFrequencyData(dataArray)
+      const step = Math.floor(bufferLength / 10)
+      const heights = Array.from({ length: 10 }, (_, i) => {
+        const val = dataArray[i * step] || 0
+        return Math.max(10, (val / 255) * 100)
+      })
+      setBarHeights(heights)
+      rafId = requestAnimationFrame(update)
     }
-  }, [stopVisualization])
+    rafId = requestAnimationFrame(update)
+    return () => cancelAnimationFrame(rafId)
+  }, [analyserRef])
 
-  // Split response text into words for progressive subtitle display (SPEAK-02)
-  // Show max 2 lines at ~40 chars per line = ~80 chars visible
-  const maxChars = 80
+  // Show last 100 chars of response with ellipsis prefix
+  const maxChars = 100
   const subtitleText = response.length > maxChars
     ? `...${response.slice(-maxChars)}`
     : response
 
   return (
     <div
-      className="w-screen h-screen flex flex-col items-center justify-center overflow-hidden relative"
+      className="w-full h-full flex flex-col overflow-hidden relative"
       style={{ background: 'var(--color-background)' }}
       onClick={onTap}
       onTouchEnd={onTap}
     >
-      {/* Atmospheric glow behind waveform — secondary-dim ambient shadow per D-12 */}
-      <div
-        className="absolute rounded-full pointer-events-none"
-        style={{
-          width: 400,
-          height: 400,
-          background: `radial-gradient(circle, ${WAVE_COLOR}30 0%, transparent 70%)`,
-          filter: 'blur(80px)',
-          top: '35%',
-          left: '50%',
-          transform: 'translate(-50%, -50%)',
-        }}
-      />
-
-      {/* Secondary purple waveform canvas (SPEAK-01) */}
-      <canvas
-        ref={canvasRef}
-        className="w-full"
-        style={{
-          height: '28vh',
-          maxWidth: '80vw',
-          position: 'relative',
-          zIndex: 1,
-        }}
-      />
-
-      {/* Subtitle glassmorphism card — per Stitch: glass card with gradient + backdrop blur */}
-      {response && (
-        <motion.div
-          key={subtitleText}
-          initial={{ opacity: 0, y: 8 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
-          className="absolute bottom-16 px-8"
-          style={{ zIndex: 2, maxWidth: '70vw' }}
-        >
-          <div
+      {/* Top tab bar */}
+      <div className="flex items-center justify-center gap-8 py-3">
+        {(['DIAGNOSTICS', 'VOICE MODE', 'PROTOCOLS'] as const).map((tab) => (
+          <span
+            key={tab}
             style={{
-              background: 'linear-gradient(135deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0) 100%)',
-              backdropFilter: 'blur(24px)',
-              WebkitBackdropFilter: 'blur(24px)',
-              borderRadius: '1.5rem',
-              padding: '1rem 1.5rem',
+              fontFamily: 'var(--font-label)',
+              fontSize: '0.625rem',
+              color: tab === 'VOICE MODE' ? 'var(--color-primary)' : 'var(--color-on-surface-variant)',
+              letterSpacing: '0.15em',
+              textTransform: 'uppercase',
+              opacity: tab === 'VOICE MODE' ? 1 : 0.5,
+              fontWeight: tab === 'VOICE MODE' ? 600 : 400,
             }}
           >
-            <p
-              className="text-base leading-relaxed text-center"
+            {tab}
+          </span>
+        ))}
+      </div>
+
+      {/* Mini weather widget — decorative top-right */}
+      <div
+        className="absolute top-3 right-4 flex items-center gap-2"
+        style={{
+          background: 'linear-gradient(135deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0) 100%)',
+          backdropFilter: 'blur(24px)',
+          WebkitBackdropFilter: 'blur(24px)',
+          borderRadius: 'var(--radius-xl)',
+          padding: '0.5rem 0.75rem',
+        }}
+      >
+        <span style={{
+          fontSize: '0.75rem',
+          color: 'var(--color-on-surface)',
+          fontFamily: 'var(--font-label)',
+          fontWeight: 600,
+        }}>
+          --°
+        </span>
+        <span style={{
+          fontSize: '0.625rem',
+          color: 'var(--color-on-surface-variant)',
+          fontFamily: 'var(--font-label)',
+        }}>
+          --
+        </span>
+      </div>
+
+      {/* Center area — response card above bars */}
+      <div className="flex-1 flex flex-col items-center justify-center gap-6">
+
+        {/* Response text in glassmorphism card */}
+        {response && (
+          <motion.div
+            key={subtitleText}
+            initial={{ opacity: 0, y: 8 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+            style={{ maxWidth: '60vw' }}
+          >
+            <div
               style={{
-                // SPEAK-02: max 2 lines — overflow hidden
-                display: '-webkit-box',
-                WebkitLineClamp: 2,
-                WebkitBoxOrient: 'vertical',
-                overflow: 'hidden',
-                // design.md: never pure white — use on-surface-variant
-                color: 'var(--color-on-surface-variant)',
-                fontFamily: 'var(--font-display)',
-                textShadow: `0 0 20px ${WAVE_COLOR}80`,
+                background: 'linear-gradient(135deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0) 100%)',
+                backdropFilter: 'blur(24px)',
+                WebkitBackdropFilter: 'blur(24px)',
+                borderRadius: 'var(--radius-xl)',
+                padding: '1rem 1.5rem',
               }}
             >
-              {subtitleText}
-            </p>
-          </div>
-        </motion.div>
-      )}
+              <p
+                style={{
+                  display: '-webkit-box',
+                  WebkitLineClamp: 3,
+                  WebkitBoxOrient: 'vertical',
+                  overflow: 'hidden',
+                  color: 'var(--color-on-surface-variant)',
+                  fontFamily: 'var(--font-display)',
+                  fontSize: '0.9375rem',
+                  lineHeight: 1.6,
+                  textAlign: 'center',
+                }}
+              >
+                "{subtitleText}"
+              </p>
+            </div>
+          </motion.div>
+        )}
+
+        {/* Purple vertical equalizer bars */}
+        <div className="flex items-end justify-center gap-2" style={{ height: 100 }}>
+          {barHeights.map((h, i) => (
+            <motion.div
+              key={i}
+              className="rounded-full"
+              style={{
+                width: 6,
+                background: 'linear-gradient(to top, #ad89ff, #d4b8ff)',
+                minHeight: 8,
+              }}
+              animate={{ height: `${h}%` }}
+              transition={{ duration: 0.15, ease: [0.22, 1, 0.36, 1] }}
+            />
+          ))}
+        </div>
+      </div>
+
+      {/* Circular avatar button — bottom-left */}
+      <div
+        className="absolute bottom-6 left-6"
+        style={{
+          width: 40,
+          height: 40,
+          borderRadius: '50%',
+          background: 'linear-gradient(135deg, #85adff 0%, #6c9fff 100%)',
+          boxShadow: '0 0 20px rgba(133, 173, 255, 0.3)',
+        }}
+      />
 
       {/* Tap hint — very subtle, fades away after 2s */}
       <motion.p
         className="absolute bottom-6 text-xs tracking-widest uppercase"
         style={{
           fontFamily: 'var(--font-label)',
-          color: `${WAVE_COLOR}40`,
+          color: '#ad89ff40',
           letterSpacing: '0.15em',
+          left: '50%',
+          transform: 'translateX(-50%)',
         }}
         initial={{ opacity: 0.6 }}
         animate={{ opacity: 0 }}
