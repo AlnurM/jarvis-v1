@@ -65,12 +65,13 @@ Plans:
 ### Phase 3: Information Modes
 **Goal**: User can ask about the weather or prayer times and see the correct specialized visual mode with real data from Almaty
 **Depends on**: Phase 2
-**Requirements**: WEATH-01, WEATH-02, WEATH-03, WEATH-04, WEATH-05, PRAY-01, PRAY-02, PRAY-03, PRAY-04, PRAY-05, PRAY-06
+**Requirements**: WEATH-01, WEATH-02, WEATH-03, WEATH-04, WEATH-05, PRAY-01, PRAY-02, PRAY-03, PRAY-04, PRAY-05, PRAY-06, LOOP-01
 **Success Criteria** (what must be TRUE):
   1. User asks "what's the weather?" and sees a full-screen weather display with current temperature, animated condition icon, and hourly forecast for Almaty
   2. User asks about prayer times and sees a full-screen display with the next prayer name large center-screen, a live countdown timer, and all 5 prayers listed
   3. The current or next prayer is visually highlighted in the prayer list
   4. Mode switching animation plays smoothly when transitioning from Speaking mode to Weather or Prayer mode
+  5. After JARVIS finishes speaking, microphone automatically reactivates — user can continue the conversation without tapping again
 **Plans**: TBD
 **UI hint**: yes
 

@@ -98,6 +98,10 @@
 - [ ] **BRIEF-04**: Auto-triggers at 7:00 AM if app is open (requires user gesture for audio)
 - [ ] **BRIEF-05**: Can be triggered manually by user request
 
+### Voice Loop
+
+- [ ] **LOOP-01**: After JARVIS finishes speaking, microphone auto-reactivates for continuous conversation without re-tapping
+
 ### PWA & Infrastructure
 
 - [x] **PWA-01**: Full-screen PWA with manifest.json and service worker
