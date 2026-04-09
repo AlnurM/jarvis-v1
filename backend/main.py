@@ -4,6 +4,7 @@ from fastapi.staticfiles import StaticFiles
 from pymongo import AsyncMongoClient
 import httpx
 from config import settings
+from routers import auth as auth_router_module
 from routers import chat as chat_router_module
 from routers import transcribe as transcribe_router_module
 
@@ -26,6 +27,7 @@ async def lifespan(app: FastAPI):
 
 app = FastAPI(title="JARVIS", lifespan=lifespan)
 
+app.include_router(auth_router_module.router)
 app.include_router(chat_router_module.router)
 app.include_router(transcribe_router_module.router)
 

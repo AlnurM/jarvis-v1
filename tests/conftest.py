@@ -22,6 +22,7 @@ def mock_mongo():
     db["events"].find_one = AsyncMock(return_value=None)
     db["settings"].find_one = AsyncMock(return_value=None)
     db["conversations"].insert_one = AsyncMock(return_value=MagicMock(inserted_id="test-id"))
+    db["settings"].update_one = AsyncMock(return_value=MagicMock(modified_count=1))
     return db
 
 
