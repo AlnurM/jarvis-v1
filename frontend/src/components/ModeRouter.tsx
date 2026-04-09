@@ -6,6 +6,9 @@
  *
  * AnimatePresence mode="wait" ensures exit animation completes before next mounts.
  * Custom easing cubic-bezier(0.22, 1, 0.36, 1) from design.md (D-38).
+ *
+ * AppShell wraps Listening, Speaking, Weather, and Prayer modes (per Stitch screens).
+ * ThinkingMode and idle orb remain full-screen WITHOUT AppShell.
  */
 import { AnimatePresence, motion } from 'motion/react'
 import { useAssistantStore } from '../store/assistantStore'
@@ -15,6 +18,7 @@ import { SpeakingMode } from '../modes/SpeakingMode'
 import { OrbAnimation } from './OrbAnimation'
 import { WeatherMode } from '../modes/WeatherMode'
 import { PrayerMode } from '../modes/PrayerMode'
+import { AppShell } from './AppShell'
 import type { RefObject } from 'react'
 
 // Shared motion variants for all mode transitions (per D-38)
@@ -30,6 +34,15 @@ const modeVariants = {
     scale: 0.98,
     transition: { duration: 0.25, ease: [0.22, 1, 0.36, 1] as const },
   },
+}
+
+// Mode label map — defines AppShell chrome for modes that use it
+// Keys match the `key` values assigned in ModeRouter logic below
+const MODE_LABELS: Record<string, { label: string; status?: string }> = {
+  listening: { label: 'LISTENING PROTOCOL V3.0', status: 'SYSTEM SECURE' },
+  speaking: { label: 'JARVIS CORE: SPEAKING', status: 'VOICE MODE' },
+  'idle-weather': { label: 'ATMOSPHERIC ANALYSIS', status: 'LIVE DATA' },
+  'idle-prayer': { label: 'SPIRITUAL PATTERNS: ALMATY', status: 'PRAYER TIMES' },
 }
 
 interface ModeRouterProps {
@@ -62,7 +75,7 @@ export function ModeRouter({ analyserRef, onStopSpeaking }: ModeRouterProps) {
     key = 'idle-prayer'
     content = <PrayerMode />
   } else {
-    // 'idle' with chat/other mode — orb landing screen
+    // 'idle' with chat/other mode — orb landing screen (full-screen, no AppShell)
     key = `idle-${mode}`
     content = (
       <div
@@ -84,6 +97,30 @@ export function ModeRouter({ analyserRef, onStopSpeaking }: ModeRouterProps) {
     )
   }
 
+  // Determine if this mode needs AppShell chrome (sidebar + top bar)
+  const shellInfo = MODE_LABELS[key]
+  const needsShell = !!shellInfo
+
+  if (needsShell) {
+    return (
+      <AnimatePresence mode="wait">
+        <motion.div
+          key={key}
+          className="w-screen h-screen"
+          variants={modeVariants}
+          initial="initial"
+          animate="animate"
+          exit="exit"
+        >
+          <AppShell modeLabel={shellInfo.label} statusLabel={shellInfo.status}>
+            {content}
+          </AppShell>
+        </motion.div>
+      </AnimatePresence>
+    )
+  }
+
+  // ThinkingMode and idle-chat: no shell, full screen
   return (
     <AnimatePresence mode="wait">
       <motion.div
