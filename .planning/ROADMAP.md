@@ -96,7 +96,7 @@ Plans:
 **Plans**: 5 plans
 
 Plans:
-- [ ] 04-01-PLAN.md — Pull Stitch Design System screen, expand @theme tokens, fix Space Grotesk font weight
+- [x] 04-01-PLAN.md — Pull Stitch Design System screen, expand @theme tokens, fix Space Grotesk font weight
 - [ ] 04-02-PLAN.md — Pull Stitch Thinking/Listening screens, rebuild OrbAnimation + ThinkingMode + ListeningMode
 - [ ] 04-03-PLAN.md — Pull Stitch Speaking screen, rebuild SpeakingMode
 - [ ] 04-04-PLAN.md — Pull Stitch Weather/Prayer screens, rebuild WeatherMode + PrayerMode
