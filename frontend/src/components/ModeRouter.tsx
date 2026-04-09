@@ -19,6 +19,8 @@ import { SpeakingMode } from '../modes/SpeakingMode'
 import { OrbAnimation } from './OrbAnimation'
 import { WeatherMode } from '../modes/WeatherMode'
 import { PrayerMode } from '../modes/PrayerMode'
+import { SearchMode } from '../modes/SearchMode'
+import { CalendarMode } from '../modes/CalendarMode'
 import { BriefingMode } from '../modes/BriefingMode'
 import { AppShell } from './AppShell'
 import type { RefObject } from 'react'
@@ -49,6 +51,8 @@ const MODE_LABELS: Record<string, { label: string; status?: string }> = {
   speaking: { label: 'JARVIS CORE: SPEAKING', status: 'VOICE MODE' },
   'content-weather': { label: 'ATMOSPHERIC ANALYSIS', status: 'LIVE DATA' },
   'content-prayer': { label: 'SPIRITUAL PATTERNS: ALMATY', status: 'PRAYER TIMES' },
+  'content-search': { label: 'WEB INTELLIGENCE', status: 'LIVE RESULTS' },
+  'content-calendar': { label: 'SCHEDULE MATRIX', status: 'GOOGLE CALENDAR' },
   'content-briefing': { label: 'MORNING PROTOCOL', status: 'BRIEFING ACTIVE' },
 }
 
@@ -76,6 +80,10 @@ export function ModeRouter({ analyserRef, onStopSpeaking, onStartListening, onSt
       contentComponent = <WeatherMode onStartListening={onStartListening} onStopListening={onStopListening} />
     } else if (mode === 'prayer') {
       contentComponent = <PrayerMode onStartListening={onStartListening} onStopListening={onStopListening} />
+    } else if (mode === 'search') {
+      contentComponent = <SearchMode onStartListening={onStartListening} onStopListening={onStopListening} />
+    } else if (mode === 'calendar') {
+      contentComponent = <CalendarMode onStartListening={onStartListening} onStopListening={onStopListening} />
     } else if (mode === 'briefing') {
       contentComponent = <BriefingMode onStartListening={onStartListening} onStopListening={onStopListening} />
     }
