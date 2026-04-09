@@ -32,7 +32,8 @@ type PrayerName = typeof PRAYER_ORDER[number]
 // ─── Helper functions ─────────────────────────────────────────────────────────
 
 /** Convert "HH:MM" string to total minutes since midnight */
-function toMinutes(hhmm: string): number {
+function toMinutes(hhmm: string | undefined): number {
+  if (!hhmm) return 0
   const [h, m] = hhmm.split(':').map(Number)
   return h * 60 + m
 }
