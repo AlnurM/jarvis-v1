@@ -59,6 +59,53 @@ class ChatResponse(BaseModel):
     text: str
     fetch: str
     query: str
+    data: dict | None = None  # Phase 3: weather or prayer payload (D-03)
+
+
+async def _fetch_weather(http_client, settings) -> dict:
+    """Fetch Almaty weather from OpenWeatherMap One Call 3.0 (D-05)."""
+    url = "https://api.openweathermap.org/data/3.0/onecall"
+    params = {
+        "lat": settings.LATITUDE,
+        "lon": settings.LONGITUDE,
+        "appid": settings.OPENWEATHER_API_KEY,
+        "units": "metric",
+        "exclude": "minutely,daily,alerts",
+    }
+    resp = await http_client.get(url, params=params)
+    resp.raise_for_status()
+    raw = resp.json()
+    current = raw["current"]
+    return {
+        "temp": round(current["temp"]),
+        "condition_id": current["weather"][0]["id"],
+        "condition_main": current["weather"][0]["main"],
+        "icon": current["weather"][0]["icon"],
+        "hourly": [
+            {
+                "dt": h["dt"],
+                "temp": round(h["temp"]),
+                "icon": h["weather"][0]["icon"],
+            }
+            for h in raw.get("hourly", [])[:24]
+        ],
+    }
+
+
+async def _fetch_prayer(http_client) -> dict:
+    """Fetch Almaty prayer times from Aladhan (D-06)."""
+    url = "https://api.aladhan.com/v1/timingsByCity"
+    params = {"city": "Almaty", "country": "KZ", "method": "1"}
+    resp = await http_client.get(url, params=params)
+    resp.raise_for_status()
+    timings = resp.json()["data"]["timings"]
+    return {
+        "Fajr": timings["Fajr"],
+        "Dhuhr": timings["Dhuhr"],
+        "Asr": timings["Asr"],
+        "Maghrib": timings["Maghrib"],
+        "Isha": timings["Isha"],
+    }
 
 
 async def _call_claude(transcript: str, history: list[dict]) -> dict[str, Any]:
@@ -119,5 +166,20 @@ async def chat(request: Request, body: ChatRequest) -> ChatResponse:
         "fetch": envelope.get("fetch", "none"),
         "query": envelope.get("query", "")
     })
+
+    # Phase 3: fetch sub-API data if Claude requested it (D-01, D-02, D-03)
+    fetch_type = envelope.get("fetch", "none")
+    fetched_data = None
+    if fetch_type == "weather":
+        try:
+            fetched_data = await _fetch_weather(request.app.state.http_client, settings)
+        except Exception as e:
+            print(f"[WARN] Weather fetch failed: {e}")
+    elif fetch_type == "prayer":
+        try:
+            fetched_data = await _fetch_prayer(request.app.state.http_client)
+        except Exception as e:
+            print(f"[WARN] Prayer fetch failed: {e}")
+    envelope["data"] = fetched_data
 
     return ChatResponse(**envelope)
