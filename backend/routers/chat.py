@@ -182,13 +182,16 @@ async def _fetch_prayer(http_client) -> dict:
     data = resp.json()
     timings = data["data"]["timings"]
 
-    # Return only the 5 canonical prayers (timings already in 24h format)
+    # Strip timezone suffix e.g. "04:23 (ALMT)" → "04:23"
+    def clean_time(t: str) -> str:
+        return t.split(" ")[0].strip()
+
     return {
-        "Fajr": timings["Fajr"],
-        "Dhuhr": timings["Dhuhr"],
-        "Asr": timings["Asr"],
-        "Maghrib": timings["Maghrib"],
-        "Isha": timings["Isha"],
+        "Fajr": clean_time(timings["Fajr"]),
+        "Dhuhr": clean_time(timings["Dhuhr"]),
+        "Asr": clean_time(timings["Asr"]),
+        "Maghrib": clean_time(timings["Maghrib"]),
+        "Isha": clean_time(timings["Isha"]),
     }
 
 
