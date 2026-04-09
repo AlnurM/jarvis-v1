@@ -76,7 +76,7 @@ Plans:
 
 Plans:
 - [x] 03-01-PLAN.md — Wave 0 TDD: failing tests for backend weather and prayer fetch helpers (test_weather.py, test_prayer.py)
-- [ ] 03-02-PLAN.md — Backend fetch pipeline: _fetch_weather + _fetch_prayer helpers, ChatResponse.data field, fetch dispatch in chat(); frontend ChatResponse interface extended
+- [x] 03-02-PLAN.md — Backend fetch pipeline: _fetch_weather + _fetch_prayer helpers, ChatResponse.data field, fetch dispatch in chat(); frontend ChatResponse interface extended
 - [ ] 03-03-PLAN.md — Frontend mode components: WeatherMode.tsx (temp, icon, hourly scroll) and PrayerMode.tsx (next prayer, countdown, 5-prayer list)
 - [ ] 03-04-PLAN.md — Integration wiring: ModeRouter weather/prayer branches, useVoiceOutput onComplete, App.tsx auto-listen (LOOP-01); device validation checkpoint
 
@@ -113,6 +113,6 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5
 |-------|----------------|--------|-----------|
 | 1. Foundation | 4/4 | Complete   | 2026-04-08 |
 | 2. Voice Loop Core | 7/7 | Complete   | 2026-04-08 |
-| 3. Information Modes | 1/4 | In Progress|  |
+| 3. Information Modes | 2/4 | In Progress|  |
 | 4. Extended Modes | 0/TBD | Not started | - |
 | 5. Polish & Hardening | 0/TBD | Not started | - |

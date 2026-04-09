@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: executing
-stopped_at: Completed 03-01-PLAN.md
-last_updated: "2026-04-09T08:02:42.723Z"
+stopped_at: Completed 03-02-PLAN.md
+last_updated: "2026-04-09T08:06:36.195Z"
 last_activity: 2026-04-09
 progress:
   total_phases: 5
   completed_phases: 2
   total_plans: 15
-  completed_plans: 12
+  completed_plans: 13
   percent: 0
 ---
 
@@ -26,7 +26,7 @@ See: .planning/PROJECT.md (updated 2026-04-08)
 ## Current Position
 
 Phase: 03 (information-modes) — EXECUTING
-Plan: 2 of 4
+Plan: 3 of 4
 Status: Ready to execute
 Last activity: 2026-04-09
 
@@ -64,6 +64,7 @@ Progress: [░░░░░░░░░░] 0%
 | Phase 02-voice-loop-core P06 | 10 | 2 tasks | 2 files |
 | Phase 02-voice-loop-core P07 | 30 | 1 tasks | 1 files |
 | Phase 03-information-modes P01 | 2 | 2 tasks | 2 files |
+| Phase 03-information-modes P02 | 2 | 2 tasks | 3 files |
 
 ## Accumulated Context
 
@@ -97,6 +98,8 @@ Recent decisions affecting current work:
 - [Phase 02-voice-loop-core]: App.tsx modeMap uses Parameters<typeof setMode>[0] cast for type-safe enum mapping instead of any
 - [Phase 02-voice-loop-core]: backend/static/ excluded from git — Dockerfile COPY --from=frontend handles dist copy at build time
 - [Phase 03-information-modes]: Tests patch routers.chat._fetch_weather/_fetch_prayer directly to isolate dispatch logic; integration tests use sync client fixture with explicit mock_claude patch
+- [Phase 03-information-modes]: _fetch_weather/_fetch_prayer placed as module-level async functions before chat() — importable in tests via routers.chat patch target
+- [Phase 03-information-modes]: Fetch dispatch placed after MongoDB insert in chat() — ensures conversation persisted regardless of sub-API outcome
 
 ### Pending Todos
 
@@ -110,6 +113,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-04-09T08:02:42.720Z
-Stopped at: Completed 03-01-PLAN.md
+Last session: 2026-04-09T08:06:36.192Z
+Stopped at: Completed 03-02-PLAN.md
 Resume file: None
