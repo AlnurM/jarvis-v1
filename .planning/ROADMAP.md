@@ -127,7 +127,7 @@ Canonical refs: design.md
 Plans:
 - [x] 05-01-PLAN.md — Backend weather data completion (city, UV, stats) + system prompt updates
 - [x] 05-02-PLAN.md — FloatingMic component + ModeRouter CONTENT_MODES refactor + App.tsx FSM
-- [ ] 05-03-PLAN.md — Wire FloatingMic into WeatherMode/PrayerMode, city display, device checkpoint
+- [x] 05-03-PLAN.md — Wire FloatingMic into WeatherMode/PrayerMode, city display, device checkpoint
 **UI hint**: yes
 
 ### Phase 6: Extended Modes

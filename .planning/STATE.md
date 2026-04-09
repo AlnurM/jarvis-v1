@@ -2,15 +2,15 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-status: executing
-stopped_at: Completed 05-01-PLAN.md
-last_updated: "2026-04-09T13:28:37.036Z"
+status: verifying
+stopped_at: Completed 05-03-PLAN.md
+last_updated: "2026-04-09T13:32:23.400Z"
 last_activity: 2026-04-09
 progress:
   total_phases: 7
-  completed_phases: 4
+  completed_phases: 5
   total_plans: 29
-  completed_plans: 28
+  completed_plans: 29
   percent: 0
 ---
 
@@ -27,7 +27,7 @@ See: .planning/PROJECT.md (updated 2026-04-08)
 
 Phase: 05 (voice-loop-weather-polish) — EXECUTING
 Plan: 3 of 3
-Status: Ready to execute
+Status: Phase complete — ready for verification
 Last activity: 2026-04-09
 
 Progress: [░░░░░░░░░░] 0%
@@ -77,6 +77,7 @@ Progress: [░░░░░░░░░░] 0%
 | Phase 04-design-audit-rebuild P09 | 3 | 1 tasks | 1 files |
 | Phase 05-voice-loop-weather-polish P02 | 2 | 2 tasks | 5 files |
 | Phase 05-voice-loop-weather-polish P01 | 3 | 2 tasks | 2 files |
+| Phase 05-voice-loop-weather-polish P03 | 5 | 2 tasks | 2 files |
 
 ## Accumulated Context
 
@@ -137,6 +138,8 @@ Recent decisions affecting current work:
 - [Phase 05-voice-loop-weather-polish]: _fetch_weather geocoding uses OWM /geo/1.0/direct; falls back silently to Almaty on any failure
 - [Phase 05-voice-loop-weather-polish]: UV index uses Open-Meteo free API (no key required); returns None on failure non-blocking
 - [Phase 05-voice-loop-weather-polish]: _fetch_prayer switched from MuslimSalat to Aladhan API to match test expectations
+- [Phase 05-voice-loop-weather-polish]: WeatherMode/PrayerMode accept onStartListening/onStopListening as optional props — backward-compatible if rendered without ModeRouter
+- [Phase 05-voice-loop-weather-polish]: Old inline mic button in WeatherMode removed; replaced with shared FloatingMic component (Plan 05-03)
 
 ### Pending Todos
 
@@ -150,6 +153,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-04-09T13:28:37.032Z
-Stopped at: Completed 05-01-PLAN.md
+Last session: 2026-04-09T13:32:23.396Z
+Stopped at: Completed 05-03-PLAN.md
 Resume file: None
