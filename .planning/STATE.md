@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: executing
-stopped_at: Completed 06-03-PLAN.md
-last_updated: "2026-04-09T14:20:59.561Z"
+stopped_at: Completed 06-05-PLAN.md
+last_updated: "2026-04-09T14:29:05.834Z"
 last_activity: 2026-04-09
 progress:
   total_phases: 7
   completed_phases: 5
   total_plans: 35
-  completed_plans: 32
+  completed_plans: 33
   percent: 0
 ---
 
@@ -26,7 +26,7 @@ See: .planning/PROJECT.md (updated 2026-04-08)
 ## Current Position
 
 Phase: 06 (extended-modes) — EXECUTING
-Plan: 3 of 6
+Plan: 4 of 6
 Status: Ready to execute
 Last activity: 2026-04-09
 
@@ -80,6 +80,7 @@ Progress: [░░░░░░░░░░] 0%
 | Phase 05-voice-loop-weather-polish P03 | 5 | 2 tasks | 2 files |
 | Phase 06-extended-modes P01 | 8 | 2 tasks | 6 files |
 | Phase 06-extended-modes P03 | 8 | 2 tasks | 4 files |
+| Phase 06-extended-modes P05 | 175 | 2 tasks | 4 files |
 
 ## Accumulated Context
 
@@ -144,6 +145,8 @@ Recent decisions affecting current work:
 - [Phase 05-voice-loop-weather-polish]: Old inline mic button in WeatherMode removed; replaced with shared FloatingMic component (Plan 05-03)
 - [Phase 06-extended-modes]: Import helper functions inside test body (not module level) for RED scaffold validity — consistent with test_weather.py pattern
 - [Phase 06-extended-modes]: _fetch_calendar signature uses only db arg to match test contract; _create_calendar_event added beyond plan scope to satisfy RED scaffold tests; asyncio.to_thread wraps all sync Google API calls
+- [Phase 06-extended-modes]: _fetch_briefing signature (http_client, db, settings) matches test contract; plan order was different
+- [Phase 06-extended-modes]: handleBriefingTrigger reuses thinking state FSM pipeline — sets transcript + state='thinking' to trigger existing runChat effect
 
 ### Pending Todos
 
@@ -157,6 +160,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-04-09T14:20:59.557Z
-Stopped at: Completed 06-03-PLAN.md
+Last session: 2026-04-09T14:29:05.831Z
+Stopped at: Completed 06-05-PLAN.md
 Resume file: None

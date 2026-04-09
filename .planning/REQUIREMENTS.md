@@ -96,9 +96,9 @@
 ### Morning Briefing Mode
 
 - [x] **BRIEF-01**: Split layout — tasks/events left, weather right
-- [ ] **BRIEF-02**: AI-generated personalized morning summary via Claude
-- [ ] **BRIEF-03**: AI quote displayed at bottom
-- [ ] **BRIEF-04**: Auto-triggers at 7:00 AM if app is open (requires user gesture for audio)
+- [x] **BRIEF-02**: AI-generated personalized morning summary via Claude
+- [x] **BRIEF-03**: AI quote displayed at bottom
+- [x] **BRIEF-04**: Auto-triggers at 7:00 AM if app is open (requires user gesture for audio)
 - [x] **BRIEF-05**: Can be triggered manually by user request
 
 ### Voice Loop
@@ -231,9 +231,9 @@
 | CAL-06 | Phase 6 | Complete |
 | CAL-07 | Phase 6 | Pending |
 | BRIEF-01 | Phase 6 | Complete |
-| BRIEF-02 | Phase 6 | Pending |
-| BRIEF-03 | Phase 6 | Pending |
-| BRIEF-04 | Phase 6 | Pending |
+| BRIEF-02 | Phase 6 | Complete |
+| BRIEF-03 | Phase 6 | Complete |
+| BRIEF-04 | Phase 6 | Complete |
 | BRIEF-05 | Phase 6 | Complete |
 | PWA-01 | Phase 1 | Complete |
 | PWA-02 | Phase 1 | Complete |
