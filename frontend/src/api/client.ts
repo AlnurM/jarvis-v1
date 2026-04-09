@@ -22,6 +22,7 @@ export interface ChatResponse {
   text: string    // Spoken aloud by TTS
   fetch: string   // 'none' | 'weather' | 'prayer' | 'search' | 'calendar' | 'briefing'
   query: string   // Search query if fetch === 'search', empty string otherwise
+  data: Record<string, unknown> | null  // Phase 3: weather or prayer payload (D-03)
 }
 
 /**

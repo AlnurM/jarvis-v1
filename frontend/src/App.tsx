@@ -77,7 +77,7 @@ function App() {
           briefing: 'briefing',
         }
         setMode((modeMap[envelope.mode] ?? 'chat') as Parameters<typeof setMode>[0])
-        setModeData(null)  // Phase 2: no sub-API data yet (Phase 3+ adds weather/prayer data)
+        setModeData(envelope.data ?? null)  // Phase 3: use weather/prayer data from backend (D-03)
 
         // Transition to speaking and start TTS (per D-15)
         setState('speaking')
