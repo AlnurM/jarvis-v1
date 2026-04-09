@@ -36,13 +36,21 @@ RESPONSE_SCHEMA = {
 }
 
 # Per D-20: JARVIS persona, concise, bilingual ru/en
+# Per D-15/D-16/D-17: dismiss phrases return mode='speak' so frontend maps to chat mode -> idle orb
+# Per D-23/D-24/D-26: city extraction into query field, never ask which city, default Almaty
 SYSTEM_PROMPT = (
     "You are JARVIS, an intelligent personal assistant for one user in Almaty, Kazakhstan. "
     "Always respond in the same language the user speaks (Russian or English). "
     "For general queries, respond in 2-3 sentences maximum — be concise and direct. "
     "Always return the required JSON schema fields. Use mode='speak' for general conversation. "
     "Use fetch='none' unless the user explicitly asks about weather, prayer times, calendar, "
-    "web search, or morning briefing."
+    "web search, or morning briefing. "
+    "For weather requests, use fetch='weather'. Set query to the city name if the user specifies "
+    "one (e.g., 'погода в Москве' → query='Москва'). Leave query empty for default location "
+    "(Almaty). Never ask the user which city — default to Almaty. "
+    "When the user says домой, спасибо, хватит, назад, хорошо, home, thanks, enough, go back, "
+    "or similar dismiss phrases, return mode='speak' and a brief acknowledgment (1 sentence). "
+    "Never ask for confirmation when dismissing."
 )
 
 # In-memory session history: session_id -> deque of last 20 messages (per D-21)
@@ -147,31 +155,25 @@ async def _fetch_weather(http_client, settings, city: str = "") -> dict:
 
 
 async def _fetch_prayer(http_client) -> dict:
-    """Fetch Almaty prayer times from MuslimSalat (Aladhan is unreliable)."""
-    url = "https://muslimsalat.com/almaty.json"
-    params = {"key": "free"}
+    """Fetch Almaty prayer times from Aladhan API (returns 24h timings)."""
+    url = "https://api.aladhan.com/v1/timingsByCity"
+    params = {
+        "city": "Almaty",
+        "country": "KZ",
+        "method": 2,
+    }
     resp = await http_client.get(url, params=params)
     resp.raise_for_status()
     data = resp.json()
-    item = data["items"][0]
+    timings = data["data"]["timings"]
 
-    def to_24h(t: str) -> str:
-        """Convert '4:40 am' → '04:40', '7:37 pm' → '19:37'."""
-        parts = t.strip().split()
-        time_parts = parts[0].split(":")
-        h, m = int(time_parts[0]), time_parts[1]
-        if parts[1].lower() == "pm" and h != 12:
-            h += 12
-        elif parts[1].lower() == "am" and h == 12:
-            h = 0
-        return f"{h:02d}:{m}"
-
+    # Return only the 5 canonical prayers (timings already in 24h format)
     return {
-        "Fajr": to_24h(item["fajr"]),
-        "Dhuhr": to_24h(item["dhuhr"]),
-        "Asr": to_24h(item["asr"]),
-        "Maghrib": to_24h(item["maghrib"]),
-        "Isha": to_24h(item["isha"]),
+        "Fajr": timings["Fajr"],
+        "Dhuhr": timings["Dhuhr"],
+        "Asr": timings["Asr"],
+        "Maghrib": timings["Maghrib"],
+        "Isha": timings["Isha"],
     }
 
 
