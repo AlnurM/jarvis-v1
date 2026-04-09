@@ -19,6 +19,7 @@ import { SpeakingMode } from '../modes/SpeakingMode'
 import { OrbAnimation } from './OrbAnimation'
 import { WeatherMode } from '../modes/WeatherMode'
 import { PrayerMode } from '../modes/PrayerMode'
+import { BriefingMode } from '../modes/BriefingMode'
 import { AppShell } from './AppShell'
 import type { RefObject } from 'react'
 
@@ -48,6 +49,7 @@ const MODE_LABELS: Record<string, { label: string; status?: string }> = {
   speaking: { label: 'JARVIS CORE: SPEAKING', status: 'VOICE MODE' },
   'content-weather': { label: 'ATMOSPHERIC ANALYSIS', status: 'LIVE DATA' },
   'content-prayer': { label: 'SPIRITUAL PATTERNS: ALMATY', status: 'PRAYER TIMES' },
+  'content-briefing': { label: 'MORNING PROTOCOL', status: 'BRIEFING ACTIVE' },
 }
 
 interface ModeRouterProps {
@@ -74,8 +76,9 @@ export function ModeRouter({ analyserRef, onStopSpeaking, onStartListening, onSt
       contentComponent = <WeatherMode onStartListening={onStartListening} onStopListening={onStopListening} />
     } else if (mode === 'prayer') {
       contentComponent = <PrayerMode onStartListening={onStartListening} onStopListening={onStopListening} />
+    } else if (mode === 'briefing') {
+      contentComponent = <BriefingMode onStartListening={onStartListening} onStopListening={onStopListening} />
     }
-    // future modes: search, calendar, briefing
     content = contentComponent
   } else if (state === 'listening') {
     key = 'listening'

@@ -11,7 +11,7 @@
  * to satisfy iOS AudioContext activation policy (Pitfall 1 from RESEARCH.md).
  * The handleTap function is called directly from onClick/onTouchEnd.
  */
-import { useEffect, useCallback, useRef } from 'react'
+import { useEffect, useCallback, useRef, useState } from 'react'
 import { useAssistantStore } from './store/assistantStore'
 import { useVoiceRecorder } from './hooks/useVoiceRecorder'
 import { useVoiceOutput } from './hooks/useVoiceOutput'
@@ -46,9 +46,40 @@ function App() {
   // This ref prevents handleTap from firing twice on a single physical tap.
   const touchHandledRef = useRef(false)
 
+  // Morning briefing auto-trigger state (per D-17, BRIEF-04)
+  const [showBriefingPrompt, setShowBriefingPrompt] = useState(false)
+
   // Prevent context menu on long press (iPad)
   useEffect(() => {
     document.addEventListener('contextmenu', (e) => e.preventDefault())
+  }, [])
+
+  // Morning briefing auto-trigger at 7 AM (per D-17, BRIEF-04, Pitfall 6)
+  // iOS AudioContext requires prior user gesture — show tap-to-start overlay instead of auto-playing
+  useEffect(() => {
+    let hasFiredThisSession = false
+    const interval = setInterval(() => {
+      if (hasFiredThisSession) return
+      const now = new Date()
+      const h = now.getHours()
+      const m = now.getMinutes()
+      const today = now.toDateString()
+      const lastBriefingDate = localStorage.getItem('lastBriefingDate')
+      const { state: currentState } = useAssistantStore.getState()
+      if (h === 7 && m < 5 && lastBriefingDate !== today && currentState === 'idle') {
+        hasFiredThisSession = true
+        localStorage.setItem('lastBriefingDate', today)
+        setShowBriefingPrompt(true)
+      }
+    }, 60_000)
+    return () => clearInterval(interval)
+  }, []) // eslint-disable-line react-hooks/exhaustive-deps
+
+  // Trigger briefing via the same chat pipeline as voice (reuses runChat in thinking effect)
+  const handleBriefingTrigger = useCallback(() => {
+    const { setCurrentTranscript, setState } = useAssistantStore.getState()
+    setCurrentTranscript('morning briefing')
+    setState('thinking')
   }, [])
 
   /**
@@ -171,6 +202,67 @@ function App() {
         onStartListening={() => { setState('listening'); startRecording() }}
         onStopListening={() => { stopRecording(); setState('thinking') }}
       />
+
+      {/* Morning briefing auto-trigger overlay (per D-17, BRIEF-04) */}
+      {/* iOS AudioContext requires user gesture — this overlay is the gesture (Pitfall 6) */}
+      {showBriefingPrompt && (
+        <div
+          style={{
+            position: 'fixed',
+            inset: 0,
+            zIndex: 100,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            background: 'rgba(0,0,0,0.7)',
+            backdropFilter: 'blur(8px)',
+            WebkitBackdropFilter: 'blur(8px)',
+          }}
+          onClick={() => {
+            setShowBriefingPrompt(false)
+            handleBriefingTrigger()
+          }}
+          onTouchEnd={(e) => {
+            e.stopPropagation()
+            setShowBriefingPrompt(false)
+            handleBriefingTrigger()
+          }}
+        >
+          <div
+            style={{
+              background:
+                'linear-gradient(135deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0) 100%), rgba(32, 31, 31, 0.4)',
+              backdropFilter: 'blur(24px)',
+              WebkitBackdropFilter: 'blur(24px)',
+              boxShadow: '0 0 30px rgba(133, 173, 255, 0.05)',
+              borderRadius: 'var(--radius-xl)',
+              padding: '2rem 3rem',
+              textAlign: 'center',
+            }}
+          >
+            <p
+              style={{
+                fontSize: '1.5rem',
+                color: '#e8e8e8',
+                fontFamily: 'var(--font-heading)',
+                marginBottom: '0.5rem',
+              }}
+            >
+              Good Morning
+            </p>
+            <p
+              style={{
+                fontSize: '0.875rem',
+                color: 'var(--color-on-surface-variant)',
+                fontFamily: 'var(--font-body)',
+                margin: 0,
+              }}
+            >
+              Tap to start your morning briefing
+            </p>
+          </div>
+        </div>
+      )}
     </div>
   )
 }
