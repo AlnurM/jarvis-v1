@@ -120,7 +120,7 @@ export function PrayerMode() {
   return (
     <motion.div
       className="w-screen h-screen flex flex-col items-center justify-between overflow-hidden py-12"
-      style={{ background: '#0e0e0e' }}
+      style={{ background: 'var(--color-background)' }}
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
@@ -184,19 +184,23 @@ export function PrayerMode() {
           return (
             <div
               key={name}
-              className="flex justify-between items-center px-6 py-3 rounded-2xl"
+              className="flex justify-between items-center px-6 py-3"
               style={{
-                /* Glassmorphism card — no 1px borders (No-Line Rule) */
+                /* Glassmorphism card — D-11 top-left gradient + backdrop-blur, no borders (No-Line Rule) */
                 background: isNext
-                  ? 'rgba(133, 173, 255, 0.1)'  /* primary glow tint for next prayer */
-                  : 'rgba(32, 31, 31, 0.4)',
+                  ? 'linear-gradient(135deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0) 100%), rgba(133, 173, 255, 0.1)'
+                  : 'linear-gradient(135deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0) 100%), rgba(32, 31, 31, 0.4)',
                 backdropFilter: 'blur(24px)',
                 WebkitBackdropFilter: 'blur(24px)',
-                /* Subtle glow for next prayer — not a border, just luminous depth */
-                boxShadow: isNext ? '0 0 30px rgba(133, 173, 255, 0.06)' : 'none',
+                /* Ambient shadow — all rows get subtle glow per D-12, next gets stronger */
+                boxShadow: isNext
+                  ? '0 0 30px rgba(133, 173, 255, 0.06)'
+                  : '0 0 30px rgba(133, 173, 255, 0.04)',
+                borderRadius: 'var(--radius-xl)',  /* 1.5rem per Stitch */
                 /* Passed prayers dimmed to 0.35 (D-17) */
                 opacity: isPast ? 0.35 : 1,
-                transition: 'opacity 0.3s ease, background 0.3s ease',
+                /* Custom easing per D-07, not standard 'ease' string */
+                transition: 'opacity 0.3s cubic-bezier(0.22, 1, 0.36, 1), background 0.3s cubic-bezier(0.22, 1, 0.36, 1)',
               }}
             >
               {/* Prayer name label — Inter for body text */}
