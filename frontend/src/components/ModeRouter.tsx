@@ -23,6 +23,7 @@ import { SearchMode } from '../modes/SearchMode'
 import { CalendarMode } from '../modes/CalendarMode'
 import { BriefingMode } from '../modes/BriefingMode'
 import { AppShell } from './AppShell'
+import { ErrorBoundary } from './ErrorBoundary'
 import type { RefObject } from 'react'
 
 // Content modes: these screens stay visible during all voice states (LOOP-02)
@@ -143,7 +144,9 @@ export function ModeRouter({ analyserRef, onStopSpeaking, onStartListening, onSt
           animate="animate"
           exit="exit"
         >
-          {inner}
+          <ErrorBoundary>
+            {inner}
+          </ErrorBoundary>
         </motion.div>
       </AnimatePresence>
     </div>
