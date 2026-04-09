@@ -99,18 +99,31 @@ async def _fetch_weather(http_client, settings) -> dict:
 
 
 async def _fetch_prayer(http_client) -> dict:
-    """Fetch Almaty prayer times from Aladhan (D-06)."""
-    url = "https://api.aladhan.com/v1/timingsByCity"
-    params = {"city": "Almaty", "country": "KZ", "method": "1"}
+    """Fetch Almaty prayer times from MuslimSalat (Aladhan is unreliable)."""
+    url = "https://muslimsalat.com/almaty.json"
+    params = {"key": "free"}
     resp = await http_client.get(url, params=params)
     resp.raise_for_status()
-    timings = resp.json()["data"]["timings"]
+    data = resp.json()
+    item = data["items"][0]
+
+    def to_24h(t: str) -> str:
+        """Convert '4:40 am' → '04:40', '7:37 pm' → '19:37'."""
+        parts = t.strip().split()
+        time_parts = parts[0].split(":")
+        h, m = int(time_parts[0]), time_parts[1]
+        if parts[1].lower() == "pm" and h != 12:
+            h += 12
+        elif parts[1].lower() == "am" and h == 12:
+            h = 0
+        return f"{h:02d}:{m}"
+
     return {
-        "Fajr": timings["Fajr"],
-        "Dhuhr": timings["Dhuhr"],
-        "Asr": timings["Asr"],
-        "Maghrib": timings["Maghrib"],
-        "Isha": timings["Isha"],
+        "Fajr": to_24h(item["fajr"]),
+        "Dhuhr": to_24h(item["dhuhr"]),
+        "Asr": to_24h(item["asr"]),
+        "Maghrib": to_24h(item["maghrib"]),
+        "Isha": to_24h(item["isha"]),
     }
 
 
