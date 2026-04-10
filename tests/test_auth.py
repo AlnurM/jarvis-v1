@@ -28,6 +28,8 @@ def test_google_callback_stores_token(client, mock_mongo):
     mock_flow.authorization_url = MagicMock(return_value=("https://accounts.google.com/o/oauth2/auth?...", "state"))
 
     with patch("google_auth_oauthlib.flow.Flow.from_client_config", return_value=mock_flow):
+        # Must call auth start first to populate _active_flow (PKCE code_verifier preservation)
+        client.get("/api/auth/google", follow_redirects=False)
         resp = client.get("/api/auth/google/callback", params={"code": "fake-auth-code", "state": "state"})
 
     # Should succeed (200 or redirect to success page)

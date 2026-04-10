@@ -42,7 +42,15 @@ RESPONSE_SCHEMA = {
 # Per D-20: JARVIS persona, concise, bilingual ru/en
 # Per D-15/D-16/D-17: dismiss phrases return mode='speak' so frontend maps to chat mode -> idle orb
 # Per D-23/D-24/D-26: city extraction into query field, never ask which city, default Almaty
-SYSTEM_PROMPT = (
+def _build_system_prompt() -> str:
+    """Build system prompt with current date/time context for Claude."""
+    now_almaty = datetime.now(timezone(timedelta(hours=6)))  # Almaty is UTC+6
+    today_str = now_almaty.strftime("%Y-%m-%d (%A)")
+    time_str = now_almaty.strftime("%H:%M")
+    return _SYSTEM_PROMPT_BASE + f"\nCurrent date in Almaty: {today_str}. Current time: {time_str}."
+
+
+_SYSTEM_PROMPT_BASE = (
     "You are JARVIS, an intelligent personal assistant for one user in Almaty, Kazakhstan. "
     "Always respond in the same language the user speaks (Russian or English). "
     "For general queries, respond in 2-3 sentences maximum — be concise and direct. "
@@ -367,7 +375,7 @@ async def _call_claude(transcript: str, history: list[dict]) -> dict[str, Any]:
     response = await client.messages.create(
         model="claude-sonnet-4-6",
         max_tokens=1024,
-        system=SYSTEM_PROMPT,
+        system=_build_system_prompt(),
         messages=messages,
         output_config={
             "format": {
@@ -438,29 +446,43 @@ async def chat(request: Request, body: ChatRequest) -> ChatResponse:
         except Exception as e:
             print(f"[WARN] Search fetch failed: {e}")
     elif fetch_type == "calendar":
-        try:
-            query_str = envelope.get("query", "")
-            if query_str.strip().startswith("{"):
-                # Create calendar event — query is a JSON string with event details
-                try:
-                    event_params = json.loads(query_str)
-                    date_str = event_params.get("date", "")
-                    time_str = event_params.get("time", "00:00")
-                    duration_min = int(event_params.get("duration_minutes", 60))
-                    start_dt = datetime.fromisoformat(f"{date_str}T{time_str}:00+06:00")
-                    end_dt = start_dt + timedelta(minutes=duration_min)
-                    fetched_data = await _create_calendar_event(
-                        request.app.state.db,
-                        title=event_params.get("title", ""),
-                        start=start_dt.isoformat(),
-                        end=end_dt.isoformat(),
-                    )
-                except Exception as e:
-                    print(f"[WARN] Calendar event creation failed: {e}")
-            else:
+        query_str = envelope.get("query", "")
+        print(f"[INFO] Calendar dispatch — query: {query_str!r}")
+        if query_str.strip().startswith("{"):
+            # Create calendar event — query is a JSON string with event details
+            try:
+                event_params = json.loads(query_str)
+                print(f"[INFO] Parsed event params: {event_params}")
+                date_str = event_params.get("date", "")
+                time_str = event_params.get("time", "00:00")
+                duration_min = int(event_params.get("duration_minutes", 60))
+                start_dt = datetime.fromisoformat(f"{date_str}T{time_str}:00+06:00")
+                end_dt = start_dt + timedelta(minutes=duration_min)
+                created = await _create_calendar_event(
+                    request.app.state.db,
+                    title=event_params.get("title", ""),
+                    start=start_dt.isoformat(),
+                    end=end_dt.isoformat(),
+                )
+                print(f"[INFO] Calendar event created: {created}")
+                # After create, fetch week view so frontend shows updated schedule + confirmation
+                week_view = await _fetch_calendar(request.app.state.db)
+                if isinstance(week_view, dict) and "error" not in week_view:
+                    week_view["created_event"] = created
+                    fetched_data = week_view
+                else:
+                    fetched_data = {"created_event": created, "events": [], "week_start": ""}
+            except Exception as e:
+                import traceback
+                print(f"[ERROR] Calendar event creation failed: {e}")
+                traceback.print_exc()
+                fetched_data = {"error": "calendar_create_failed", "message": str(e), "events": []}
+        else:
+            try:
                 fetched_data = await _fetch_calendar(request.app.state.db)
-        except Exception as e:
-            print(f"[WARN] Calendar fetch failed: {e}")
+            except Exception as e:
+                print(f"[ERROR] Calendar fetch failed: {e}")
+                fetched_data = {"error": "calendar_fetch_failed", "events": []}
     elif fetch_type == "briefing":
         try:
             fetched_data = await _fetch_briefing(request.app.state.http_client, request.app.state.db, settings)
